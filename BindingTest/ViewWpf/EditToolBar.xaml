@@ -1,0 +1,58 @@
+<ToolBar x:Class="BindingTest.ViewWpf.EditToolBar"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+         xmlns:viewWpf="clr-namespace:BindingTest.ViewWpf"
+         mc:Ignorable="d"
+         Name="this">
+    <ToolBar.Resources>
+        <Style x:Key="disabledStyle" TargetType="Image">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </ToolBar.Resources>
+    <Button Name="btnUndo" 
+            Width="25" 
+            ToolTip="Undo last change"
+            Command="{Binding UndoCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Undo}}" 
+               Width="16" 
+               Style="{StaticResource disabledStyle}"/>
+    </Button>
+    <Button Name="btnRedo"
+            Width="25"
+            ToolTip="Redo last change"
+            Command="{Binding RedoCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Redo}}" 
+               Width="16" 
+               Style="{StaticResource disabledStyle}"/>
+    </Button>
+    <Button Name="btnBeginEdit"
+            Width="25"
+            ToolTip="Begin new Edit"
+            Command="{Binding BeginEditCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Edit}}" 
+               Width="16" 
+               Style="{StaticResource disabledStyle}"/>
+    </Button>
+    <Button Name="btnEndEdit"
+            Width="25"
+            ToolTip="Commit Last Edit"
+            Command="{Binding EndEditCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Accept}}" 
+               Width="16" 
+               Style="{StaticResource disabledStyle}"/>
+    </Button>
+    <Button Name="btnCancelEdit"
+            Width="25"
+            ToolTip="Cancel Edit"
+            Command="{Binding CancelEditCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Cancel}}" 
+               Width="16" 
+               Style="{StaticResource disabledStyle}"/>
+    </Button>
+</ToolBar>

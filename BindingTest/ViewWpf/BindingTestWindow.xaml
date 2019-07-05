@@ -1,0 +1,335 @@
+﻿<Window x:Class="BindingTest.ViewWpf.BindingTestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:model="clr-namespace:BindingTest.Model"
+        xmlns:viewModel="clr-namespace:BindingTest.ViewModel"
+        xmlns:viewWpf="clr-namespace:BindingTest.ViewWpf"
+        xmlns:componentModel="clr-namespace:KGySoft.ComponentModel;assembly=KGySoft.CoreLibraries"
+        xmlns:validation="clr-namespace:BindingTest.ViewWpf.Validation"
+        xmlns:adorners="clr-namespace:BindingTest.ViewWpf.Adorners"
+        d:DataContext="{d:DesignInstance viewModel:BindingViewModel, IsDesignTimeCreatable=True}"
+        Title="Binding Test (WPF)"
+        Background="{x:Static SystemColors.ControlBrush}"
+        Name="this" Height="400" Width="800">
+    <Window.Resources>
+
+        <!--Validation results (Error/Warning/Information for TextBox)-->
+        <Style x:Key="styleValidatingTextBox" TargetType="TextBox">
+            <Style.Triggers>
+
+                <!--
+                The ValidationResult/HasValidationResult extensions are converters for IValidatingObject implementations that can be used also in Binding position.
+                
+                Examples:
+                
+                Getting whether the TestList/ValidationResults has a warning validation entry for the IntProp property:
+                
+                <DataTrigger Value="True" Binding="{validation:HasValidationResult Warning, Path=TestList/ValidationResults, PropertyName=IntProp}">
+                
+                Which is practically the same as:
+                
+                <DataTrigger Value="True" Binding="{Binding TestList/ValidationResults,
+                                                    Converter={validation:HasValidationResult Warning, PropertyName=IntProp}}">
+                
+                Note: The bindings above point to the ValidationResults property. The converter works also for IValidatingObject (Path=TestList/) but we want the
+                trigger to reevaluate the condition for the changes of the ValidationResults property.
+                
+                Above we specified the property name IntProp but the style can be applied to any TextBox used to display different properties.
+                So we can tell that the name of the validated property has to determined by the original binding on the TextBox.
+                Getting whether the TestList/ValidationResults has a warning validation entry for the property bound to TextBox.Text:
+                
+                <DataTrigger Value="True" Binding="{validation:HasValidationResult Warning,
+                                                    Path=TestList/ValidationResults,
+                                                    BoundTarget={Binding RelativeSource={RelativeSource Self}},
+                                                    BoundProperty={x:Static TextBox.TextProperty}}">
+                
+                The BoundProperty used above is a DependencyProperty reference and can be an attached property, too.
+                But for the TextBox.Text property using the PropertyName is simpler:
+
+                <DataTrigger Value="True" Binding="{validation:HasValidationResult Warning,
+                                                    Path=TestList/ValidationResults,
+                                                    BoundTarget={Binding RelativeSource={RelativeSource Self}},
+                                                    PropertyName=Text}">
+
+                Note that if BoundTarget is specified, then PropertyName specifies one of its properties rather than a IValidatingObject property (see above)
+                
+                If no property is defined, then the bound property is tried to be auto detected. If neither BoundTarget, nor a property is defined,
+                then the result tells if there is at least one info validation entry for any properties.
+                -->
+
+                <!-- Info Style - we don't specify the TextBox.Text property so it is auto detected now (see also the examples above). -->
+                <DataTrigger Value="True" Binding="{validation:HasValidationResult Information, Path=TestList/ValidationResults, BoundTarget={Binding RelativeSource={RelativeSource Self}}}">
+
+                    <!--Setting ElementAdorner.Template, which works similarly to Validation.ErrorTemplate: makes possible to define a template
+                        displayed in the adorner layer so the arrangement of the controls will not change when the border appears, and the original content
+                        of the control will be preserved (which would disappear by setting the regular Template property) -->
+                    <Setter Property="adorners:ElementAdorner.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <!-- Drawing a border around the original control. Since we are in the adorner layer now, this will not change the layout -->
+                                <Border BorderBrush="Blue" BorderThickness="3">
+                                    <!--adorners:AdornedElementPlaceholder is the same as Controls.AdornedElementPlaceholder, which unfortunately works only for ErrorTemplate -->
+                                    <adorners:AdornedElementPlaceholder>
+                                        <!-- Displaying an icon in the original TextBox and using the ValidationResult extension for obtaining the validation message.
+                                             Note the AdornerBinding used in BoundTarget. It can be used similarly to TemplateBinding and is actually the shorthand of
+                                             <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(adorners:ElementAdorner.AdornedParent)"/>-->
+                                        <Image HorizontalAlignment="Right" DockPanel.Dock="Right"
+                                               Source="{Binding Source={x:Static viewWpf:Images.Information}}"
+                                               ToolTip="{validation:ValidationResult Information,
+                                                        Path=TestList/ValidationResults,
+                                                        BoundTarget={adorners:AdornerBinding}}"/>
+                                    </adorners:AdornedElementPlaceholder>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                    <!-- Unlike regular templates, the adorner template above does not make the original TextBox disappear so we can change also its properties: -->
+                    <Setter Property="Background" Value="LightBlue"/>
+                </DataTrigger>
+
+                <!-- Warning Style - for details see the Info Style above -->
+                <DataTrigger Value="True" Binding="{validation:HasValidationResult Warning, Path=TestList/ValidationResults, BoundTarget={Binding RelativeSource={RelativeSource Self}}}">
+                    <Setter Property="adorners:ElementAdorner.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border BorderBrush="Orange" BorderThickness="3">
+                                    <adorners:AdornedElementPlaceholder>
+                                        <Image HorizontalAlignment="Right" DockPanel.Dock="Right"
+                                               Source="{Binding Source={x:Static viewWpf:Images.Warning}}"
+                                               ToolTip="{validation:ValidationResult Warning,
+                                                        Path=TestList/ValidationResults,
+                                                        BoundTarget={adorners:AdornerBinding}}"/>
+                                    </adorners:AdornedElementPlaceholder>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="Khaki"/>
+                </DataTrigger>
+
+                <!-- Error style - now by the standard way (for the sake of comparison). Works because ValidatingObjectBase implements IDataErrorInfo, too.
+                     Could be used similarly to Info and Warning styles above but then binding errors (eg. string in an int field) weren't displayed.
+                     Tip: Specify Error style similarly to Info and Warning, do not enable ValidatesOnDataErrors on bindings, and then this can be
+                     an additional level above Error, specifically for binding errors -->
+                <Trigger Property="Validation.HasError" Value="True">
+                    <!--Disabling the original error template and using the general adorner template instead so they will not interfere-->
+                    <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+                    <Setter Property="adorners:ElementAdorner.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border BorderBrush="Red" BorderThickness="3">
+                                    <adorners:AdornedElementPlaceholder>
+                                        <!-- Here the AdornerBinding is used with a path (see the Info Style above for more details)
+                                             If we used ToolTip="{validation:ValidationResult Error, ...}" here, then binding errors would not be displayed. -->
+                                        <Image HorizontalAlignment="Right" DockPanel.Dock="Right"
+                                               Source="{Binding Source={x:Static viewWpf:Images.Error}}"
+                                               ToolTip="{adorners:AdornerBinding (Validation.Errors)[0].ErrorContent}"/>
+                                    </adorners:AdornedElementPlaceholder>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="LightPink"/>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <!-- Error Styles for DataGid. They are applied in the codebehind. See the comments below at the DataGrid for details. -->
+        <Style x:Key="styleCellError" TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="styleEditCellError" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- Window Content starts here -->
+    <DockPanel LastChildFill="True">
+
+        <!-- The Grid of GroupBoxes with the RadioButtons -->
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0"
+                      Header="Bound List Type"
+                      ToolTip="The list type to bind.
+&#13;&#10;• List has no notification events so direct changes on it cannot be detected">
+                <StackPanel>
+                    <RadioButton Content="List" IsChecked="{Binding UseList}" ToolTip="• Has no notification events so direct changes are not reflected until refreshing.
+&#13;&#10;• Cannot wrap a list, the constructor just copies the elements
+&#13;&#10;• Does not support sorting, WPF's fallback sorting will be used"/>
+                    <RadioButton Content="BindingList" IsChecked="{Binding UseBindingList}" ToolTip="• Does not support sorting (and no fallback sort is applied by WPF)
+&#13;&#10;• Events of a wrapped list are not captured
+&#13;&#10;• Events of item property changes are captured"/>
+                    <RadioButton Content="SortableBindingList" IsChecked="{Binding UseSortableBindingList}" ToolTip="• Events of a wrapped list are not captured
+&#13;&#10;• Events of item property changes are captured
+&#13;&#10;• Does not re-sort items when they are edited"/>
+                    <RadioButton Content="SortableBindingList (SortOnChange)" IsChecked="{Binding UseSortableBindingListSortOnChange}" ToolTip="• Events of a wrapped list are not captured
+&#13;&#10;• Events of item property changes are captured
+&#13;&#10;• Sort is re-applied when an item changes
+&#13;&#10;• To sort for simple property changes element must support change notification"/>
+                    <RadioButton Content="ObservableCollection" IsChecked="{Binding UseObservableCollection}" ToolTip="• Cannot wrap a list, the constructor just copies the elements
+&#13;&#10;• Does not support sorting, WPF's fallback sorting will be used"/>
+                    <RadioButton Content="ObservableBindingList" IsChecked="{Binding UseObservableBindingList}" ToolTip="• WPF prefers to use it as an IBindingList
+&#13;&#10;• If wraps another list with change notifications, then captures the events of the wrapped collection
+&#13;&#10;• Supports sorting if the wrapped collection supports sorting
+&#13;&#10;• If initialized without a wrapped list, then will use a SortableBindingList internally"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Wrapped List Type" ToolTip="The type of the list to be passed to the constructor of the bound list
+&#13;&#10;• If the bound list is List or ObservableCollection, then only the elements are copied
+&#13;&#10;• Unless the bound list is ObservableBindingList and the wrapped list supports change notification, then direct modifications of the wrapped list are not captured">
+                <StackPanel>
+                    <RadioButton Content="None" IsChecked="{Binding NoInnerList}" ToolTip="The bound list is created by its default constructor."/>
+                    <RadioButton Content="List" IsChecked="{Binding InnerList}" ToolTip="A List is passed to the default constructor.
+&#13;&#10;• Has no notification events so direct changes on the wrapped collection are not detected"/>
+                    <RadioButton Content="BindingList" IsChecked="{Binding InnerBindingList}" ToolTip="If wrapped into an ObservableBindingList, then direct modifications on the wrapped list are detected.
+&#13;&#10;• Does not support sorting"/>
+                    <RadioButton Content="SortableBindingList" IsChecked="{Binding InnerSortableBindingList}" ToolTip="If wrapped into an ObservableBindingList, then direct modifications on the wrapped list are detected.
+&#13;&#10;• Supports sorting"/>
+                    <RadioButton Content="ObservableCollection" IsChecked="{Binding InnerObservableCollection}" ToolTip="If wrapped into an ObservableBindingList, then direct modifications on the wrapped list are detected.
+&#13;&#10;• Does not support sorting"/>
+                    <RadioButton Content="ObservableBindingList" IsChecked="{Binding InnerObservableBindingList}" ToolTip="If wrapped into an ObservableBindingList, then direct modifications on the wrapped list are detected.
+&#13;&#10;• Supports sorting if created by its default constructor"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Grid.Column="2" Header="Element Base Type">
+                <StackPanel>
+                    <RadioButton Content="Object" IsChecked="{Binding UseObject}" ToolTip="The element type is derived from object
+&#13;&#10;• Does not support property change notification"/>
+                    <RadioButton Content="ObservableObjectBase" IsChecked="{Binding UseObservableObject}" ToolTip="The element type is derived from ObservableObjectBase
+&#13;&#10;• Supports property change notification"/>
+                    <RadioButton Content="UndoableObjectBase" IsChecked="{Binding UseUndoableObject}" ToolTip="The element type is derived from UndoableObjectBase
+&#13;&#10;• Supports property change notification
+&#13;&#10;• Supports Undo/Redo"/>
+                    <RadioButton Content="EditableObjectBase" IsChecked="{Binding UseEditableObject}" ToolTip="The element type is derived from EditableObjectBase
+&#13;&#10;• Supports property change notification
+&#13;&#10;• Supports BeginEdit/EndEdit/CancelEdit"/>
+                    <RadioButton Content="ValidatingObjectBase" IsChecked="{Binding UseValidatingObject}" ToolTip="The element type is derived from ValidatingObjectBase
+&#13;&#10;• Supports property change notification
+&#13;&#10;• Supports Validation"/>
+                    <RadioButton Content="ModelBase" IsChecked="{Binding UseModelBase}" ToolTip="The element type is derived from ModelObjectBase
+&#13;&#10;• Supports property change notification
+&#13;&#10;• Supports Undo/Redo
+&#13;&#10;• Supports BeginEdit/EndEdit/CancelEdit
+&#13;&#10;• Supports Validation"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
+        <!-- The Grid of the tested controls -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" LastChildFill="True">
+
+                <!--The ToolBar for manipulating the bound list directly -->
+                <ToolBarTray Orientation="Vertical">
+                    <ToolBar>
+                        <CheckBox Content="[...]" IsChecked="{Binding ChangeUnderlyingCollection}" ToolTip="If checked the buttons below manipulate the wrapped list directly rather than the bound list
+&#13;&#10;• ATTENTION: Unless the bound list is an ObservableBindingList and the wrapped collection supports change notification manipulating the underlying collection directly may cause inconsistency.
+&#13;&#10;   Press Reset if no change can be seen to reset binding and to avoid errors.
+&#13;&#10;• Makes no difference for a List
+&#13;&#10;• An ObservableCollection wraps a List no matter what was passed to the constructor"/>
+                        <Button Content="Reset" Command="{Binding ResetBindingCommand, ElementName=this}" ToolTip="Resets the binding. Press to re-read the bound list if it was updated and the changes could not be detected."/>
+                        <Button Content="Add" Command="{Binding AddItemCommand, ElementName=this}" ToolTip="Adds a new element directly to the bound list.
+&#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
+&#13;&#10;• Change cannot be detected if bound list type is List
+&#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
+                        <Button Content="Del" Command="{Binding RemoveItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Removes element directly from the bound list at the current index
+&#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
+&#13;&#10;• Change cannot be detected if bound list type is List
+&#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
+                        <Button Content="Item" Command="{Binding ReplaceItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Replaces the element directly in the bound list at the current index
+&#13;&#10;• If no change can be seen press Reset to refresh the binding.
+&#13;&#10;• Change cannot be detected if bound list type is List (and IBindingList update performs a full reset due to a WPF bug)
+&#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
+                        <Button Content="Prop" Command="{Binding EditItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Sets StringProp of the current item
+&#13;&#10;• If no change can be seen press Reset to refresh the binding.
+&#13;&#10;• Change can be detected if element type supports change notification (anything but Object base is selected)"/>
+                    </ToolBar>
+                </ToolBarTray>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!-- WPF DataGrid Issues:
+                        - If columns are auto generated: validation and style can be added only from events (current solution)
+                        - If columns are manually added with validation, then sorting will have issues:
+                          - List and ObservableCollection: simply do not work
+                          - SortableBindingList: null reference exception from deeply in PresentationFramework.dll/System.Windows.Data.BindingListCollectionView.ConvertSortDescriptionCollection 
+                        - Bonus: AutoGeneratingColumn is not triggered if the DataGrid is defined in <mc:AlternateContent>/<mc:Choice Requires="NET40">
+                    -->
+                    <!-- Just a DataGrid bound to the TestList -->
+                    <GroupBox Header="DataGrid" Grid.Row="0">
+                        <DataGrid IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding TestList}" AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn">
+                            <!-- This is now in codebehind. Columns are autogenerated so all properties of the different element types are displayed -->
+                            <!--<DataGrid.Columns>
+                                <DataGridTextColumn Header="IntProp" Binding="{Binding Path=(model:ITestObject.IntProp), ValidatesOnDataErrors=True}" ElementStyle="{StaticResource styleCellError}" EditingElementStyle="{StaticResource styleEditCellError}"/>
+                                <DataGridTextColumn Header="StringProp" Binding="{Binding Path=(model:ITestObject.StringProp), ValidatesOnDataErrors=True}" ElementStyle="{StaticResource styleCellError}" EditingElementStyle="{StaticResource styleEditCellError}"/>
+                            </DataGrid.Columns>-->
+                        </DataGrid>
+                    </GroupBox>
+
+                    <!-- Just a ListBox bound to the TestList -->
+                    <GroupBox Header="ListBox" Grid.Row="1">
+                        <ListBox Name="lbList" ItemsSource="{Binding TestList}" DisplayMemberPath="StringProp" IsSynchronizedWithCurrentItem="True"/>
+                    </GroupBox>
+                </Grid>
+            </DockPanel>
+            <DockPanel Grid.Column="1">
+
+                <!-- A custom re-usable ToolBar to demonstrate how to use ICanUndo[/Redo] and ICanEdit features in WPF
+                     and how to wraps KGySoft.ComponentModel commands into WPF commands. See the EditToolBar control for details. -->
+                <ToolBarTray Orientation="Vertical" DockPanel.Dock="Right">
+                    <viewWpf:EditToolBar DataContext="{Binding TestList/}" />
+                </ToolBarTray>
+
+                <!-- Just a couple of TextBoxes bound to the properties of TestList items. The validation styles for IValidatingObject are enabled for them
+                     (see the style definitions in the Window.Resources above) -->
+                <GroupBox Header="Bound to the same source as the DataGrid and ListBox" DockPanel.Dock="Top">
+                    <StackPanel>
+                        <Label Content="IntProp"/>
+                        <TextBox Style="{StaticResource styleValidatingTextBox}" Text="{Binding TestList/IntProp, ValidatesOnDataErrors=True}" />
+                        <Label Content="StringProp"/>
+                        <TextBox Style="{StaticResource styleValidatingTextBox}" Text="{Binding TestList/StringProp, ValidatesOnDataErrors=True}"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Just another couple of TextBoxes bound to the current item of the ListBox.
+                 As their binding source is different the -->
+                <GroupBox Header="Bound to the selected item in ListBox">
+                    <StackPanel>
+                        <Label Content="IntProp"/>
+                        <TextBox Style="{StaticResource styleValidatingTextBox}" Text="{Binding ElementName=lbList, Path=SelectedItem.(model:ITestObject.IntProp), ValidatesOnDataErrors=True}"/>
+                        <Label Content="StringProp"/>
+                        <TextBox Style="{StaticResource styleValidatingTextBox}" Text="{Binding ElementName=lbList, Path=SelectedItem.(model:ITestObject.StringProp), ValidatesOnDataErrors=True}"/>
+                    </StackPanel>
+                </GroupBox>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>
+
