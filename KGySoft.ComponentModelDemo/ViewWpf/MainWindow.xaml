@@ -1,4 +1,4 @@
-﻿<Window x:Class="KGySoft.ComponentModelDemo.ViewWpf.BindingTestWindow"
+﻿<Window x:Class="KGySoft.ComponentModelDemo.ViewWpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,7 +10,7 @@
         xmlns:model="clr-namespace:KGySoft.ComponentModelDemo.Model"
         xmlns:viewModel="clr-namespace:KGySoft.ComponentModelDemo.ViewModel"
         xmlns:viewWpf="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf"
-        d:DataContext="{d:DesignInstance viewModel:BindingViewModel, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance viewModel:MainViewModel, IsDesignTimeCreatable=True}"
         Title="KGySoft.ComponentModel Demo (WPF)"
         Background="{x:Static SystemColors.ControlBrush}"
         Name="this" Height="400" Width="700">

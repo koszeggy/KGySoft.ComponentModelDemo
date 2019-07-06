@@ -17,9 +17,9 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class BindingTestWindow : Window
+    public partial class MainWindow : Window
     {
-        private readonly BindingViewModel viewModel;
+        private readonly ViewModel.MainViewModel viewModel;
 
         public ICommand ResetBindingCommand { get; }
         public ICommand AddItemCommand { get; }
@@ -27,7 +27,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
         public ICommand ReplaceItemCommand { get; }
         public ICommand EditItemCommand { get; }
 
-        public BindingTestWindow()
+        public MainWindow()
         {
             ResetBindingCommand = new SimpleWpfCommand(OnResetBindingCommand);
             AddItemCommand = new SimpleWpfCommand(OnAddItemCommand);
@@ -48,7 +48,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
             e.Handled = true;
         }
 
-        public BindingTestWindow(BindingViewModel viewModel) : this()
+        public MainWindow(ViewModel.MainViewModel viewModel) : this()
         {
             DataContext = viewModel;
             this.viewModel = viewModel;

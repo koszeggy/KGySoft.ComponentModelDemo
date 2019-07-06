@@ -17,7 +17,7 @@ namespace KGySoft.ComponentModelDemo
         /// </summary>
         static void Main()
         {
-            //LaunchStaThread(StartWpf);
+            LaunchStaThread(StartWpf);
             LaunchStaThread(StartWinForms);
         }
 
@@ -32,14 +32,14 @@ namespace KGySoft.ComponentModelDemo
         {
             var application = new WpfApp();
             application.InitializeComponent();
-            application.Run(new BindingTestWindow(new BindingViewModel()));
+            application.Run(new MainWindow(new ViewModel.MainViewModel()));
         }
 
         private static void StartWinForms()
         {
             WinFormsApp.EnableVisualStyles();
             WinFormsApp.SetCompatibleTextRenderingDefault(false);
-            WinFormsApp.Run(new BindingTestForm(new BindingViewModel()));
+            WinFormsApp.Run(new MainForm(new ViewModel.MainViewModel()));
         }
     }
 }

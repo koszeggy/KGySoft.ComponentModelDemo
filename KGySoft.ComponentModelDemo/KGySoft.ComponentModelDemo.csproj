@@ -55,7 +55,7 @@
     <Compile Include="ViewWpf\Adorners\AdornedElementPlaceholder.cs" />
     <Compile Include="ViewWpf\Adorners\ElementAdorner.cs" />
     <Compile Include="ViewWpf\Adorners\TemplatedAdorner.cs" />
-    <Compile Include="ViewModel\BindingViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Model\Commands.cs" />
     <Compile Include="Model\EditableTestObject.cs" />
     <Compile Include="ViewWinForms\EditMenuStrip.cs">
@@ -70,11 +70,11 @@
     <Compile Include="Model\PocoTestObject.cs" />
     <Compile Include="Model\UndoableTestObject.cs" />
     <Compile Include="Model\ValidatingTestObject.cs" />
-    <Compile Include="ViewWinForms\BindingTestForm.cs">
+    <Compile Include="ViewWinForms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ViewWinForms\BindingTestForm.Designer.cs">
-      <DependentUpon>BindingTestForm.cs</DependentUpon>
+    <Compile Include="ViewWinForms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewWinForms\Images.cs" />
     <Compile Include="ViewWinForms\TooltipUpdater.cs" />
@@ -84,8 +84,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewWpf\BindingTestWindow.xaml.cs">
-      <DependentUpon>BindingTestWindow.xaml</DependentUpon>
+    <Compile Include="ViewWpf\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,8 +100,8 @@
     <Compile Include="ViewWpf\SimpleWpfCommand.cs" />
     <Compile Include="ViewWpf\Validation\ValidationBindingExtension.cs" />
     <Compile Include="ViewWpf\WpfCommands.cs" />
-    <EmbeddedResource Include="ViewWinForms\BindingTestForm.resx">
-      <DependentUpon>BindingTestForm.cs</DependentUpon>
+    <EmbeddedResource Include="ViewWinForms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -117,7 +117,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewWpf\BindingTestWindow.xaml">
+    <Page Include="ViewWpf\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

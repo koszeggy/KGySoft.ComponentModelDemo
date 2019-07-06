@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.Extensions;
@@ -17,9 +16,9 @@ using KGySoft.Reflection;
 
 namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
-    public partial class BindingTestForm : Form
+    public partial class MainForm : Form
     {
-        private readonly BindingViewModel viewModel;
+        private readonly ViewModel.MainViewModel viewModel;
         private readonly CommandBindingsCollection commandBindings = new CommandBindingsCollection();
 
         // TODO: to designer
@@ -31,11 +30,11 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         private Binding intPropCurrentColorBinding, stringPropCurrentColorBinding;
         private ICommandBinding formatColorListBinding, formatColorCurrentBinding;
 
-        static BindingTestForm() => Application.ThreadException += (sender, e) =>
+        static MainForm() => Application.ThreadException += (sender, e) =>
             MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
                 + $"The caught exception message: {e.Exception.Message}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-        public BindingTestForm(BindingViewModel viewModel)
+        public MainForm(ViewModel.MainViewModel viewModel)
         {
             InitializeComponent();
             this.viewModel = viewModel;
@@ -96,7 +95,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             // this.Load/viewModel.PropertyChanged -> OnRebindCommand
             commandBindings.Add<EventArgs>(OnRebindCommand)
                 .AddSource(this, nameof(Load))
-                .AddSource(viewModel, nameof(BindingViewModel.PropertyChanged));
+                .AddSource(viewModel, nameof(ViewModel.MainViewModel.PropertyChanged));
 
             // grid.DataError: adding an empty handler so no dialogs will be popped up endlessly on errors
             commandBindings.Add(() => { }).AddSource(grid, nameof(grid.DataError));

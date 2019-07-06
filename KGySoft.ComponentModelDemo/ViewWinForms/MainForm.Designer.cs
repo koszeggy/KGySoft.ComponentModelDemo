@@ -2,7 +2,7 @@
 
 namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
-    partial class BindingTestForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -18,7 +18,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BindingTestForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.Panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();

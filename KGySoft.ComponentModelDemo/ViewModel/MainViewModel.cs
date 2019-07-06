@@ -10,7 +10,7 @@ using KGySoft.Reflection;
 
 namespace KGySoft.ComponentModelDemo.ViewModel
 {
-    public class BindingViewModel : ObservableObjectBase
+    public class MainViewModel : ObservableObjectBase
     {
         private static readonly HashSet<string>[] radioGroups =
         {
