@@ -236,7 +236,7 @@
 </value>
   </data>
   <data name="btnSetItem.ToolTipText" xml:space="preserve">
-    <value>Replaces the element directly in the bound list at the current index
+    <value>Replaces the element in the bound list at the current index
 • If no change can be seen press Reset to refresh the binding.
 • Change cannot be detected if bound list type is List or ObservableCollection
 • Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List</value>

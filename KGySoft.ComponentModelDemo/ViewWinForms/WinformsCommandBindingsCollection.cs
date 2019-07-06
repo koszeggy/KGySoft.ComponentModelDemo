@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
-using KGySoft.Reflection;
 
-namespace BindingTest.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     /// <summary>
     /// A specialized <see cref="CommandBindingsCollection"/> that can be used commands for <see cref="Control"/> sources.

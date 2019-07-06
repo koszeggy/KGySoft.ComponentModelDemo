@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace BindingTest.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     partial class BindingTestForm
     {
@@ -68,7 +68,7 @@ namespace BindingTest.ViewWinForms
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.warningProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.infoProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.editMenuStrip = new BindingTest.ViewWinForms.EditMenuStrip();
+            this.editMenuStrip = new KGySoft.ComponentModelDemo.ViewWinForms.EditMenuStrip();
             this.Panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -689,7 +689,7 @@ namespace BindingTest.ViewWinForms
             this.Controls.Add(this.tsList);
             this.Controls.Add(this.Panel1);
             this.Name = "BindingTestForm";
-            this.Text = "Binding Test (Windows Forms)";
+            this.Text = "KGySoft.ComponentModel Demo (Windows Forms)";
             this.Panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);

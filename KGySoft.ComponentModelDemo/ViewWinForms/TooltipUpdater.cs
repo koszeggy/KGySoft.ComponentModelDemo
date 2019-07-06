@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using KGySoft.ComponentModel;
 using KGySoft.Reflection;
 
-namespace BindingTest.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     /// <summary>
     /// Provides special handling for ToolTipText: tries to find the associated <see cref="ToolTip"/> component.

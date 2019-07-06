@@ -1,7 +1,7 @@
 ﻿using System;
 using KGySoft.ComponentModel;
 
-namespace BindingTest.Extensions
+namespace KGySoft.ComponentModelDemo.Extensions
 {
     internal static class CommandBindingsCollectionExtensions
     {

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using KGySoft.ComponentModel;
 
-namespace BindingTest.Model
+namespace KGySoft.ComponentModelDemo.Model
 {
     public class FullExtraTestObject : ModelBase, ITestObject
     {

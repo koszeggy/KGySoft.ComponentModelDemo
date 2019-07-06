@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using BindingTest.Model;
 using KGySoft.ComponentModel;
+using KGySoft.ComponentModelDemo.Model;
 
-namespace BindingTest.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     /// <summary>
     /// Interaction logic for EditToolBar.xaml

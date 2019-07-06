@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace BindingTest.ViewWpf.Adorners
+namespace KGySoft.ComponentModelDemo.ViewWpf.Adorners
 {
     /// <summary>
     /// Similar to <see cref="System.Windows.Controls.AdornedElementPlaceholder"/>, which could be used only for error templates only.

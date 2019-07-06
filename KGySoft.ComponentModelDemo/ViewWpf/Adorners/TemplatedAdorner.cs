@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace BindingTest.ViewWpf.Adorners
+namespace KGySoft.ComponentModelDemo.ViewWpf.Adorners
 {
     /// <summary>
     /// This is the actual underlying adorner created when <see cref="ElementAdorner.TemplateProperty"/> is set.

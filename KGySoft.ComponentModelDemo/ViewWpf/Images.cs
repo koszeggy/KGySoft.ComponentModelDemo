@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using BindingTest.Properties;
 
-namespace BindingTest.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     internal static class Images
     {
@@ -22,15 +15,15 @@ namespace BindingTest.ViewWpf
         private static ImageSource warning;
         private static ImageSource info;
 
-        public static ImageSource Undo => undo ?? (undo = BitmapFrame.Create(Resources.Undo));
-        public static ImageSource Redo => redo ?? (redo = BitmapFrame.Create(Resources.Redo));
-        public static ImageSource Edit => edit ?? (edit = BitmapFrame.Create(Resources.Edit));
-        public static ImageSource Accept => accept ?? (accept = BitmapFrame.Create(Resources.Accept));
-        public static ImageSource Cancel => cancel ?? (cancel = BitmapFrame.Create(Resources.Cancel));
+        public static ImageSource Undo => undo ?? (undo = BitmapFrame.Create(Properties.Resources.Undo));
+        public static ImageSource Redo => redo ?? (redo = BitmapFrame.Create(Properties.Resources.Redo));
+        public static ImageSource Edit => edit ?? (edit = BitmapFrame.Create(Properties.Resources.Edit));
+        public static ImageSource Accept => accept ?? (accept = BitmapFrame.Create(Properties.Resources.Accept));
+        public static ImageSource Cancel => cancel ?? (cancel = BitmapFrame.Create(Properties.Resources.Cancel));
 
-        public static ImageSource Error => error ?? (error = BitmapFrame.Create(Resources.Error));
-        public static ImageSource Warning => warning ?? (warning = BitmapFrame.Create(Resources.Warning));
-        public static ImageSource Information => info ?? (info = BitmapFrame.Create(Resources.Information));
+        public static ImageSource Error => error ?? (error = BitmapFrame.Create(Properties.Resources.Error));
+        public static ImageSource Warning => warning ?? (warning = BitmapFrame.Create(Properties.Resources.Warning));
+        public static ImageSource Information => info ?? (info = BitmapFrame.Create(Properties.Resources.Information));
 
     }
 }

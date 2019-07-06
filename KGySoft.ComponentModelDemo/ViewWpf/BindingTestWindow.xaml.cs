@@ -6,12 +6,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using BindingTest.Model;
-using BindingTest.ViewModel;
+using System.Windows.Threading;
+using KGySoft.ComponentModelDemo.Model;
+using KGySoft.ComponentModelDemo.ViewModel;
 using KGySoft.CoreLibraries;
 using KGySoft.Reflection;
 
-namespace BindingTest.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -34,7 +35,17 @@ namespace BindingTest.ViewWpf
             ReplaceItemCommand = new ParameterizedWpfCommand<ITestObject>(OnReplaceItemCommand);
             EditItemCommand = new ParameterizedWpfCommand<ITestObject>(OnEditItemCommand);
 
+            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+
             InitializeComponent();
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            OnResetBindingCommand();
+            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. The binding have been reset prevent further errors.{Environment.NewLine}{Environment.NewLine}"
+                + $"The caught exception message: {e.Exception.Message}", "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            e.Handled = true;
         }
 
         public BindingTestWindow(BindingViewModel viewModel) : this()

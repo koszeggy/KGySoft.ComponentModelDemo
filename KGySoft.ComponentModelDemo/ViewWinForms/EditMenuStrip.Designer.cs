@@ -1,4 +1,4 @@
-﻿namespace BindingTest.ViewWinForms
+﻿namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     partial class EditMenuStrip
     {

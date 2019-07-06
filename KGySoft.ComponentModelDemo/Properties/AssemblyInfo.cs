@@ -5,12 +5,16 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BindingTest")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BindingTest")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyTitle("KGySoft.ComponentModelDemo")]
+[assembly: AssemblyDescription("KGySoft.ComponentModel Demo")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+[assembly: AssemblyCompany("KGy SOFT")]
+[assembly: AssemblyProduct("KGy SOFT Libraries")]
+[assembly: AssemblyCopyright("Copyright © KGy SOFT. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

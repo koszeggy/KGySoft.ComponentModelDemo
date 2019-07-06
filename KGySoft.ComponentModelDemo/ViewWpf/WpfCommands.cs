@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
-namespace BindingTest.ViewWpf
+﻿namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     internal static class WpfCommands
     {

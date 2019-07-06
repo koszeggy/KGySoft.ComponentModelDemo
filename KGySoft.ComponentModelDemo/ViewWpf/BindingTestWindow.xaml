@@ -1,19 +1,19 @@
-﻿<Window x:Class="BindingTest.ViewWpf.BindingTestWindow"
+﻿<Window x:Class="KGySoft.ComponentModelDemo.ViewWpf.BindingTestWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        xmlns:model="clr-namespace:BindingTest.Model"
-        xmlns:viewModel="clr-namespace:BindingTest.ViewModel"
-        xmlns:viewWpf="clr-namespace:BindingTest.ViewWpf"
         xmlns:componentModel="clr-namespace:KGySoft.ComponentModel;assembly=KGySoft.CoreLibraries"
-        xmlns:validation="clr-namespace:BindingTest.ViewWpf.Validation"
-        xmlns:adorners="clr-namespace:BindingTest.ViewWpf.Adorners"
+        xmlns:validation="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf.Validation"
+        xmlns:adorners="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf.Adorners"
+        xmlns:model="clr-namespace:KGySoft.ComponentModelDemo.Model"
+        xmlns:viewModel="clr-namespace:KGySoft.ComponentModelDemo.ViewModel"
+        xmlns:viewWpf="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf"
         d:DataContext="{d:DesignInstance viewModel:BindingViewModel, IsDesignTimeCreatable=True}"
-        Title="Binding Test (WPF)"
+        Title="KGySoft.ComponentModel Demo (WPF)"
         Background="{x:Static SystemColors.ControlBrush}"
-        Name="this" Height="400" Width="800">
+        Name="this" Height="400" Width="700">
     <Window.Resources>
 
         <!--Validation results (Error/Warning/Information for TextBox)-->
@@ -259,7 +259,7 @@
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Item" Command="{Binding ReplaceItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Replaces the element directly in the bound list at the current index
+                        <Button Content="Item" Command="{Binding ReplaceItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Replaces the element in the bound list at the current index
 &#13;&#10;• If no change can be seen press Reset to refresh the binding.
 &#13;&#10;• Change cannot be detected if bound list type is List (and IBindingList update performs a full reset due to a WPF bug)
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-using BindingTest.Model;
 using KGySoft.ComponentModel;
+using KGySoft.ComponentModelDemo.Model;
 using KGySoft.CoreLibraries;
 
-namespace BindingTest.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     public partial class EditMenuStrip : ToolStrip
     {

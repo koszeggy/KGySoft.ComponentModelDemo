@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using BindingTest.Model;
 using KGySoft.ComponentModel;
+using KGySoft.ComponentModelDemo.Model;
 using KGySoft.CoreLibraries;
 using KGySoft.Reflection;
 
-namespace BindingTest.ViewModel
+namespace KGySoft.ComponentModelDemo.ViewModel
 {
     public class BindingViewModel : ObservableObjectBase
     {

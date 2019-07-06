@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
 
-namespace BindingTest.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     /// <summary>
     /// Provides an adapter for <see cref="ErrorProvider"/> to be able to display validation results of any <see cref="ValidationSeverity"/>.
@@ -81,20 +81,37 @@ namespace BindingTest.ViewWinForms
             {
                 // Ignore everything but bindings to Controls
                 var control = binding.Control;
-                if (control == null)
+                string propertyName = binding.BindingMemberInfo.BindingField;
+                if (control == null || String.IsNullOrEmpty(binding.BindingMemberInfo.BindingField))
                     continue;
 
-                string propertyName = binding.BindingMemberInfo.BindingField;
-                string message = currentItem is IValidatingObject validatingObject && !validatingObject.ValidationResults.Any(vr => vr.Severity > severity)
-                    ? validatingObject.ValidationResults[propertyName, severity]?.FirstOrDefault()?.Message
-                    : null;
-
-                if (!controlMessages.TryGetValue(control, out StringBuilder sb))
-                    controlMessages[control] = new StringBuilder(message ?? String.Empty);
-                else if (!String.IsNullOrEmpty(message))
+                var message = new StringBuilder();
+                if (currentItem is IValidatingObject validatingObject)
                 {
-                    sb.AppendLine();
-                    sb.Append(message);
+                    foreach (ValidationResult validationResult in validatingObject.ValidationResults)
+                    {
+                        if (validationResult.Severity < severity || validationResult.PropertyName != propertyName || String.IsNullOrEmpty(validationResult.Message))
+                            continue;
+
+                        if (validationResult.Severity > severity)
+                        {
+                            message.Clear();
+                            break;
+                        }
+
+                        if (message.Length > 0)
+                            message.AppendLine();
+                        message.Append(validationResult.Message);
+                    }
+                }
+
+                if (!controlMessages.TryGetValue(control, out StringBuilder messages))
+                    controlMessages[control] = message;
+                else
+                {
+                    if (messages.Length > 0)
+                        messages.AppendLine();
+                    messages.Append(message);
                 }
             }
 

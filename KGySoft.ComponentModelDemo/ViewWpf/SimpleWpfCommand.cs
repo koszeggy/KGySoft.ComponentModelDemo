@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BindingTest.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     public class SimpleWpfCommand : WpfCommandBase
     {

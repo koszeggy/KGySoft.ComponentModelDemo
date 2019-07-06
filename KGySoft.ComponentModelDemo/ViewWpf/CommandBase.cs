@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace BindingTest.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     public abstract class WpfCommandBase : ICommand
     {

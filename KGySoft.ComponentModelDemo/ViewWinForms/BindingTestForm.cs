@@ -6,15 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows.Forms;
-using BindingTest.Extensions;
-using BindingTest.Model;
-using BindingTest.ViewModel;
 using KGySoft.ComponentModel;
+using KGySoft.ComponentModelDemo.Extensions;
+using KGySoft.ComponentModelDemo.Model;
+using KGySoft.ComponentModelDemo.ViewModel;
 using KGySoft.CoreLibraries;
 using KGySoft.Reflection;
 
-namespace BindingTest.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     public partial class BindingTestForm : Form
     {
@@ -29,6 +30,10 @@ namespace BindingTest.ViewWinForms
         private Binding intPropListColorBinding, stringPropListColorBinding;
         private Binding intPropCurrentColorBinding, stringPropCurrentColorBinding;
         private ICommandBinding formatColorListBinding, formatColorCurrentBinding;
+
+        static BindingTestForm() => Application.ThreadException += (sender, e) =>
+            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
+                + $"The caught exception message: {e.Exception.Message}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         public BindingTestForm(BindingViewModel viewModel)
         {
@@ -176,7 +181,10 @@ namespace BindingTest.ViewWinForms
 
             // the actual rebind
             IList testList = viewModel.TestList;
+            listBindingSource.SuspendBinding();
             listBindingSource.DataSource = testList;
+            listBindingSource.ResumeBinding();
+            errorProvider.UpdateBinding();
 
             // validation colors below (could be in the constructor if elements were always IValidatingObject instances)
             if (testList.Cast<ITestObject>().FirstOrDefault() is IValidatingObject)

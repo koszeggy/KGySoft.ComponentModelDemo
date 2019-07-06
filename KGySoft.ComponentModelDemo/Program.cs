@@ -1,12 +1,14 @@
-﻿using System.Threading;
-using BindingTest.ViewModel;
-using BindingTest.ViewWinForms;
-using BindingTest.ViewWpf;
+﻿using System;
+using System.Threading;
+using System.Windows.Forms;
+using KGySoft.ComponentModelDemo.ViewModel;
+using KGySoft.ComponentModelDemo.ViewWinForms;
+using KGySoft.ComponentModelDemo.ViewWpf;
 
 using WinFormsApp = System.Windows.Forms.Application;
-using WpfApp = BindingTest.ViewWpf.App;
+using WpfApp = KGySoft.ComponentModelDemo.ViewWpf.App;
 
-namespace BindingTest
+namespace KGySoft.ComponentModelDemo
 {
     static class Program
     {
@@ -15,7 +17,7 @@ namespace BindingTest
         /// </summary>
         static void Main()
         {
-            LaunchStaThread(StartWpf);
+            //LaunchStaThread(StartWpf);
             LaunchStaThread(StartWinForms);
         }
 

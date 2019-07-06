@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.Design.Serialization;
-using System.Diagnostics;
-using System.Globalization;
-using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
-using KGySoft.Reflection;
 
-namespace BindingTest.ViewWpf.Adorners
+namespace KGySoft.ComponentModelDemo.ViewWpf.Adorners
 {
   public class AdornerBindingExtension : MarkupExtension
   {

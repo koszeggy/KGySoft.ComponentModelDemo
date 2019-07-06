@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Threading;
 
-namespace BindingTest.ViewWpf.Adorners
+namespace KGySoft.ComponentModelDemo.ViewWpf.Adorners
 {
     /// <summary>
     /// Contains the <see cref="TemplateProperty"/> attached property that can be used to specify an adorner for any <see cref="UIElement"/> as a <see cref="ControlTemplate"/>.

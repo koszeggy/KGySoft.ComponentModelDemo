@@ -1,4 +1,4 @@
-﻿namespace BindingTest.Model
+﻿namespace KGySoft.ComponentModelDemo.Model
 {
     public interface ITestObject
     {

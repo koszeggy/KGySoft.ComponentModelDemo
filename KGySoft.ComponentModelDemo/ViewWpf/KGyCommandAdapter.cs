@@ -1,6 +1,6 @@
 ﻿using KGySoft.ComponentModel;
 
-namespace BindingTest.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     public class KGyCommandAdapter : WpfCommandBase
     {

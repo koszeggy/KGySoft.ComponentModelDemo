@@ -4,16 +4,13 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
-using System.Windows.Markup.Primitives;
 using KGySoft.ComponentModel;
 
-namespace BindingTest.ViewWpf.Validation
+namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
 {
     public class ValidationResultExtension : MarkupExtension, IValueConverter
     {
