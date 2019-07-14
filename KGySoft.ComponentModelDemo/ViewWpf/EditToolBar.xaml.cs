@@ -42,10 +42,10 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
             ResetEndCancelEditState();
         }
 
-        private void ResetUndoState() => UndoCommand.CanExecute = (DataContext as ICanUndo)?.CanUndo == true;
-        private void ResetRedoState() => RedoCommand.CanExecute = (DataContext as ICanUndoRedo)?.CanRedo == true;
-        private void ResetBeginEditState() => BeginEditCommand.CanExecute = (DataContext is ICanEdit);
-        private void ResetEndCancelEditState() => EndEditCommand.CanExecute = CancelEditCommand.CanExecute = (DataContext as ICanEdit)?.EditLevel > 0;
+        private void ResetUndoState() => UndoCommand.IsEnabled = (DataContext as ICanUndo)?.CanUndo == true;
+        private void ResetRedoState() => RedoCommand.IsEnabled = (DataContext as ICanUndoRedo)?.CanRedo == true;
+        private void ResetBeginEditState() => BeginEditCommand.IsEnabled = (DataContext is ICanEdit);
+        private void ResetEndCancelEditState() => EndEditCommand.IsEnabled = CancelEditCommand.IsEnabled = (DataContext as ICanEdit)?.EditLevel > 0;
 
         private void NotifyPropertyChanged_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {

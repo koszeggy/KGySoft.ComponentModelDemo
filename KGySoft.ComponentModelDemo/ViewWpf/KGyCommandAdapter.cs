@@ -1,16 +1,21 @@
-﻿using KGySoft.ComponentModel;
+﻿using System.ComponentModel;
+using KGySoft.ComponentModel;
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
-    public class KGyCommandAdapter : WpfCommandBase
+    public class KGyCommandAdapter : SwitchableWpfCommandBase
     {
         private readonly ICommand wrappedCommand;
         private readonly ICommandState state;
 
-        public KGyCommandAdapter(ICommand command, ICommandState state = null)
+        public KGyCommandAdapter(ICommand command, CommandState state = null)
         {
             wrappedCommand = command;
+            if (state == null)
+                return;
+
             this.state = state;
+            state.CreatePropertyBinding(nameof(state.Enabled), nameof(IsEnabled), this);
         }
 
         public override void Execute(object parameter)

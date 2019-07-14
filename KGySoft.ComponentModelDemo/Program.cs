@@ -32,14 +32,14 @@ namespace KGySoft.ComponentModelDemo
         {
             var application = new WpfApp();
             application.InitializeComponent();
-            application.Run(new MainWindow(new ViewModel.MainViewModel()));
+            application.Run(new MainWindow(new MainViewModel()));
         }
 
         private static void StartWinForms()
         {
             WinFormsApp.EnableVisualStyles();
             WinFormsApp.SetCompatibleTextRenderingDefault(false);
-            WinFormsApp.Run(new MainForm(new ViewModel.MainViewModel()));
+            WinFormsApp.Run(new MainForm(new MainViewModel()));
         }
     }
 }

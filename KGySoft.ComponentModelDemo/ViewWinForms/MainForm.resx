@@ -120,6 +120,9 @@
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>348, 17</value>
   </metadata>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>348, 17</value>
+  </metadata>
   <data name="groupBox3.ToolTip" xml:space="preserve">
     <value>The type of the list to be passed to the constructor of the bound list
 • If the bound list is List or ObservableCollection, then only the elements are copied
@@ -194,7 +197,7 @@
 </value>
   </data>
   <data name="btnAdd.ToolTipText" xml:space="preserve">
-    <value>Adds a new element directly to the bound list.
+    <value>Adds a new element to the bound list.
 • ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 • Change cannot be detected if bound list type is List or ObservableCollection
 • Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List</value>
@@ -215,7 +218,7 @@
 </value>
   </data>
   <data name="btnRemove.ToolTipText" xml:space="preserve">
-    <value>Removes element directly from the bound list at the current index
+    <value>Removes the current element from the bound list
 • ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 • Change cannot be detected if bound list type is List or ObservableCollection
 • Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List</value>
@@ -236,7 +239,7 @@
 </value>
   </data>
   <data name="btnSetItem.ToolTipText" xml:space="preserve">
-    <value>Replaces the element in the bound list at the current index
+    <value>Replaces the selected element in the bound list
 • If no change can be seen press Reset to refresh the binding.
 • Change cannot be detected if bound list type is List or ObservableCollection
 • Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List</value>
@@ -257,7 +260,7 @@
 </value>
   </data>
   <data name="btnSetProp.ToolTipText" xml:space="preserve">
-    <value>Sets StringProp of the current item
+    <value>Sets the StringProp of the current item. It does not matther whether [...] is checked.
 • If no change can be seen press Reset to refresh the binding.
 • Change can be detected if element type supports change notification (anything but Object base is selected)</value>
   </data>

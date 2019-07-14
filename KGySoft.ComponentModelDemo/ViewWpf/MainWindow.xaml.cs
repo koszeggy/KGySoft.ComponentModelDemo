@@ -1,16 +1,22 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Threading;
+using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.Model;
 using KGySoft.ComponentModelDemo.ViewModel;
 using KGySoft.CoreLibraries;
 using KGySoft.Reflection;
+using ICommand = System.Windows.Input.ICommand;
+
+#endregion
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
@@ -19,82 +25,107 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ViewModel.MainViewModel viewModel;
+        #region Fields
 
-        public ICommand ResetBindingCommand { get; }
+        private readonly MainViewModel viewModel;
+
+        // A shared state for the command bindings with the current item parameter to manage their CanExecute status
+        private readonly CommandState commandsWithCurrentItemState;
+
+        private ICollectionView currentView;
+
+        #endregion
+
+        #region Properties
+
+        // Unlike in Model and ViewModel, these are regular System.Windows.Input.ICommand commands, which are used traditionally in WPF.
+        // They can wrap KGySoft.ComponentModel.ICommand instances though - see the constructor and the KGyCommandAdapter class.
         public ICommand AddItemCommand { get; }
         public ICommand RemoveItemCommand { get; }
-        public ICommand ReplaceItemCommand { get; }
-        public ICommand EditItemCommand { get; }
+        public ICommand SetItemCommand { get; }
+        public ICommand SetItemPropertyCommand { get; }
+        public ICommand ResetBindingCommand { get; }
 
-        public MainWindow()
+        #endregion
+
+        #region Constructors
+
+        public MainWindow() : this(null)
         {
-            ResetBindingCommand = new SimpleWpfCommand(OnResetBindingCommand);
-            AddItemCommand = new SimpleWpfCommand(OnAddItemCommand);
-            RemoveItemCommand = new ParameterizedWpfCommand<ITestObject>(OnRemoveItemCommand);
-            ReplaceItemCommand = new ParameterizedWpfCommand<ITestObject>(OnReplaceItemCommand);
-            EditItemCommand = new ParameterizedWpfCommand<ITestObject>(OnEditItemCommand);
+        }
 
+        public MainWindow(MainViewModel viewModel)
+        {
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 
+            commandsWithCurrentItemState = new CommandState { Enabled = false };
+
+            // These commands are mapped to KGySoft.ComponentModel.ICommand because they are defined so in the ViewModel.
+            AddItemCommand = new KGyCommandAdapter(viewModel.AddItemCommand);
+            RemoveItemCommand = new KGyCommandAdapter(viewModel.RemoveItemCommand, commandsWithCurrentItemState);
+            SetItemCommand = new KGyCommandAdapter(viewModel.SetItemCommand, commandsWithCurrentItemState);
+            SetItemPropertyCommand = new KGyCommandAdapter(viewModel.SetItemPropertyCommand, commandsWithCurrentItemState);
+
+            // This can be a pure WPF command as the executed method is in this class.
+            ResetBindingCommand = new SimpleWpfCommand(OnResetBindingCommand);
+
+            // TODO: Simple and parameterized commands (the ones, which don't need to get the triggering source and event arguments) can be mapped easily
+            // to KGySoft.ComponentModel.ICommand (see the KGyCommandAdapter class).
+
             InitializeComponent();
+
+            DataContext = viewModel;
+            this.viewModel = viewModel;
+
+            // TODO: events to commands
+            UpdateCurrentView();
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
+
+        private void UpdateCurrentView()
+        {
+            if (currentView != null)
+                currentView.CurrentChanged -= CurrentView_CurrentChanged;
+
+            currentView = CollectionViewSource.GetDefaultView(viewModel.TestList);
+            currentView.CurrentChanged += CurrentView_CurrentChanged;
+        }
+
+        private void CurrentView_CurrentChanged(object sender, EventArgs e)
+        {
+            commandsWithCurrentItemState.Enabled = ((ICollectionView)sender).CurrentItem is ITestObject;
+        }
+
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(viewModel.TestList))
+                UpdateCurrentView();
+        }
+
+        #endregion
+
+        #region Methods
+
+        #region Private Methods
+
+        private void ResetBinding() => currentView.Refresh();
+
+        #endregion
+
+        #region Command Handlers
+
+        private void OnResetBindingCommand() => ResetBinding();
+
+        #endregion
+        
+        #region Event handlers
 
         private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            OnResetBindingCommand();
-            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. The binding have been reset prevent further errors.{Environment.NewLine}{Environment.NewLine}"
-                + $"The caught exception message: {e.Exception.Message}", "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            ResetBinding();
+            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. The binding have been reset to prevent further errors.{Environment.NewLine}{Environment.NewLine}"
+                    + $"The caught exception: {e.Exception}", "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             e.Handled = true;
-        }
-
-        public MainWindow(ViewModel.MainViewModel viewModel) : this()
-        {
-            DataContext = viewModel;
-            this.viewModel = viewModel;
-        }
-
-        private void OnResetBindingCommand()
-        {
-            object context = DataContext;
-            DataContext = null;
-            DataContext = context;
-        }
-
-        private void OnAddItemCommand()
-        {
-            IList list = GetListToModify(viewModel.TestList);
-            Type elementType = list.GetType().GetInterface(typeof(IList<>).Name).GetGenericArguments()[0];
-            list.Add((ITestObject)Reflector.CreateInstance(elementType));
-        }
-
-        private void OnRemoveItemCommand(ITestObject item)
-        {
-            IList list = GetListToModify(viewModel.TestList);
-            list.Remove(item);
-        }
-
-        private void OnReplaceItemCommand(ITestObject item)
-        {
-            IList list = GetListToModify(viewModel.TestList);
-            int index = list.IndexOf(item);
-            if (index < 0)
-                return;
-            list[index] = (ITestObject)viewModel.RandomInstance.NextObject(item.GetType());
-        }
-
-        private void OnEditItemCommand(ITestObject item)
-        {
-            item.StringProp = viewModel.RandomInstance.NextString();
-        }
-
-        private IList GetListToModify(IList list)
-        {
-            if (!viewModel.ChangeUnderlyingCollection)
-                return list;
-
-            PropertyInfo itemsProp = list.GetType().GetProperty("Items", BindingFlags.Instance | BindingFlags.NonPublic);
-            return itemsProp == null ? list : (IList)itemsProp.GetValue(list, null);
         }
 
         private void DataGrid_OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -109,6 +140,8 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
             }
         }
 
-        public string Random => ThreadSafeRandom.Instance.NextString();
+        #endregion
+
+        #endregion
     }
 }

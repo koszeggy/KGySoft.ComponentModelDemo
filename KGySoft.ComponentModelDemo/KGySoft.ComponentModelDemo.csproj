@@ -29,8 +29,8 @@
     <StartupObject>KGySoft.ComponentModelDemo.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KGySoft.CoreLibraries, Version=4.6.2.0, Culture=neutral, PublicKeyToken=b45eba277439ddfe, processorArchitecture=MSIL">
-      <HintPath>..\packages\KGySoft.CoreLibraries.4.6.2\lib\net45\KGySoft.CoreLibraries.dll</HintPath>
+    <Reference Include="KGySoft.CoreLibraries, Version=4.6.2.1, Culture=neutral, PublicKeyToken=b45eba277439ddfe, processorArchitecture=MSIL">
+      <HintPath>..\packages\KGySoft.CoreLibraries.4.7.0-alpha.1\lib\net45\KGySoft.CoreLibraries.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
@@ -52,6 +52,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\CommandErrorEventArgs.cs" />
     <Compile Include="ViewWpf\Adorners\AdornedElementPlaceholder.cs" />
     <Compile Include="ViewWpf\Adorners\ElementAdorner.cs" />
     <Compile Include="ViewWpf\Adorners\TemplatedAdorner.cs" />
@@ -89,7 +90,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewWpf\CommandBase.cs" />
+    <Compile Include="ViewWpf\SwitchableWpfCommandBase.cs" />
     <Compile Include="ViewWpf\EditToolBar.xaml.cs">
       <DependentUpon>EditToolBar.xaml</DependentUpon>
     </Compile>
@@ -99,7 +100,6 @@
     <Compile Include="ViewWpf\ParameterizedWpfCommand.cs" />
     <Compile Include="ViewWpf\SimpleWpfCommand.cs" />
     <Compile Include="ViewWpf\Validation\ValidationBindingExtension.cs" />
-    <Compile Include="ViewWpf\WpfCommands.cs" />
     <EmbeddedResource Include="ViewWinForms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

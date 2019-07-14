@@ -7,7 +7,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
     /// <summary>
     /// A specialized <see cref="CommandBindingsCollection"/> that can be used commands for <see cref="Control"/> sources.
     /// </summary>
-    /// <seealso cref="KGySoft.ComponentModel.CommandBindingsCollection" />
+    /// <seealso cref="CommandBindingsCollection" />
     public class WinformsCommandBindingsCollection : CommandBindingsCollection
     {
         public override ICommandBinding Add(ICommand command, IDictionary<string, object> initialState = null, bool disposeCommand = false)

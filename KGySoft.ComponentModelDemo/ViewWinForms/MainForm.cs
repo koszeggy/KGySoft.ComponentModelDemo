@@ -1,40 +1,72 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.Extensions;
 using KGySoft.ComponentModelDemo.Model;
 using KGySoft.ComponentModelDemo.ViewModel;
-using KGySoft.CoreLibraries;
-using KGySoft.Reflection;
+
+#endregion
 
 namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     public partial class MainForm : Form
     {
-        private readonly ViewModel.MainViewModel viewModel;
-        private readonly CommandBindingsCollection commandBindings = new CommandBindingsCollection();
+        private class SafeGrid : DataGridView
+        {
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                try
+                {
+                    base.OnPaint(e);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An unhandled exception has been detected in DataGridView.OnPaint. This would have killed the grid rendering in a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
+                        + $"The caught exception: {ex}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        #region Fields
 
         // TODO: to designer
+        private readonly MainViewModel viewModel;
         private readonly BindingSource listBindingSource, itemBindingSource;
         private readonly ValidationResultToErrorProviderAdapter warningsAdapter, infosAdapter;
+
+        private readonly CommandBindingsCollection commandBindings = new CommandBindingsCollection();
+
+        // A shared state for the command bindings with the current item parameter to manage their Enabled status
+        private readonly ICommandState commandsWithCurrentItemState;
 
         // These bindings are dynamically removed and re-created so they are stored as fields
         private Binding intPropListColorBinding, stringPropListColorBinding;
         private Binding intPropCurrentColorBinding, stringPropCurrentColorBinding;
         private ICommandBinding formatColorListBinding, formatColorCurrentBinding;
 
+        #endregion
+
+        #region Constructors
+
+        #region Static Constructor
+
         static MainForm() => Application.ThreadException += (sender, e) =>
             MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
-                + $"The caught exception message: {e.Exception.Message}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                + $"The caught exception: {e.Exception}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-        public MainForm(ViewModel.MainViewModel viewModel)
+        #endregion
+
+        #region Instance Constructors
+
+        public MainForm(MainViewModel viewModel)
         {
             InitializeComponent();
             this.viewModel = viewModel;
@@ -56,7 +88,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             // without manual setting or another set of providers bound to the itemBindingSource
             SetProviderPaddings(-20, tbIntPropList, tbStringPropList, tbIntPropCurrent, tbStringPropCurrent);
 
-            // listBindingSource -> grid/listBox/errorProvider/tbIntPropList/tbStringPropList/editMenuStrip1
+            // For the better overview even the standard WinForms bindings are set here instead of the designer.
+
+            // listBindingSource -> grid/listBox/errorProvider/tbIntPropList/tbStringPropList/editMenuStrip
             grid.DataSource = listBindingSource;
             listBox.DataSource = listBindingSource;
             errorProvider.DataSource = listBindingSource;
@@ -70,7 +104,11 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             tbIntPropCurrent.DataBindings.Add(nameof(TextBox.Text), itemBindingSource, nameof(ITestObject.IntProp));
             tbStringPropCurrent.DataBindings.Add(nameof(TextBox.Text), itemBindingSource, nameof(ITestObject.StringProp));
 
-            // binding radio buttons by KGySoft.ComponentModel binding (regular WinForms binding works strangely for radio buttons)
+            // A ToolStripButton does not support regular WinForms binding. But as it has a CheckedChanged event, KGy SOFT's command binding can be used for it.
+            // btnChangeInner.Checked -> viewModel.ChangeUnderlyingCollection - AddPropertyBinding will use an internal command for the change event.
+            commandBindings.AddPropertyBinding(btnChangeInner, nameof(btnChangeInner.Checked), nameof(viewModel.ChangeUnderlyingCollection), viewModel);
+
+            // Binding radio buttons by KGy SOFT's command binding, too (regular WinForms binding behaves strangely for radio buttons).
             commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseList), rbList, nameof(RadioButton.Checked));
             commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseBindingList), rbBindingList, nameof(RadioButton.Checked));
             commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseSortableBindingList), rbSortableBindingList, nameof(RadioButton.Checked));
@@ -92,52 +130,57 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseValidatingObject), rbValidating, nameof(RadioButton.Checked));
             commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseModelBase), rbModel, nameof(RadioButton.Checked));
 
-            // this.Load/viewModel.PropertyChanged -> OnRebindCommand
-            commandBindings.Add<EventArgs>(OnRebindCommand)
+            // Binding to ViewModel Commands. Using a shared state for the indexing commands so we can set their Enabled status at once.
+            // Adding PropertyCommandStateUpdater.Updater to them so their source buttons will reflect the Enabled state.
+            commandsWithCurrentItemState = new CommandState { Enabled = false };
+            commandBindings.Add(viewModel.AddItemCommand, btnAdd, nameof(btnAdd.Click)); // btnAdd.Click -> viewModel.AddItemCommand
+            commandBindings.Add(viewModel.RemoveItemCommand, commandsWithCurrentItemState) // btnRemove.Click -> viewModel.RemoveItemCommand
+                .AddStateUpdater(PropertyCommandStateUpdater.Updater)
+                .AddSource(btnRemove, nameof(btnRemove.Click))
+                .AddTarget(() => listBindingSource.Current);
+            commandBindings.Add(viewModel.SetItemCommand, commandsWithCurrentItemState) // btnSetItem.Click -> viewModel.SetItemCommand
+                .AddStateUpdater(PropertyCommandStateUpdater.Updater)
+                .AddSource(btnSetItem, nameof(btnSetItem.Click))
+                .AddTarget(() => listBindingSource.Current);
+            commandBindings.Add(viewModel.SetItemPropertyCommand, commandsWithCurrentItemState) // btnSetProp.Click -> viewModel.SetItemPropertyCommand
+                .AddStateUpdater(PropertyCommandStateUpdater.Updater)
+                .AddSource(btnSetProp, nameof(btnSetProp.Click))
+                .AddTarget(() => listBindingSource.Current);
+
+            // Note that the following bindings don't reference any explicitly defined ICommands instances. We can do this for private commands not used by anyone else.
+            commandBindings.Add<CommandErrorEventArgs>(OnCommandErrorHandler) // viewModel.CommandError -> OnCommandErrorHandler
+                .AddSource(viewModel, nameof(viewModel.CommandError));
+            commandBindings.Add<EventArgs>(OnRebindCommand) // this.Load/viewModel.PropertyChanged -> OnRebindCommand
                 .AddSource(this, nameof(Load))
-                .AddSource(viewModel, nameof(ViewModel.MainViewModel.PropertyChanged));
-
-            // grid.DataError: adding an empty handler so no dialogs will be popped up endlessly on errors
-            commandBindings.Add(() => { }).AddSource(grid, nameof(grid.DataError));
-
-            // listBindingSource.CurrentItemChanged -> OnListBindingSourceCurrentItemChangedCommand
-            commandBindings.Add<EventArgs>(OnListBindingSourceCurrentItemChangedCommand)
+                .AddSource(viewModel, nameof(MainViewModel.PropertyChanged));
+            commandBindings.Add(() => { }).AddSource(grid, nameof(grid.DataError)); // grid.DataError: adding an empty handler so no dialogs will be popped up endlessly on errors
+            commandBindings.Add<EventArgs>(OnListBindingSourceCurrentItemChangedCommand) // listBindingSource.CurrentItemChanged -> OnListBindingSourceCurrentItemChangedCommand
                 .AddSource(listBindingSource, nameof(listBindingSource.CurrentItemChanged));
-
-            // btnChangeInner.Checked -> viewModel.ChangeUnderlyingCollection
-            commandBindings.AddPropertyBinding(btnChangeInner, nameof(btnChangeInner.Checked), nameof(viewModel.ChangeUnderlyingCollection), viewModel);
-
-            // btnReset.Click -> OnResetBindingCommand
-            commandBindings.Add(OnResetBindingCommand)
-                .AddSource(btnReset, nameof(btnReset.Click));
-
-            // btnAdd.Click -> OnAddItemCommand
-            commandBindings.Add(OnAddItemCommand)
-                .AddSource(btnAdd, nameof(btnAdd.Click));
-
-            // btnRemove.Click -> OnRemoveItemCommand
-            commandBindings.Add(OnRemoveItemCommand)
-                .AddSource(btnRemove, nameof(btnRemove.Click));
-
-            // btnSetItem.Click -> OnSetItemCommand
-            commandBindings.Add(OnSetItemCommand)
-                .AddSource(btnSetItem, nameof(btnSetItem.Click));
-
-            // btnSetProp.Click -> OnSetItemPropertyCommand
-            commandBindings.Add(OnSetItemPropertyCommand)
-                .AddSource(btnSetProp, nameof(btnSetProp.Click));
+            commandBindings.Add(OnResetBindingCommand).AddSource(btnReset, nameof(btnReset.Click)); // btnReset.Click -> OnResetBindingCommand
         }
+
+        #endregion
+
+        #endregion
+
+        #region Methods
+
+        #region Protected Methods
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 components?.Dispose();
-                commandBindings.Dispose();
+                commandBindings.Dispose(); // since we use only commands for all events, here we release all subscriptions at once
             }
 
             base.Dispose(disposing);
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void SetProviderPaddings(int padding, params Control[] controls)
         {
@@ -147,17 +190,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
                 warningProvider.SetIconPadding(control, padding);
                 infoProvider.SetIconPadding(control, padding);
             }
-        }
-
-        private void OnRebindCommand(ICommandSource source)
-        {
-            if (source.EventArgs is PropertyChangedEventArgs propertyChanged && propertyChanged.PropertyName != nameof(viewModel.TestList))
-                return;
-            Action rebind = DoRebind;
-            if (InvokeRequired)
-                Invoke(rebind);
-            else
-                rebind.Invoke();
         }
 
         private void DoRebind()
@@ -185,7 +217,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             listBindingSource.ResumeBinding();
             errorProvider.UpdateBinding();
 
-            // validation colors below (could be in the constructor if elements were always IValidatingObject instances)
+            // bindings for TextBox.BackColor (could be in the constructor if elements were always IValidatingObject instances but WinForms is not tolerant for invalid property names)
             if (testList.Cast<ITestObject>().FirstOrDefault() is IValidatingObject)
             {
                 intPropListColorBinding = new Binding(nameof(TextBox.BackColor), listBindingSource, nameof(IValidatingObject.ValidationResults), true, DataSourceUpdateMode.Never);
@@ -203,98 +235,27 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
                     .AddSource(stringPropCurrentColorBinding, nameof(Binding.Format));
                 tbIntPropCurrent.DataBindings.Add(intPropCurrentColorBinding);
                 tbStringPropCurrent.DataBindings.Add(stringPropCurrentColorBinding);
-
             }
         }
+
+        #endregion
+
+        #region Command Handlers
+
+        // Note that unlike in Model and ViewModel there are no explicit ICommand definitions for these handlers.
+        // For such private commands the CommandBindingsCollection.Add overloads support implicit command initialization from delegates.
 
         private void OnResetBindingCommand() => listBindingSource.ResetBindings(false);
 
-        private void OnAddItemCommand()
+        private void OnRebindCommand(ICommandSource source)
         {
-            IList list = (IList)listBindingSource.DataSource;
-            list = GetListToModify(list);
-            Type elementType = list.GetType().GetInterface(typeof(IList<>).Name).GetGenericArguments()[0];
-            try
-            {
-                list.Add(Reflector.CreateInstance(elementType));
-            }
-            catch (Exception e)
-            {
-                HandleError(e);
-            }
-        }
-
-        private void OnRemoveItemCommand()
-        {
-            var list = (IList)listBindingSource.DataSource;
-            int current = listBindingSource.Position;
-            if (current < 0)
-            {
-                ShowNoSelectedElement();
+            if (source.EventArgs is PropertyChangedEventArgs propertyChanged && propertyChanged.PropertyName != nameof(viewModel.TestList))
                 return;
-            }
-
-            list = GetListToModify(list);
-            try
-            {
-                list.RemoveAt(current);
-            }
-            catch (Exception e)
-            {
-                HandleError(e);
-            }
-        }
-
-        private void OnSetItemCommand()
-        {
-            IList list = (IList)listBindingSource.DataSource;
-            int current = listBindingSource.Position;
-            if (current < 0)
-            {
-                ShowNoSelectedElement();
-                return;
-            }
-
-            list = GetListToModify(list);
-            Type elementType = list.GetType().GetInterface(typeof(IList<>).Name).GetGenericArguments()[0];
-            try
-            {
-                list[current] = viewModel.RandomInstance.NextObject(elementType);
-            }
-            catch (Exception e)
-            {
-                HandleError(e);
-            }
-        }
-
-        private void OnSetItemPropertyCommand()
-        {
-            IList list = (IList)listBindingSource.DataSource;
-            int current = listBindingSource.Position;
-            if (current < 0)
-            {
-                ShowNoSelectedElement();
-                return;
-            }
-
-            var item = (ITestObject)list[current];
-            try
-            {
-                item.StringProp = viewModel.RandomInstance.NextString();
-            }
-            catch (Exception e)
-            {
-                HandleError(e);
-            }
-        }
-
-        private IList GetListToModify(IList list)
-        {
-            if (!viewModel.ChangeUnderlyingCollection)
-                return list;
-
-            PropertyInfo itemsProp = list.GetType().GetProperty("Items", BindingFlags.Instance | BindingFlags.NonPublic);
-            return itemsProp == null ? list : (IList)itemsProp.GetValue(list, null);
+            Action rebind = DoRebind;
+            if (InvokeRequired)
+                Invoke(rebind);
+            else
+                rebind.Invoke();
         }
 
         private void OnFormatColor(ICommandSource<ConvertEventArgs> src)
@@ -313,15 +274,25 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         private void OnListBindingSourceCurrentItemChangedCommand(ICommandSource src)
         {
             var bindingSource = (BindingSource)src.Source;
+
+            // adjusting the enabled state of the command bindings using selected index
+            commandsWithCurrentItemState.Enabled = bindingSource.Position >= 0;
+
+            // setting the data source of the itemBindingSource
             object current = bindingSource.Current;
             itemBindingSource.DataSource = current ?? typeof(ITestObject);
-            // here we could set the data source of an additional error/warning/info provider set for the current item
+
+            // here we could set the data source of an additional set of error/warning/info providers the current item
         }
 
-        private static void ShowNoSelectedElement() 
-            => MessageBox.Show("No selected element", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void OnCommandErrorHandler(ICommandSource<CommandErrorEventArgs> source)
+        {
+            MessageBox.Show($"Operation '{source.EventArgs.Operation}' failed: {source.EventArgs.Exception.Message}{Environment.NewLine}Press Reset to refresh the binding.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            source.EventArgs.Handled = true;
+        }
 
-        private static void HandleError(Exception e, [CallerMemberName]string operation = null) 
-            => MessageBox.Show($"Operation '{operation}' failed: {e.Message}{Environment.NewLine}Press Reset to refresh the binding.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        #endregion
+
+        #endregion
     }
 }

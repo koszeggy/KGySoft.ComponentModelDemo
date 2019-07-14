@@ -2,7 +2,7 @@
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
-    public class ParameterizedWpfCommand<T> : WpfCommandBase
+    public class ParameterizedWpfCommand<T> : SwitchableWpfCommandBase
     {
         private readonly Action<T> callback;
         private readonly Func<T, bool> canExecute;
@@ -13,11 +13,11 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
             this.canExecute = canExecute;
         }
 
-        protected override bool DoCanExecute(object parameter)
+        protected override bool EvaluateCanExecute(object parameter)
         {
             if (canExecute != null)
-                CanExecute = canExecute.Invoke((T)parameter);
-            return CanExecute;
+                IsEnabled = canExecute.Invoke((T)parameter);
+            return IsEnabled;
         }
 
         public override void Execute(object parameter) => callback.Invoke((T)parameter);

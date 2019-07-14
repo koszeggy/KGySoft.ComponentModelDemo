@@ -2,7 +2,12 @@
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
-    public class SimpleWpfCommand : WpfCommandBase
+    /// <summary>
+    /// A simple "relay" command from a delegate with a switchable <see cref="SwitchableWpfCommandBase.IsEnabled"/> property.
+    /// The term "Wpf" in the name just denotes that it is an <see cref="System.Windows.Input.ICommand"/> and not a <see cref="KGySoft.ComponentModel.ICommand"/>.
+    /// </summary>
+    /// <seealso cref="SwitchableWpfCommandBase" />
+    public class SimpleWpfCommand : SwitchableWpfCommandBase
     {
         private readonly Action callback;
         private readonly Func<bool> canExecute;
@@ -13,11 +18,11 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
             this.canExecute = canExecute;
         }
 
-        protected override bool DoCanExecute(object _)
+        protected override bool EvaluateCanExecute(object _)
         {
             if (canExecute != null)
-                CanExecute = canExecute.Invoke();
-            return CanExecute;
+                IsEnabled = canExecute.Invoke();
+            return IsEnabled;
         }
 
         public override void Execute(object _) => callback.Invoke();

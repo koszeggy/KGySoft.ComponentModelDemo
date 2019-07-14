@@ -89,7 +89,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Adorners
             GeneralTransformGroup group = new GeneralTransformGroup();
             group.Children.Add(transform);
 
-            GeneralTransform t = this.TransformToDescendant(Placeholder);
+            GeneralTransform t = TransformToDescendant(Placeholder);
             if (t != null)
             {
                 group.Children.Add(t);

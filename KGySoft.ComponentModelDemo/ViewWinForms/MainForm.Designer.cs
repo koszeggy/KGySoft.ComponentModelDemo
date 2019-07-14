@@ -54,7 +54,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             this.tbIntPropList = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gbGrid = new System.Windows.Forms.GroupBox();
-            this.grid = new System.Windows.Forms.DataGridView();
+            this.grid = new SafeGrid();
             this.gbListBox = new System.Windows.Forms.GroupBox();
             this.listBox = new System.Windows.Forms.ListBox();
             this.tsList = new System.Windows.Forms.ToolStrip();
@@ -239,9 +239,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             this.rbModel.Size = new System.Drawing.Size(201, 18);
             this.rbModel.TabIndex = 5;
             this.rbModel.Text = "ModelBase";
-            this.toolTip.SetToolTip(this.rbModel, "The element type is derived from ModelObjectBase\r\n• Supports property change noti" +
-        "fication\r\n• Supports Undo/Redo\r\n• Supports BeginEdit/EndEdit/CancelEdit\r\n• Suppo" +
-        "rts Validation");
+            this.toolTip.SetToolTip(this.rbModel, "The element type is derived from ModelBase\r\n• Supports property change notificati" +
+        "on\r\n• Supports Undo/Redo\r\n• Supports BeginEdit/EndEdit/CancelEdit\r\n• Supports Va" +
+        "lidation");
             this.rbModel.UseVisualStyleBackColor = true;
             // 
             // rbValidating
@@ -679,7 +679,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             this.editMenuStrip.TabIndex = 2;
             this.editMenuStrip.Text = "editMenuStrip1";
             // 
-            // BindingTestForm
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -688,7 +688,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             this.Controls.Add(this.editMenuStrip);
             this.Controls.Add(this.tsList);
             this.Controls.Add(this.Panel1);
-            this.Name = "BindingTestForm";
+            this.Name = "MainForm";
             this.Text = "KGySoft.ComponentModel Demo (Windows Forms)";
             this.Panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -225,7 +225,7 @@
                     <RadioButton Content="ValidatingObjectBase" IsChecked="{Binding UseValidatingObject}" ToolTip="The element type is derived from ValidatingObjectBase
 &#13;&#10;• Supports property change notification
 &#13;&#10;• Supports Validation"/>
-                    <RadioButton Content="ModelBase" IsChecked="{Binding UseModelBase}" ToolTip="The element type is derived from ModelObjectBase
+                    <RadioButton Content="ModelBase" IsChecked="{Binding UseModelBase}" ToolTip="The element type is derived from ModelBase
 &#13;&#10;• Supports property change notification
 &#13;&#10;• Supports Undo/Redo
 &#13;&#10;• Supports BeginEdit/EndEdit/CancelEdit
@@ -251,19 +251,19 @@
 &#13;&#10;• Makes no difference for a List
 &#13;&#10;• An ObservableCollection wraps a List no matter what was passed to the constructor"/>
                         <Button Content="Reset" Command="{Binding ResetBindingCommand, ElementName=this}" ToolTip="Resets the binding. Press to re-read the bound list if it was updated and the changes could not be detected."/>
-                        <Button Content="Add" Command="{Binding AddItemCommand, ElementName=this}" ToolTip="Adds a new element directly to the bound list.
+                        <Button Content="Add" Command="{Binding AddItemCommand, ElementName=this}" ToolTip="Adds a new element to the bound list.
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Del" Command="{Binding RemoveItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Removes element directly from the bound list at the current index
+                        <Button Content="Del" Command="{Binding RemoveItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Removes the current element from the bound list
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Item" Command="{Binding ReplaceItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Replaces the element in the bound list at the current index
-&#13;&#10;• If no change can be seen press Reset to refresh the binding.
-&#13;&#10;• Change cannot be detected if bound list type is List (and IBindingList update performs a full reset due to a WPF bug)
+                        <Button Content="Item" Command="{Binding SetItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Replaces the current element in the bound list
+&#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
+&#13;&#10;• Change cannot be detected if bound list type is List (or IBindingList with INotifyPropertyChanged elements due to a WPF bug)
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Prop" Command="{Binding EditItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Sets StringProp of the current item
+                        <Button Content="Prop" Command="{Binding SetItemPropertyCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Sets the StringProp of the current item. It does not matther whether [...] is checked.
 &#13;&#10;• If no change can be seen press Reset to refresh the binding.
 &#13;&#10;• Change can be detected if element type supports change notification (anything but Object base is selected)"/>
                     </ToolBar>
@@ -319,7 +319,7 @@
                 </GroupBox>
 
                 <!-- Just another couple of TextBoxes bound to the current item of the ListBox.
-                 As their binding source is different the -->
+                 As their binding source is different from the one used in styleValidatingTextBox only errors will work for them -->
                 <GroupBox Header="Bound to the selected item in ListBox">
                     <StackPanel>
                         <Label Content="IntProp"/>
