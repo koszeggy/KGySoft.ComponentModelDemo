@@ -14,6 +14,9 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
 {
     public class ValidationResultExtension : MarkupExtension, IValueConverter
     {
+        /// <summary>
+        /// Used to resolve the validated object along with <see cref="BoundTarget"/>.
+        /// </summary>
         private sealed class MultiBindingConverter : IMultiValueConverter
         {
             private readonly ValidationResultExtension owner;
@@ -81,10 +84,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
         {
         }
 
-        public ValidationResultExtension(ValidationSeverity severity)
-        {
-            Severity = severity;
-        }
+        public ValidationResultExtension(ValidationSeverity severity) => Severity = severity;
 
         public ValidationSeverity? Severity { get; set; }
 
@@ -210,8 +210,6 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
         }
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return base.Convert(value, targetType, parameter, culture) != null;
-        }
+            => base.Convert(value, targetType, parameter, culture) != null;
     }
 }

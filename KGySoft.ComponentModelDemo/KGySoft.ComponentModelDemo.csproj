@@ -85,6 +85,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewWpf\BindingHelper.cs" />
+    <Compile Include="ViewWpf\EventToCommand\ToKGyCommand.cs" />
     <Compile Include="ViewWpf\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -99,6 +101,7 @@
     <Compile Include="ViewWpf\Adorners\AdornerBindingExtension.cs" />
     <Compile Include="ViewWpf\ParameterizedWpfCommand.cs" />
     <Compile Include="ViewWpf\SimpleWpfCommand.cs" />
+    <Compile Include="ViewWpf\UIElementExtensions.cs" />
     <Compile Include="ViewWpf\Validation\ValidationBindingExtension.cs" />
     <EmbeddedResource Include="ViewWinForms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -151,5 +154,6 @@
   <ItemGroup>
     <None Include="Resources\Warning.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

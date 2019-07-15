@@ -14,7 +14,8 @@ using KGySoft.ComponentModelDemo.Model;
 using KGySoft.ComponentModelDemo.ViewModel;
 using KGySoft.CoreLibraries;
 using KGySoft.Reflection;
-using ICommand = System.Windows.Input.ICommand;
+using WpfCommand = System.Windows.Input.ICommand;
+using KGyCommand = KGySoft.ComponentModel.ICommand;
 
 #endregion
 
@@ -40,11 +41,13 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
 
         // Unlike in Model and ViewModel, these are regular System.Windows.Input.ICommand commands, which are used traditionally in WPF.
         // They can wrap KGySoft.ComponentModel.ICommand instances though - see the constructor and the KGyCommandAdapter class.
-        public ICommand AddItemCommand { get; }
-        public ICommand RemoveItemCommand { get; }
-        public ICommand SetItemCommand { get; }
-        public ICommand SetItemPropertyCommand { get; }
-        public ICommand ResetBindingCommand { get; }
+        // NOTE: These properties would not be needed if the XAML used direct binding to the MainViewModel commands by the ToKGyCommand extension.
+        // See the XAML file for examples or the EditToolBar control where the ToKGyCommand extension is used instead of wrapping.
+        public WpfCommand AddItemCommand { get; }
+        public WpfCommand RemoveItemCommand { get; }
+        public WpfCommand SetItemCommand { get; }
+        public WpfCommand SetItemPropertyCommand { get; }
+        public WpfCommand ResetBindingCommand { get; }
 
         #endregion
 
@@ -60,7 +63,8 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
 
             commandsWithCurrentItemState = new CommandState { Enabled = false };
 
-            // These commands are mapped to KGySoft.ComponentModel.ICommand because they are defined so in the ViewModel.
+            // These commands are mapped to KGySoft.ComponentModel.ICommand commands defined in the ViewModel by the KGyCommandAdapter class.
+            // See also the comment in the XAML file and the EditToolBar and ToKGyCommandExtension classes for examples without wrapping.
             AddItemCommand = new KGyCommandAdapter(viewModel.AddItemCommand);
             RemoveItemCommand = new KGyCommandAdapter(viewModel.RemoveItemCommand, commandsWithCurrentItemState);
             SetItemCommand = new KGyCommandAdapter(viewModel.SetItemCommand, commandsWithCurrentItemState);

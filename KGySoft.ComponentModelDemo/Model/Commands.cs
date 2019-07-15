@@ -2,13 +2,13 @@
 
 namespace KGySoft.ComponentModelDemo.Model
 {
-    internal static class Commands
+    public static class Commands
     {
-        internal static ICommand Undo { get; } = new TargetedCommand<ICanUndo>(OnUndo);
-        internal static ICommand Redo { get; } = new TargetedCommand<ICanUndoRedo>(OnRedo);
-        internal static ICommand BeginEdit { get; } = new TargetedCommand<ICanEdit>(OnBeginEdit);
-        internal static ICommand EndEdit { get; } = new TargetedCommand<ICanEdit>(OnEndEdit);
-        internal static ICommand CancelEdit { get; } = new TargetedCommand<ICanEdit>(OnCancelEdit);
+        public static ICommand Undo { get; } = new TargetedCommand<ICanUndo>(OnUndo);
+        public static ICommand Redo { get; } = new TargetedCommand<ICanUndoRedo>(OnRedo);
+        public static ICommand BeginEdit { get; } = new TargetedCommand<ICanEdit>(OnBeginEdit);
+        public static ICommand EndEdit { get; } = new TargetedCommand<ICanEdit>(OnEndEdit);
+        public static ICommand CancelEdit { get; } = new TargetedCommand<ICanEdit>(OnCancelEdit);
 
         private static void OnUndo(ICanUndo target)
         {
