@@ -1,4 +1,4 @@
-﻿<Window x:Class="KGySoft.ComponentModelDemo.ViewWpf.MainWindow"
+﻿<Window x:Class="KGySoft.ComponentModelDemo.ViewWpf.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,7 +10,8 @@
         xmlns:model="clr-namespace:KGySoft.ComponentModelDemo.Model"
         xmlns:viewModel="clr-namespace:KGySoft.ComponentModelDemo.ViewModel"
         xmlns:viewWpf="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf"
-        xmlns:eventToCommand="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf.EventToCommand"
+        xmlns:controls="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf.Controls"
+        xmlns:commands="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf.Commands"
         d:DataContext="{d:DesignInstance viewModel:MainViewModel, IsDesignTimeCreatable=True}"
         Title="KGySoft.ComponentModel Demo (WPF)"
         Background="{x:Static SystemColors.ControlBrush}"
@@ -251,36 +252,30 @@
 &#13;&#10;   Press Reset if no change can be seen to reset binding and to avoid errors.
 &#13;&#10;• Makes no difference for a List
 &#13;&#10;• An ObservableCollection wraps a List no matter what was passed to the constructor"/>
-                        <!--
-                        These buttons use regular WPF commands. The KGySoft commands of the ViewModel are wrapped into WPF commands
-                        in the constructor - see also the KGySoftCommandAdapter class defined in this project.
-                        
-                        A more direct way to access KGySoft commands directly from XAML is the ToKGyCommand extension that can be bound to any event.
-                        It can be useful also for elements that support only events but not commands (even in WPF not every element support commands)
-                        or when the command must receive the event arguments, which is not possible by pure WPF commands.
-                        
-                        For example, the Add button executes the MainViewModel.AddItemCommand, which is a KGySoft.ComponentModel.ICommand
-                        One possible way is to wrap it into a KGyCommandAdapter, which is the MainWindow.AddItemCommand property:
-                        
-                        <Button Content="Add" Command="{Binding AddItemCommand, ElementName=this}"/>
-                        
-                        And another way is to use the ToKGyCommand extension and bind the event directly to the MainViewModel.AddItemCommand:
-                        <Button Content="Add" Click="{eventToCommand:ToKGyCommand CommandIndirect={Binding AddItemCommand}}"/>
-                        -->
+                        <!--This button uses a regular WPF command-->
                         <Button Content="Reset" Command="{Binding ResetBindingCommand, ElementName=this}" ToolTip="Resets the binding. Press to re-read the bound list if it was updated and the changes could not be detected."/>
-                        <Button Content="Add" Command="{Binding AddItemCommand, ElementName=this}" ToolTip="Adds a new element to the bound list.
+
+                        <!--
+                        These buttons refer KGySoft.ComponentModel commands. An alternative way would be to define local WPF command wrapper properties.
+                        See also the EditToolBar control where the KGySoft.ComponentModel commands are wrapped into KGyCommandAdapter instances instead.
+                        -->
+                        <Button Content="Add" Click="{commands:EventToKGyCommand Command={Binding AddItemCommand}}"
+                                ToolTip="Adds a new element to the bound list.
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Del" Command="{Binding RemoveItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Removes the current element from the bound list
+                        <Button Content="Del" Click="{commands:EventToKGyCommand Command={Binding RemoveItemCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
+                                ToolTip="Removes the current element from the bound list
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Item" Command="{Binding SetItemCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Replaces the current element in the bound list
+                        <Button Content="Item" Click="{commands:EventToKGyCommand Command={Binding SetItemCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
+                                ToolTip="Replaces the current element in the bound list
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List (or IBindingList with INotifyPropertyChanged elements due to a WPF bug)
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Prop" Command="{Binding SetItemPropertyCommand, ElementName=this}" CommandParameter="{Binding TestList/}" ToolTip="Sets the StringProp of the current item. It does not matther whether [...] is checked.
+                        <Button Content="Prop" Click="{commands:EventToKGyCommand Command={Binding SetItemPropertyCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
+                                ToolTip="Sets the StringProp of the current item. It does not matther whether [...] is checked.
 &#13;&#10;• If no change can be seen press Reset to refresh the binding.
 &#13;&#10;• Change can be detected if element type supports change notification (anything but Object base is selected)"/>
                     </ToolBar>
@@ -321,7 +316,7 @@
                 <!-- A custom re-usable ToolBar to demonstrate how to use ICanUndo[/Redo] and ICanEdit features in WPF
                      and how to wraps KGySoft.ComponentModel commands into WPF commands. See the EditToolBar control for details. -->
                 <ToolBarTray Orientation="Vertical" DockPanel.Dock="Right">
-                    <viewWpf:EditToolBar DataContext="{Binding TestList/}" />
+                    <controls:EditToolBar DataContext="{Binding TestList/}" />
                 </ToolBarTray>
 
                 <!-- Just a couple of TextBoxes bound to the properties of TestList items. The validation styles for IValidatingObject are enabled for them
@@ -336,13 +331,14 @@
                 </GroupBox>
 
                 <!-- Just another couple of TextBoxes bound to the current item of the ListBox.
-                 As their binding source is different from the one used in styleValidatingTextBox only errors will work for them -->
+                     As their binding source is different from the one used in styleValidatingTextBox info and warning validation would not work for them.
+                     Error validation would work just because in styleValidatingTextBox the Error template is used for errors instead of adorner template -->
                 <GroupBox Header="Bound to the selected item in ListBox">
                     <StackPanel>
                         <Label Content="IntProp"/>
-                        <TextBox Style="{StaticResource styleValidatingTextBox}" Text="{Binding ElementName=lbList, Path=SelectedItem.(model:ITestObject.IntProp), ValidatesOnDataErrors=True}"/>
+                        <TextBox Text="{Binding ElementName=lbList, Path=SelectedItem.(model:ITestObject.IntProp)}"/>
                         <Label Content="StringProp"/>
-                        <TextBox Style="{StaticResource styleValidatingTextBox}" Text="{Binding ElementName=lbList, Path=SelectedItem.(model:ITestObject.StringProp), ValidatesOnDataErrors=True}"/>
+                        <TextBox Text="{Binding ElementName=lbList, Path=SelectedItem.(model:ITestObject.StringProp)}"/>
                     </StackPanel>
                 </GroupBox>
             </DockPanel>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KGySoft.ComponentModelDemo.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 {
     public class ParameterizedWpfCommand<T> : SwitchableWpfCommandBase
     {

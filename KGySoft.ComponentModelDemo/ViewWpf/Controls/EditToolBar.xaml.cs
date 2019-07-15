@@ -3,7 +3,7 @@ using System.Windows;
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.Model;
 
-namespace KGySoft.ComponentModelDemo.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf.Controls
 {
     /// <summary>
     /// Interaction logic for EditToolBar.xaml
@@ -11,11 +11,11 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
     public partial class EditToolBar
     {
         // WPF part of commands must be instances due to CanExecute
-        public KGyCommandAdapter UndoCommand { get; } = new KGyCommandAdapter(Commands.Undo);
-        public KGyCommandAdapter RedoCommand { get; } = new KGyCommandAdapter(Commands.Redo);
-        public KGyCommandAdapter BeginEditCommand { get; } = new KGyCommandAdapter(Commands.BeginEdit);
-        public KGyCommandAdapter EndEditCommand { get; } = new KGyCommandAdapter(Commands.EndEdit);
-        public KGyCommandAdapter CancelEditCommand { get; } = new KGyCommandAdapter(Commands.CancelEdit);
+        public KGyCommandAdapter UndoCommand { get; } = new KGyCommandAdapter(Model.Commands.Undo);
+        public KGyCommandAdapter RedoCommand { get; } = new KGyCommandAdapter(Model.Commands.Redo);
+        public KGyCommandAdapter BeginEditCommand { get; } = new KGyCommandAdapter(Model.Commands.BeginEdit);
+        public KGyCommandAdapter EndEditCommand { get; } = new KGyCommandAdapter(Model.Commands.EndEdit);
+        public KGyCommandAdapter CancelEditCommand { get; } = new KGyCommandAdapter(Model.Commands.CancelEdit);
 
         public EditToolBar()
         {

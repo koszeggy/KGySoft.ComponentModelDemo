@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 #endregion
 
-namespace KGySoft.ComponentModelDemo.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 {
     /// <summary>
     /// A base class for WPF commands with a switchable <see cref="IsEnabled"/> property.

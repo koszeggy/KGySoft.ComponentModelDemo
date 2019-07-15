@@ -1,39 +1,30 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Windows;
-using KGySoft.Collections;
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     internal static class UIElementExtensions
     {
-        // not a ConcurrentDictionary because we don't expect many threads actually
-        private static readonly LockingDictionary<FrameworkElement, EventHandler> disposedHandlers = new LockingDictionary<FrameworkElement, EventHandler>();
+        private static readonly ConcurrentDictionary<FrameworkElement, EventHandler> onDisposedHandlers = new ConcurrentDictionary<FrameworkElement, EventHandler>();
 
         /// <summary>
-        /// Registers a <paramref name="handler"/> to be executed when the parent Window of <paramref name="element"/> is disposed.
+        /// Registers a <paramref name="handler"/> to be executed when the parent <see cref="Window"/> of <paramref name="element"/> is disposed.
+        /// <br/>The internal Window.IsDisposed property is not a dependency property so we cannot check its change.
+        /// <br/>The private Window.InternalDispose method is executed when the Window is closed so after all we subscribe its Closed event.
         /// </summary>
         internal static void RegisterOnDisposed(this FrameworkElement element, EventHandler handler)
         {
             if (element == null)
                 throw new ArgumentNullException(nameof(element));
-            AddHandler(element, handler);
+            onDisposedHandlers.AddOrUpdate(element, e => handler, (e, h) => h + handler);
             if (element.IsLoaded && Window.GetWindow(element) is Window window)
                 HookWindowClosed(element, window);
             else
-                element.Loaded += FrameworkElement_Loaded;
+                element.Loaded += FrameworkElement_Loaded; // we delay subscribing because we can't get the parent window yet.
         }
 
-        private static void AddHandler(FrameworkElement frameworkElement, EventHandler handler)
-        {
-            disposedHandlers.Lock();
-            if (disposedHandlers.TryGetValue(frameworkElement, out var existingHandler) && existingHandler != null)
-                disposedHandlers[frameworkElement] = existingHandler + handler;
-            else
-                disposedHandlers[frameworkElement] = handler;
-            disposedHandlers.Unlock();
-        }
-
-        private static void RemoveHandlers(FrameworkElement frameworkElement) => disposedHandlers.Remove(frameworkElement);
+        private static void RemoveHandlers(FrameworkElement element) => onDisposedHandlers.TryRemove(element, out var _);
 
         private static void FrameworkElement_Loaded(object sender, RoutedEventArgs e)
         {
@@ -49,7 +40,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
         {
             window.Closed += (sender, args) =>
             {
-                if (disposedHandlers.TryGetValue(element, out EventHandler handler))
+                if (onDisposedHandlers.TryGetValue(element, out EventHandler handler))
                     handler.Invoke(element, args);
                 RemoveHandlers(element);
             };

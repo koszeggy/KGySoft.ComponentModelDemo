@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using KGySoft.ComponentModel;
+using KGySoft.ComponentModelDemo.ViewWpf.Commands;
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {

@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
-    public static class BindingHelper
+    public static class BindingBaseExtensions
     {
         private static readonly DependencyProperty dummyProperty = DependencyProperty.RegisterAttached("dummy", typeof(object), typeof(DependencyObject));
 

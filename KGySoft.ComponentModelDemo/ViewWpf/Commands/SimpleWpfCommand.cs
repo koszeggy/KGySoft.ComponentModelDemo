@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KGySoft.ComponentModelDemo.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 {
     /// <summary>
     /// A simple "relay" command from a delegate with a switchable <see cref="SwitchableWpfCommandBase.IsEnabled"/> property.
