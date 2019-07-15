@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using KGySoft.ComponentModel;
-using KGySoft.ComponentModelDemo.Model;
 
 namespace KGySoft.ComponentModelDemo.ViewWpf.Controls
 {

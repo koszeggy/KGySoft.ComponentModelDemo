@@ -4,7 +4,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        xmlns:componentModel="clr-namespace:KGySoft.ComponentModel;assembly=KGySoft.CoreLibraries"
         xmlns:validation="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf.Validation"
         xmlns:adorners="clr-namespace:KGySoft.ComponentModelDemo.ViewWpf.Adorners"
         xmlns:model="clr-namespace:KGySoft.ComponentModelDemo.Model"
@@ -15,7 +14,13 @@
         d:DataContext="{d:DesignInstance viewModel:MainViewModel, IsDesignTimeCreatable=True}"
         Title="KGySoft.ComponentModel Demo (WPF)"
         Background="{x:Static SystemColors.ControlBrush}"
-        Name="this" Height="400" Width="700">
+        Name="this" Height="400" Width="700"
+        Closed="{commands:EventToKGyCommand Command={Binding WindowClosedCommand, ElementName=this}}">
+    <!--
+    Note how a KGy SOFT command is bound to the Closed event.
+    For more details see the buttons in the ToolBarTray on the left
+    -->
+
     <Window.Resources>
 
         <!--Validation results (Error/Warning/Information for TextBox)-->
@@ -23,7 +28,7 @@
             <Style.Triggers>
 
                 <!--
-                The ValidationResult/HasValidationResult extensions are converters for IValidatingObject implementations that can be used also in Binding position.
+                The ValidationResult/HasValidationResult markup extensions are converters for IValidatingObject implementations that can be used also in Binding position.
                 
                 Examples:
                 
@@ -252,12 +257,26 @@
 &#13;&#10;   Press Reset if no change can be seen to reset binding and to avoid errors.
 &#13;&#10;• Makes no difference for a List
 &#13;&#10;• An ObservableCollection wraps a List no matter what was passed to the constructor"/>
+
                         <!--This button uses a regular WPF command-->
                         <Button Content="Reset" Command="{Binding ResetBindingCommand, ElementName=this}" ToolTip="Resets the binding. Press to re-read the bound list if it was updated and the changes could not be detected."/>
 
                         <!--
-                        These buttons refer KGySoft.ComponentModel commands. An alternative way would be to define local WPF command wrapper properties.
+                        These buttons refer KGySoft.ComponentModel commands.
+                        
+                        The EventToKGyCommand markup extension can be used for binding events in XAML directly to KGySoft.ComponentModel.ICommand commands.
+                        Alternatively, you can use the usual Command and CommandBindingsCollection methods from C#, or you can define local WPF commands
+                        to wrap the KGy SOFT commands.
+                        
                         See also the EditToolBar control where the KGySoft.ComponentModel commands are wrapped into KGyCommandAdapter instances instead.
+                        Please note though that WPF commands do receive the event arguments. So while the KGyCommandAdapter can be used for simple or
+                        targeted commands (or parameterized commands as per WPF terminology), for source aware commands the EventToKGyCommand extension is
+                        a better choice.
+
+                        The EventToKGyCommand extension has 3 properties, Command, State and Target, all of them are bindings.
+                        - Command is mandatory and has to be evaluated to a KGySoft.ComponentModel.ICommand.
+                        - State is optional. If not defined, then the command will always be enabled.
+                        - Target is optional. It is evaluated each time when the command is executed (that is the parameter in WPF commands).
                         -->
                         <Button Content="Add" Click="{commands:EventToKGyCommand Command={Binding AddItemCommand}}"
                                 ToolTip="Adds a new element to the bound list.
@@ -294,9 +313,12 @@
                           - SortableBindingList: null reference exception from deeply in PresentationFramework.dll/System.Windows.Data.BindingListCollectionView.ConvertSortDescriptionCollection 
                         - Bonus: AutoGeneratingColumn is not triggered if the DataGrid is defined in <mc:AlternateContent>/<mc:Choice Requires="NET40">
                     -->
-                    <!-- Just a DataGrid bound to the TestList -->
+
+                    <!-- Just a DataGrid bound to the TestList. See how a command is bound to the AutoGeneratingColumn event by the EventToKGyCommand extension -->
                     <GroupBox Header="DataGrid" Grid.Row="0">
-                        <DataGrid IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding TestList}" AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn">
+                        <DataGrid IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding TestList}" AutoGenerateColumns="True"
+                                  AutoGeneratingColumn="{commands:EventToKGyCommand Command={Binding AutoGeneratingColumnCommand, ElementName=this}}">
+                    
                             <!-- This is now in codebehind. Columns are autogenerated so all properties of the different element types are displayed -->
                             <!--<DataGrid.Columns>
                                 <DataGridTextColumn Header="IntProp" Binding="{Binding Path=(model:ITestObject.IntProp), ValidatesOnDataErrors=True}" ElementStyle="{StaticResource styleCellError}" EditingElementStyle="{StaticResource styleEditCellError}"/>

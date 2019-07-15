@@ -181,6 +181,20 @@ namespace KGySoft.ComponentModelDemo.ViewModel
             return (IList)Reflector.CreateInstance(genericType, ReflectionWays.Auto, parameters);
         }
 
+        private void OnCommandError(Exception e, [CallerMemberName]string operation = null)
+        {
+            var args = new CommandErrorEventArgs(e, operation);
+            CommandErrorHandler?.Invoke(this, args);
+            if (!args.Handled)
+                throw new InvalidOperationException($"Operation '{operation}' failed. See inner exception for details.", e);
+        }
+
+        private IList GetListToAccess() => ChangeUnderlyingCollection && !UseList ? (IList)Reflector.GetProperty(TestList, "Items") : TestList;
+
+        #endregion
+
+        #region ViewModel-related Command Handlers
+
         private void OnAddItemCommand()
         {
             IList list = GetListToAccess();
@@ -232,16 +246,6 @@ namespace KGySoft.ComponentModelDemo.ViewModel
                 OnCommandError(e);
             }
         }
-
-        private void OnCommandError(Exception e, [CallerMemberName]string operation = null)
-        {
-            var args = new CommandErrorEventArgs(e, operation);
-            CommandErrorHandler?.Invoke(this, args);
-            if (!args.Handled)
-                throw new InvalidOperationException($"Operation '{operation}' failed. See inner exception for details.", e);
-        }
-
-        private IList GetListToAccess() => ChangeUnderlyingCollection && !UseList ? (IList)Reflector.GetProperty(TestList, "Items") : TestList;
 
         #endregion
 

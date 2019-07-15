@@ -88,7 +88,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
                     return;
                 ICommandState state = State; // now it will not be null even if binding could not be resolved in constructor
                 object target = owner.Target?.Evaluate(src);
-                if (!state.Enabled)
+                if (state.Enabled)
                     command.Execute(new CommandSource{ EventArgs = e, Source = source, TriggeringEvent = eventName}, state, target);
             }
         }

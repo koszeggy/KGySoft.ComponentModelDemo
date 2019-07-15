@@ -6,6 +6,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
 {
     /// <summary>
     /// A specialized <see cref="CommandBindingsCollection"/> that can be used commands for <see cref="Control"/> sources.
+    /// The <see cref="ICommandState"/> properties (eg. <see cref="ICommandState.Enabled"/> but also any other added property) of the added bindings will be synced with the command sources.
     /// </summary>
     /// <seealso cref="CommandBindingsCollection" />
     public class WinformsCommandBindingsCollection : CommandBindingsCollection
