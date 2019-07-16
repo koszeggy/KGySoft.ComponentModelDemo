@@ -55,7 +55,10 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.tbIntPropList = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gbGrid = new System.Windows.Forms.GroupBox();
-            this.grid = new SafeGrid();
+            this.grid = new KGySoft.ComponentModelDemo.ViewWinForms.Controls.SafeDataGridView();
+            this.intPropDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.stringPropDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.listBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gbListBox = new System.Windows.Forms.GroupBox();
             this.listBox = new System.Windows.Forms.ListBox();
             this.tsList = new System.Windows.Forms.ToolStrip();
@@ -67,9 +70,12 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.btnSetProp = new System.Windows.Forms.ToolStripButton();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.editMenuStrip = new KGySoft.ComponentModelDemo.ViewWinForms.Controls.EditMenuStrip();
+            this.itemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.warningProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.infoProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.editMenuStrip = new EditMenuStrip();
+            this.warningAdapter = new KGySoft.ComponentModelDemo.ViewWinForms.Components.ValidationResultToErrorProviderAdapter(this.components);
+            this.infoAdapter = new KGySoft.ComponentModelDemo.ViewWinForms.Components.ValidationResultToErrorProviderAdapter(this.components);
             this.Panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -80,9 +86,11 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.gbBoundToList.SuspendLayout();
             this.gbGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listBindingSource)).BeginInit();
             this.gbListBox.SuspendLayout();
             this.tsList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.warningProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoProvider)).BeginInit();
             this.SuspendLayout();
@@ -553,12 +561,33 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // 
             // grid
             // 
+            this.grid.AutoGenerateColumns = false;
             this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.intPropDataGridViewTextBoxColumn,
+            this.stringPropDataGridViewTextBoxColumn});
+            this.grid.DataSource = this.listBindingSource;
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.Location = new System.Drawing.Point(3, 16);
             this.grid.Name = "grid";
             this.grid.Size = new System.Drawing.Size(274, 88);
             this.grid.TabIndex = 1;
+            // 
+            // intPropDataGridViewTextBoxColumn
+            // 
+            this.intPropDataGridViewTextBoxColumn.DataPropertyName = "IntProp";
+            this.intPropDataGridViewTextBoxColumn.HeaderText = "IntProp";
+            this.intPropDataGridViewTextBoxColumn.Name = "intPropDataGridViewTextBoxColumn";
+            // 
+            // stringPropDataGridViewTextBoxColumn
+            // 
+            this.stringPropDataGridViewTextBoxColumn.DataPropertyName = "StringProp";
+            this.stringPropDataGridViewTextBoxColumn.HeaderText = "StringProp";
+            this.stringPropDataGridViewTextBoxColumn.Name = "stringPropDataGridViewTextBoxColumn";
+            // 
+            // listBindingSource
+            // 
+            this.listBindingSource.DataSource = typeof(KGySoft.ComponentModelDemo.Model.ITestObject);
             // 
             // gbListBox
             // 
@@ -573,6 +602,8 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // 
             // listBox
             // 
+            this.listBox.DataSource = this.listBindingSource;
+            this.listBox.DisplayMember = "StringProp";
             this.listBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox.FormattingEnabled = true;
             this.listBox.Location = new System.Drawing.Point(3, 16);
@@ -661,14 +692,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
-            // 
-            // warningProvider
-            // 
-            this.warningProvider.ContainerControl = this;
-            // 
-            // infoProvider
-            // 
-            this.infoProvider.ContainerControl = this;
+            this.errorProvider.DataSource = this.listBindingSource;
             // 
             // editMenuStrip
             // 
@@ -679,6 +703,32 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.editMenuStrip.Size = new System.Drawing.Size(24, 227);
             this.editMenuStrip.TabIndex = 2;
             this.editMenuStrip.Text = "editMenuStrip1";
+            // 
+            // itemBindingSource
+            // 
+            this.itemBindingSource.DataSource = typeof(KGySoft.ComponentModelDemo.Model.ITestObject);
+            // 
+            // warningProvider
+            // 
+            this.warningProvider.ContainerControl = this;
+            // 
+            // infoProvider
+            // 
+            this.infoProvider.ContainerControl = this;
+            // 
+            // warningAdapter
+            // 
+            this.warningAdapter.DataSource = this.listBindingSource;
+            this.warningAdapter.Provider = this.warningProvider;
+            this.warningAdapter.Severity = KGySoft.ComponentModel.ValidationSeverity.Warning;
+            this.warningAdapter.ShowBindingErrors = false;
+            // 
+            // infoAdapter
+            // 
+            this.infoAdapter.DataSource = this.listBindingSource;
+            this.infoAdapter.Provider = this.infoProvider;
+            this.infoAdapter.Severity = KGySoft.ComponentModel.ValidationSeverity.Information;
+            this.infoAdapter.ShowBindingErrors = false;
             // 
             // MainForm
             // 
@@ -706,10 +756,12 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.gbBoundToList.PerformLayout();
             this.gbGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listBindingSource)).EndInit();
             this.gbListBox.ResumeLayout(false);
             this.tsList.ResumeLayout(false);
             this.tsList.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.warningProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.infoProvider)).EndInit();
             this.ResumeLayout(false);
@@ -763,11 +815,17 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
         private TextBox tbIntPropList;
         private ToolTip toolTip;
         private ToolStripButton btnReset;
-        private ErrorProvider warningProvider;
-        private ErrorProvider infoProvider;
         private GroupBox gbGrid;
         private GroupBox gbListBox;
         private ListBox listBox;
-        private SafeGrid grid;
+        private SafeDataGridView grid;
+        private BindingSource listBindingSource;
+        private BindingSource itemBindingSource;
+        private DataGridViewTextBoxColumn intPropDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn stringPropDataGridViewTextBoxColumn;
+        private ErrorProvider warningProvider;
+        private ErrorProvider infoProvider;
+        private Components.ValidationResultToErrorProviderAdapter warningAdapter;
+        private Components.ValidationResultToErrorProviderAdapter infoAdapter;
     }
 }

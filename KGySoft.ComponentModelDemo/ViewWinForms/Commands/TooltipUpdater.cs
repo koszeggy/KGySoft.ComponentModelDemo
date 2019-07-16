@@ -16,9 +16,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Commands
         private const string toolTipTextProperty = "ToolTipText";
         private static readonly TooltipUpdater instance = new TooltipUpdater();
 
-        private TooltipUpdater()
-        {
-        }
+        private TooltipUpdater() { }
 
         internal static ICommandStateUpdater Updater => instance;
 
@@ -51,8 +49,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Commands
             return null;
         }
 
-        void IDisposable.Dispose()
-        {
-        }
+        void IDisposable.Dispose() { }
     }
 }

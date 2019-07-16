@@ -7,8 +7,13 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
     /// Just a DataGridView, which catches the exceptions from its OnPaint to prevent killing the rendering (red X issue).
     /// Needed to demonstrate the issues of inconsistent binding states in a DataGridView.
     /// </summary>
-    internal class SafeGrid : DataGridView
+    internal class SafeDataGridView : DataGridView
     {
+        public SafeDataGridView()
+        {
+            AutoGenerateColumns = true;
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             try

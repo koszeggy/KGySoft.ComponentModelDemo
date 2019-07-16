@@ -20,10 +20,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
     {
         #region Fields
 
-        // TODO: to designer
         private readonly MainViewModel viewModel;
-        private readonly BindingSource listBindingSource, itemBindingSource;
-        private readonly ValidationResultToErrorProviderAdapter warningsAdapter, infosAdapter;
 
         private readonly CommandBindingsCollection commandBindings = new CommandBindingsCollection();
 
@@ -57,15 +54,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             warningProvider.Icon = Images.Warning;
             infoProvider.Icon = Images.Information;
 
-            // TODO: to designer
-            warningsAdapter = new ValidationResultToErrorProviderAdapter(warningProvider, ValidationSeverity.Warning);
-            infosAdapter = new ValidationResultToErrorProviderAdapter(infoProvider, ValidationSeverity.Information);
-            listBindingSource = new BindingSource(components);
-            itemBindingSource = new BindingSource(components);
-            listBindingSource.DataSource = typeof(ITestObject);
-            itemBindingSource.DataSource = typeof(ITestObject);
-            listBox.DisplayMember = nameof(ITestObject.StringProp);
-
             // Setting the TextBoxes of current elements, too; though they have a different source so no validation will appear for them
             // without manual setting or another set of providers bound to the itemBindingSource
             SetProviderPaddings(-20, tbIntPropList, tbStringPropList, tbIntPropCurrent, tbStringPropCurrent);
@@ -73,11 +61,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // For the better overview even the standard WinForms bindings are set here instead of the designer.
 
             // listBindingSource -> grid/listBox/errorProvider/tbIntPropList/tbStringPropList/editMenuStrip
-            grid.DataSource = listBindingSource;
-            listBox.DataSource = listBindingSource;
-            errorProvider.DataSource = listBindingSource;
-            warningsAdapter.DataSource = listBindingSource;
-            infosAdapter.DataSource = listBindingSource;
             tbIntPropList.DataBindings.Add(nameof(TextBox.Text), listBindingSource, nameof(ITestObject.IntProp));
             tbStringPropList.DataBindings.Add(nameof(TextBox.Text), listBindingSource, nameof(ITestObject.StringProp));
             editMenuStrip.DataBindings.Add(nameof(editMenuStrip.DataSource), listBindingSource, String.Empty);

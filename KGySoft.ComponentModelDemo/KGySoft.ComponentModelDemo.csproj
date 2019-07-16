@@ -53,7 +53,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CommandErrorEventArgs.cs" />
-    <Compile Include="ViewWinForms\Controls\SafeGrid.cs">
+    <Compile Include="ViewWinForms\Controls\SafeDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewWpf\Adorners\AdornedElementPlaceholder.cs" />
@@ -79,7 +79,9 @@
     </Compile>
     <Compile Include="ViewWinForms\Images.cs" />
     <Compile Include="ViewWinForms\Commands\TooltipUpdater.cs" />
-    <Compile Include="ViewWinForms\Components\ValidationResultToErrorProviderAdapter.cs" />
+    <Compile Include="ViewWinForms\Components\ValidationResultToErrorProviderAdapter.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ViewWinForms\Commands\WinformsCommandBindingsCollection.cs" />
     <Compile Include="ViewWpf\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -131,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\KGySoft.ComponentModelDemo.Model.ITestObject.datasource" />
     <None Include="Resources\Undo.png" />
   </ItemGroup>
   <ItemGroup>
