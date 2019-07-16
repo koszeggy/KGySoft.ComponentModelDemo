@@ -28,6 +28,9 @@
   <PropertyGroup>
     <StartupObject>KGySoft.ComponentModelDemo.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="KGySoft.CoreLibraries, Version=4.6.2.1, Culture=neutral, PublicKeyToken=b45eba277439ddfe, processorArchitecture=MSIL">
       <HintPath>..\packages\KGySoft.CoreLibraries.4.7.0-alpha.1\lib\net45\KGySoft.CoreLibraries.dll</HintPath>
@@ -132,6 +135,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\KGySoft.ComponentModelDemo.Model.ITestObject.datasource" />
     <None Include="Resources\Undo.png" />

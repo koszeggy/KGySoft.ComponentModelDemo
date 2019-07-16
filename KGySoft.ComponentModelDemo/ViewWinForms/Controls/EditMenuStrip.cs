@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.ViewWinForms.Commands;
@@ -49,6 +51,19 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
 
         public EditMenuStrip()
         {
+            using (var g = this.CreateGraphics())
+            {
+                var scale = Math.Max(g.DpiX, g.DpiY) / 96f;
+                var newScale = (int)Math.Floor(scale * 100) / 100f;
+                if (newScale > 1)
+                {
+                    var newWidth = (int)(ImageScalingSize.Width * newScale);
+                    var newHeight = (int)(ImageScalingSize.Height * newScale);
+                    ImageScalingSize = new Size(newWidth, newHeight);
+                    AutoSize = false;
+                }
+            }
+
             // ReSharper disable once VirtualMemberCallInConstructor
             Items.AddRange(new ToolStripItem[] { btnUndo, btnRedo, btnBeginEdit, btnEndEdit, btnCancelEdit });
             ApplyDataSource();
