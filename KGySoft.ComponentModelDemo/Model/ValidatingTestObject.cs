@@ -1,23 +1,31 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Linq;
+
 using KGySoft.ComponentModel;
+
+#endregion
 
 namespace KGySoft.ComponentModelDemo.Model
 {
+    // A model class that implements IValidatingObject (KGySoft) and IDataErrorInfo (Microsoft) interfaces.
+    // IDataErrorInfo is supported by several UI environments (WPF, WinForms, ASP.NET, etc.).
+    // For IValidatingObject demo see the  ViewWpf.Validation.ValidationBindingExtension and
+    // ViewWinForms.Components.ValidationResultToErrorProviderAdapter classes.
     public class ValidatingTestObject : ValidatingObjectBase, ITestObject
     {
-        public int IntProp
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
+        #region Properties
 
-        public string StringProp
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
+        public int IntProp { get => Get<int>(); set => Set(value); }
+        public string StringProp { get => Get<string>(); set => Set(value); }
 
+        #endregion
+
+        #region Methods
+
+        // This is how validation of the properties can be implemented. Error, Warning and Information severities can be used.
+        // Changing a property value automatically causes the invalidation of earlier results.
         protected override ValidationResultsCollection DoValidation()
         {
             var result = new ValidationResultsCollection();
@@ -34,5 +42,7 @@ namespace KGySoft.ComponentModelDemo.Model
                 result.AddInfo(nameof(StringProp), $"{nameof(StringProp)} contains non-ASCII characters.");
             return result;
         }
+
+        #endregion
     }
 }

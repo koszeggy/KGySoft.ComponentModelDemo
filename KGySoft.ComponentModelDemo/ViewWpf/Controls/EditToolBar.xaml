@@ -15,44 +15,19 @@
             </Style.Triggers>
         </Style>
     </ToolBar.Resources>
-    <Button Name="btnUndo" 
-            Width="25" 
-            ToolTip="Undo last change"
-            Command="{Binding UndoCommand, ElementName=this}" CommandParameter="{Binding}">
-        <Image Source="{Binding Source={x:Static viewWpf:Images.Undo}}" 
-               Width="16" 
-               Style="{StaticResource disabledStyle}"/>
+    <Button Width="25" ToolTip="Undo last change" Command="{Binding UndoCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Undo}}" Width="16" Style="{StaticResource disabledStyle}"/>
     </Button>
-    <Button Name="btnRedo"
-            Width="25"
-            ToolTip="Redo last change"
-            Command="{Binding RedoCommand, ElementName=this}" CommandParameter="{Binding}">
-        <Image Source="{Binding Source={x:Static viewWpf:Images.Redo}}" 
-               Width="16" 
-               Style="{StaticResource disabledStyle}"/>
+    <Button Width="25" ToolTip="Redo last change" Command="{Binding RedoCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Redo}}" Width="16" Style="{StaticResource disabledStyle}"/>
     </Button>
-    <Button Name="btnBeginEdit"
-            Width="25"
-            ToolTip="Begin new Edit"
-            Command="{Binding BeginEditCommand, ElementName=this}" CommandParameter="{Binding}">
-        <Image Source="{Binding Source={x:Static viewWpf:Images.Edit}}" 
-               Width="16" 
-               Style="{StaticResource disabledStyle}"/>
+    <Button Width="25" ToolTip="Begin new Edit" Command="{Binding BeginEditCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Edit}}" Width="16" Style="{StaticResource disabledStyle}"/>
     </Button>
-    <Button Name="btnEndEdit"
-            Width="25"
-            ToolTip="Commit Last Edit"
-            Command="{Binding EndEditCommand, ElementName=this}" CommandParameter="{Binding}">
-        <Image Source="{Binding Source={x:Static viewWpf:Images.Accept}}" 
-               Width="16" 
-               Style="{StaticResource disabledStyle}"/>
+    <Button Width="25" ToolTip="Commit Last Edit" Command="{Binding EndEditCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Accept}}" Width="16" Style="{StaticResource disabledStyle}"/>
     </Button>
-    <Button Name="btnCancelEdit"
-            Width="25"
-            ToolTip="Cancel Edit"
-            Command="{Binding CancelEditCommand, ElementName=this}" CommandParameter="{Binding}">
-        <Image Source="{Binding Source={x:Static viewWpf:Images.Cancel}}" 
-               Width="16" 
-               Style="{StaticResource disabledStyle}"/>
+    <Button Width="25" ToolTip="Cancel Edit" Command="{Binding CancelEditCommand, ElementName=this}" CommandParameter="{Binding}">
+        <Image Source="{Binding Source={x:Static viewWpf:Images.Cancel}}" Width="16" Style="{StaticResource disabledStyle}"/>
     </Button>
 </ToolBar>

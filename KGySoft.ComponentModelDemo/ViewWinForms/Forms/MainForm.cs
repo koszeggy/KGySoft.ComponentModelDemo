@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
-using KGySoft.ComponentModelDemo.Extensions;
 using KGySoft.ComponentModelDemo.Model;
 using KGySoft.ComponentModelDemo.ViewModel;
 
@@ -78,12 +77,12 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.InnerObservableCollection), rbInnerObservableCollection, nameof(RadioButton.Checked));
             commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.InnerObservableBindingList), rbInnerObservableBindingList, nameof(RadioButton.Checked));
 
-            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseObject), rbObject, nameof(RadioButton.Checked));
-            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseObservableObject), rbObservableObject, nameof(RadioButton.Checked));
-            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseUndoableObject), rbUndoable, nameof(RadioButton.Checked));
-            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseEditableObject), rbEditable, nameof(RadioButton.Checked));
-            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseValidatingObject), rbValidating, nameof(RadioButton.Checked));
-            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseModelBase), rbModel, nameof(RadioButton.Checked));
+            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UsePlainTestObject), rbObject, nameof(RadioButton.Checked));
+            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseObservableTestObject), rbObservableObject, nameof(RadioButton.Checked));
+            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseUndoableTestObject), rbUndoable, nameof(RadioButton.Checked));
+            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseEditableTestObject), rbEditable, nameof(RadioButton.Checked));
+            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseValidatingTestObject), rbValidating, nameof(RadioButton.Checked));
+            commandBindings.AddTwoWayPropertyBinding(viewModel, nameof(viewModel.UseAllInOneTestObject), rbModel, nameof(RadioButton.Checked));
 
             // Binding to ViewModel Commands. Using a shared state for the indexing commands so we can set their Enabled status at once.
             // Adding PropertyCommandStateUpdater.Updater to them so their source buttons will reflect the Enabled state.

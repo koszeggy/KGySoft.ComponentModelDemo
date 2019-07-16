@@ -3,10 +3,8 @@ using System.Windows.Forms;
 
 namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
 {
-    /// <summary>
-    /// Just a DataGridView, which catches the exceptions from its OnPaint to prevent killing the rendering (red X issue).
-    /// Needed to demonstrate the issues of inconsistent binding states in a DataGridView.
-    /// </summary>
+    // Just a DataGridView, which catches the exceptions from its OnPaint to prevent killing the rendering (red X issue).
+    // Needed to demonstrate the issues of inconsistent binding states in a DataGridView without destroying rendering.
     internal class SafeDataGridView : DataGridView
     {
         public SafeDataGridView()

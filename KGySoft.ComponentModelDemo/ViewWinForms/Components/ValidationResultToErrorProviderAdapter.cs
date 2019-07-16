@@ -12,6 +12,8 @@ using KGySoft.ComponentModel;
 
 namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
 {
+    // If you want your ErrorProvider to provide Warning or Information messages of an IValidatingObject (see also Model.ValidatingTestObject),
+    // then just drop an ValidationResultToErrorProviderAdapter to the Form and set the Provider, Severity and DataSource properties. See also Forms.MainForm.
     /// <summary>
     /// Provides an adapter for <see cref="ErrorProvider"/> to be able to display validation results of any <see cref="ValidationSeverity"/>.
     /// </summary>
@@ -28,6 +30,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
 
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the data source that this adapter monitors.
+        /// </summary>
         [DefaultValue(null)]
         [AttributeProvider(typeof(IListSource))]
         public object DataSource
@@ -42,9 +47,11 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
             }
         }
 
-        public bool ShowBindingErrors { get; set; }
-
+        /// <summary>
+        /// Gets or sets the wrapped provider.
+        /// </summary>
         [DefaultValue(null)]
+        [Description("Select the ErrorProvider instance to wrap by this adapter.")]
         public ErrorProvider Provider
         {
             get => provider;
@@ -63,6 +70,10 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
             }
         }
 
+        /// <summary>
+        /// Gets or sets the severity to be displayed by this adapter.
+        /// </summary>
+        [Description("The severity of the messages to be displayed by this adapter.")]
         public ValidationSeverity Severity
         {
             get => severity;
@@ -209,8 +220,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
 
         private void BindingManager_BindingComplete(object sender, BindingCompleteEventArgs e)
         {
+            // showing binding errors only for error severity
             Binding binding = e.Binding;
-            if (!ShowBindingErrors || binding?.Control == null)
+            if (severity < ValidationSeverity.Error || binding?.Control == null)
                 return;
             provider.SetError(binding.Control, e.ErrorText);
         }

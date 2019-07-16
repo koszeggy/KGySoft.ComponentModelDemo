@@ -14,7 +14,7 @@
         d:DataContext="{d:DesignInstance viewModel:MainViewModel, IsDesignTimeCreatable=True}"
         Title="KGySoft.ComponentModel Demo (WPF)"
         Background="{x:Static SystemColors.ControlBrush}"
-        Name="this" Height="400" Width="700"
+        Name="this" Width="680" Height="430" MinWidth="680" MinHeight="420"
         Closed="{commands:EventToKGyCommand Command={Binding WindowClosedCommand, ElementName=this}}">
     <!--
     Note how a KGy SOFT command is bound to the Closed event.
@@ -81,8 +81,8 @@
                                     <!--adorners:AdornedElementPlaceholder is the same as Controls.AdornedElementPlaceholder, which unfortunately works only for ErrorTemplate -->
                                     <adorners:AdornedElementPlaceholder>
                                         <!-- Displaying an icon in the original TextBox and using the ValidationResult extension for obtaining the validation message.
-                                             Note the AdornerBinding used in BoundTarget. It can be used similarly to TemplateBinding and is actually the shorthand of
-                                             <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="(adorners:ElementAdorner.AdornedParent)"/>-->
+                                             Note the {adorners:AdornerBinding} used in BoundTarget. It can be used similarly to TemplateBinding and is actually the shorthand of
+                                             {Binding RelativeSource={RelativeSource TemplatedParent}, Path=(adorners:ElementAdorner.AdornedParent)}-->
                                         <Image HorizontalAlignment="Right" DockPanel.Dock="Right"
                                                Source="{Binding Source={x:Static viewWpf:Images.Information}}"
                                                ToolTip="{validation:ValidationResult Information,
@@ -166,6 +166,9 @@
 
     <!-- Window Content starts here -->
     <DockPanel LastChildFill="True">
+        <TextBlock DockPanel.Dock="Top" Padding="3" Text="Choose the configuration and check how WPF controls and bindings behave for different list and element types.
+            &#13;&#10;Be careful: By choosing non-observable types you can easily cause inconsistencies.
+            &#13;&#10;And of course, there are several bugs in WPF DataGrid."/>
 
         <!-- The Grid of GroupBoxes with the RadioButtons -->
         <Grid DockPanel.Dock="Top">
@@ -219,20 +222,20 @@
             </GroupBox>
             <GroupBox Grid.Column="2" Header="Element Base Type">
                 <StackPanel>
-                    <RadioButton Content="Object" IsChecked="{Binding UseObject}" ToolTip="The element type is derived from object
+                    <RadioButton Content="PlainTestObject" IsChecked="{Binding UsePlainTestObject}" ToolTip="The element type is derived from object
 &#13;&#10;• Does not support property change notification"/>
-                    <RadioButton Content="ObservableObjectBase" IsChecked="{Binding UseObservableObject}" ToolTip="The element type is derived from ObservableObjectBase
+                    <RadioButton Content="ObservableTestObject" IsChecked="{Binding UseObservableTestObject}" ToolTip="The element type is derived from ObservableObjectBase
 &#13;&#10;• Supports property change notification"/>
-                    <RadioButton Content="UndoableObjectBase" IsChecked="{Binding UseUndoableObject}" ToolTip="The element type is derived from UndoableObjectBase
+                    <RadioButton Content="UndoableTestObject" IsChecked="{Binding UseUndoableTestObject}" ToolTip="The element type is derived from UndoableObjectBase
 &#13;&#10;• Supports property change notification
 &#13;&#10;• Supports Undo/Redo"/>
-                    <RadioButton Content="EditableObjectBase" IsChecked="{Binding UseEditableObject}" ToolTip="The element type is derived from EditableObjectBase
+                    <RadioButton Content="EditableTestObject" IsChecked="{Binding UseEditableTestObject}" ToolTip="The element type is derived from EditableObjectBase
 &#13;&#10;• Supports property change notification
 &#13;&#10;• Supports BeginEdit/EndEdit/CancelEdit"/>
-                    <RadioButton Content="ValidatingObjectBase" IsChecked="{Binding UseValidatingObject}" ToolTip="The element type is derived from ValidatingObjectBase
+                    <RadioButton Content="ValidatingTestObject" IsChecked="{Binding UseValidatingTestObject}" ToolTip="The element type is derived from ValidatingObjectBase
 &#13;&#10;• Supports property change notification
 &#13;&#10;• Supports Validation"/>
-                    <RadioButton Content="ModelBase" IsChecked="{Binding UseModelBase}" ToolTip="The element type is derived from ModelBase
+                    <RadioButton Content="AllInOneTestObject" IsChecked="{Binding UseAllInOneTestObject}" ToolTip="The element type is derived from ModelBase
 &#13;&#10;• Supports property change notification
 &#13;&#10;• Supports Undo/Redo
 &#13;&#10;• Supports BeginEdit/EndEdit/CancelEdit
@@ -291,12 +294,13 @@
                         <Button Content="Item" Click="{commands:EventToKGyCommand Command={Binding SetItemCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
                                 ToolTip="Replaces the current element in the bound list
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
-&#13;&#10;• Change cannot be detected if bound list type is List (or IBindingList with INotifyPropertyChanged elements due to a WPF bug)
+&#13;&#10;• WPF BUG: WPF ignores element change of an IBindingList if element implements INotifyPropertyChanged (anything but PlainTestObject)
+&#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
                         <Button Content="Prop" Click="{commands:EventToKGyCommand Command={Binding SetItemPropertyCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
                                 ToolTip="Sets the StringProp of the current item. It does not matther whether [...] is checked.
 &#13;&#10;• If no change can be seen press Reset to refresh the binding.
-&#13;&#10;• Change can be detected if element type supports change notification (anything but Object base is selected)"/>
+&#13;&#10;• Change can be detected if element type supports change notification (anything but PlainTestObject is selected)"/>
                     </ToolBar>
                 </ToolBarTray>
 

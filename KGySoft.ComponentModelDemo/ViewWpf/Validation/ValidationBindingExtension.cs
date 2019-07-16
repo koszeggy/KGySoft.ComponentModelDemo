@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -8,20 +10,42 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+
 using KGySoft.ComponentModel;
+
+#endregion
 
 namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
 {
+    // Use this markup extension to get the Error, Warning or Information validation message for an IValidatingObject.
+    // See the MainWindow.xaml for examples and more description.
+    /// <summary>
+    /// A markup extension and a converter to get a validation message for the specified severity from a <see cref="KGySoft.ComponentModel.ValidationResult"/>
+    /// for an <see cref="IValidatingObject"/> instance.
+    /// </summary>
     public class ValidationResultExtension : MarkupExtension, IValueConverter
     {
-        /// <summary>
-        /// Used to resolve the validated object along with <see cref="BoundTarget"/>.
-        /// </summary>
+        #region MultiBindingConverter class
+
+        // When BoundTarget property is specified this IMultiValueConverter is created internally to be able to resolve both the binding to the object to validate
+        // and BoundTarget, which is the object (typically a control) to which the IValidatingObject is bound.
         private sealed class MultiBindingConverter : IMultiValueConverter
         {
+            #region Fields
+
             private readonly ValidationResultExtension owner;
 
+            #endregion
+
+            #region Constructors
+
             public MultiBindingConverter(ValidationResultExtension owner) => this.owner = owner;
+
+            #endregion
+
+            #region Methods
+
+            #region Public Methods
 
             /// <summary>
             /// This method is executed when <see cref="ValidationResultExtension"/> is used in a binding position and <see cref="BoundTarget"/> is not <see langword="null"/>.
@@ -66,26 +90,36 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
                 }
 
                 string path = targetBinding?.Path?.Path ?? targetBinding?.XPath;
-                string propertyName = path?.Split(new [] { '.', '/', '[', ']', '(', ')' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+                string propertyName = path?.Split(new[] { '.', '/', '[', ']', '(', ')' }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
 
                 // If property name was defined but no such property exists or path could not be parsed we don't return any validation.
                 // But if there was no property defined and we did not find a bound property returning a result for any property.
                 if (propertyName == null && (owner.PropertyName != null || owner.BoundProperty != null))
                     return null;
 
-                // passing the found property name as parameter so it will not conflict with a defined one
+                // After resolving some propertyName, eventually calls the outer IValueConverter.Convert.
+                // Passing the found property name as parameter so it will not overwrite the owner's PropertyName
                 return owner.Convert(values[0], targetType, propertyName, culture);
             }
 
+            #endregion
+
+            #region Explicitly Implemented Interface Methods
+
             object[] IMultiValueConverter.ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
+
+            #endregion
+
+            #endregion
         }
 
-        public ValidationResultExtension()
-        {
-        }
+        #endregion
 
-        public ValidationResultExtension(ValidationSeverity severity) => Severity = severity;
+        #region Properties
 
+        /// <summary>
+        /// Gets or sets the severity of the message to return. If <see langword="null"/>, then a result of any severity can be returned.
+        /// </summary>
         public ValidationSeverity? Severity { get; set; }
 
         /// <summary>
@@ -120,9 +154,38 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
         /// </summary>
         public DependencyProperty BoundProperty { get; set; }
 
-        /// <summary>
-        /// Gets the markup extension result. Can be used in binding and <see cref="IValueConverter"/> positions.
-        /// </summary>
+        #endregion
+
+        #region Constructors
+
+        public ValidationResultExtension() { }
+        public ValidationResultExtension(ValidationSeverity severity) => Severity = severity;
+
+        #endregion
+
+        #region Methods
+
+        #region Static Methods
+
+        private static IEnumerable<DependencyProperty> EnumerateDependencyProperties(DependencyObject obj)
+        {
+            if (obj != null)
+            {
+                LocalValueEnumerator lve = obj.GetLocalValueEnumerator();
+                while (lve.MoveNext())
+                {
+                    yield return lve.Current.Property;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Instance Methods
+
+        #region Public Methods
+
+        // Gets the markup extension result. Can be used in binding and <see cref="IValueConverter"/> positions.
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             if (!(serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget target))
@@ -166,9 +229,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
         }
 
         /// <summary>
-        /// Gets the validation result messages from an <see cref="IValidatingObject"/>.
-        /// This method is executed when <see cref="ValidationResultExtension"/> is passed to a <see cref="Binding.Converter"/>
-        /// or when it is used as a binding and <see cref="BoundTarget"/> is <see langword="null"/>.
+        /// Gets the validation result message from an <see cref="IValidatingObject"/>.
         /// </summary>
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -176,40 +237,25 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Validation
             if (validationResults == null)
                 return null;
 
+            // parameter is set, when this Convert is called from the MultiBindingConverter.Convert (that is, when also BoundProperty had to be resolved)
             string validatedPropertyName = parameter as string ?? PropertyName;
             IEnumerable<string> messages = validationResults.Where(vr =>
-                (Severity == null || vr.Severity == Severity)
-                && (validatedPropertyName == null || vr.PropertyName == validatedPropertyName)).Select(vr => vr.Message);
+                        (Severity == null || vr.Severity == Severity)
+                        && (validatedPropertyName == null || vr.PropertyName == validatedPropertyName)).Select(vr => vr.Message);
 
             return messages.FirstOrDefault();
         }
 
-        private static IEnumerable<DependencyProperty> EnumerateDependencyProperties(DependencyObject obj)
-        {
-            if (obj != null)
-            {
-                LocalValueEnumerator lve = obj.GetLocalValueEnumerator();
-                while (lve.MoveNext())
-                {
-                    yield return lve.Current.Property;
-                }
-            }
-        }
+        #endregion
+
+        #region Explicitly Implemented Interface Methods
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotSupportedException();
-    }
 
-    public class HasValidationResultExtension : ValidationResultExtension
-    {
-        public HasValidationResultExtension()
-        {
-        }
+        #endregion
 
-        public HasValidationResultExtension(ValidationSeverity severity) : base(severity)
-        {
-        }
+        #endregion
 
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            => base.Convert(value, targetType, parameter, culture) != null;
+        #endregion
     }
 }

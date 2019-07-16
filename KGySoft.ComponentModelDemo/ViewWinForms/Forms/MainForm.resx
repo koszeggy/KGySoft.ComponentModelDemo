@@ -263,7 +263,7 @@
   <data name="btnSetProp.ToolTipText" xml:space="preserve">
     <value>Sets the StringProp of the current item. It does not matther whether [...] is checked.
 • If no change can be seen press Reset to refresh the binding.
-• Change can be detected if element type supports change notification (anything but Object base is selected)</value>
+• Change can be detected if element type supports change notification (anything but PlainTestObject is selected)</value>
   </data>
   <metadata name="errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>616, 17</value>
@@ -274,6 +274,11 @@
   <metadata name="editMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>96, 17</value>
   </metadata>
+  <data name="lblInfo.Text" xml:space="preserve">
+    <value>Choose the configuration and check how Windows Forms controls and bindings behave for different list and element types.
+Be careful: By choosing non-observable types you can easily cause inconsistencies.
+And of course, there are several bugs in WinForms DataGridView.</value>
+  </data>
   <metadata name="itemBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>461, 17</value>
   </metadata>

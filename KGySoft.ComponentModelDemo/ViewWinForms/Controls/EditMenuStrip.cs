@@ -1,22 +1,40 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.ViewWinForms.Commands;
 using KGySoft.CoreLibraries;
 
+#endregion
+
 namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
 {
+    // See also the ViewWpf.Controls.EditToolBar control for another solution for WPF.
+    /// <summary>
+    /// A specialized <see cref="ToolStrip"/> control that demonstrates KGy SOFT <see cref="ICanUndoRedo"/> and <see cref="ICanEdit"/> features
+    /// using KGy SOFT commands. Just bind the <see cref="DataSource"/> property to an undoable or editable object.
+    /// </summary>
     public class EditMenuStrip : ToolStrip
     {
+        #region Fields
+
+        // In this class every command binding has a Control source so we use the specialized WinformsCommandBindingsCollection,
+        // which visualizes every command state property on the source (Enabled, Image, ToolTipText).
         private readonly CommandBindingsCollection commandBindings = new WinformsCommandBindingsCollection();
+
+        // Note that we don't set initialize any properties of the buttons. The command state will provide the needed properties.
         private readonly ToolStripButton btnUndo = new ToolStripButton();
         private readonly ToolStripButton btnRedo = new ToolStripButton();
         private readonly ToolStripButton btnBeginEdit = new ToolStripButton();
         private readonly ToolStripButton btnEndEdit = new ToolStripButton();
         private readonly ToolStripButton btnCancelEdit = new ToolStripButton();
 
+        // We keep references to the states of the commands so we can toggle their Enabled state (true by default). We add some further state properties.
+        // As the used WinformsCommandBindingsCollection adds the a PropertyCommandStateUpdater to each binding, the Enabled state will be reflected by the buttons, too.
         private readonly ICommandState undoState = new CommandState
         {
             { nameof(ToolStripButton.Image), Images.Undo },
@@ -47,28 +65,17 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
             { nameof(ToolStripButton.ToolTipText), "Cancel Edit" }
         };
 
+        // Keeping a reference to the DataSource.PropertyChanged binding because this one is removed and added dynamically
+        private ICommandBinding sourceChangedBinding;
+
         private object dataSource;
 
-        public EditMenuStrip()
-        {
-            using (var g = this.CreateGraphics())
-            {
-                var scale = Math.Max(g.DpiX, g.DpiY) / 96f;
-                var newScale = (int)Math.Floor(scale * 100) / 100f;
-                if (newScale > 1)
-                {
-                    var newWidth = (int)(ImageScalingSize.Width * newScale);
-                    var newHeight = (int)(ImageScalingSize.Height * newScale);
-                    ImageScalingSize = new Size(newWidth, newHeight);
-                    AutoSize = false;
-                }
-            }
+        #endregion
 
-            // ReSharper disable once VirtualMemberCallInConstructor
-            Items.AddRange(new ToolStripItem[] { btnUndo, btnRedo, btnBeginEdit, btnEndEdit, btnCancelEdit });
-            ApplyDataSource();
-        }
+        #region Properties
 
+        // Unlike in ValidationResultToErrorProviderAdapter, we don't support collection sources here.
+        // So the binding for this property has to be set just like a binding for a TextBox, for example.
         public object DataSource
         {
             get => dataSource;
@@ -81,19 +88,62 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
             }
         }
 
-        private void ApplyDataSource()
+        #endregion
+
+        #region Constructors
+
+        public EditMenuStrip()
         {
-            commandBindings.Clear();
-            ResetStates();
+            // Just adjusting DPI, which is not supported automatically by ToolStrip
+            double scale;
+            using (Graphics g = CreateGraphics())
+                scale = Math.Round(Math.Max(g.DpiX, g.DpiY) / 96, 2);
+            if (scale > 1)
+            {
+                ImageScalingSize = new Size((int)(ImageScalingSize.Width * scale), (int)(ImageScalingSize.Height * scale));
+                AutoSize = false;
+            }
+
+            // ReSharper disable once VirtualMemberCallInConstructor
+            Items.AddRange(new ToolStripItem[] { btnUndo, btnRedo, btnBeginEdit, btnEndEdit, btnCancelEdit });
+
+            // binding the Click event of the buttons to the various Model.Commands commands
             commandBindings.Add(Model.Commands.Undo, undoState).AddSource(btnUndo, nameof(btnUndo.Click));
             commandBindings.Add(Model.Commands.Redo, redoState).AddSource(btnRedo, nameof(btnRedo.Click));
             commandBindings.Add(Model.Commands.BeginEdit, beginEditState).AddSource(btnBeginEdit, nameof(btnBeginEdit.Click));
             commandBindings.Add(Model.Commands.EndEdit, endEditState).AddSource(btnEndEdit, nameof(btnEndEdit.Click));
             commandBindings.Add(Model.Commands.CancelEdit, cancelEditState).AddSource(btnCancelEdit, nameof(btnCancelEdit.Click));
-            if (dataSource != null)
-                commandBindings.ForEach(b => b.AddTarget(dataSource));
+            commandBindings.ForEach(b => b.AddTarget(() => DataSource)); // their target will be the current DataSource in the moment of the invocation
+
+            ApplyDataSource();
+        }
+
+        #endregion
+
+        #region Methods
+
+        #region Protected Methods
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                commandBindings.Dispose();
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void ApplyDataSource()
+        {
+            if (sourceChangedBinding != null)
+                commandBindings.Remove(sourceChangedBinding);
+
+            ResetStates();
+
             if (dataSource is INotifyPropertyChanged)
-                commandBindings.Add<PropertyChangedEventArgs>(OnDataSourcePropertyChanged).AddSource(dataSource, nameof(INotifyPropertyChanged.PropertyChanged));
+                sourceChangedBinding = commandBindings.Add<PropertyChangedEventArgs>(OnDataSourcePropertyChangedCommand).AddSource(dataSource, nameof(INotifyPropertyChanged.PropertyChanged));
         }
 
         private void ResetStates()
@@ -109,14 +159,11 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
         private void ResetBeginEditState() => beginEditState.Enabled = (dataSource is ICanEdit);
         private void ResetEndCancelEditState() => endEditState.Enabled = cancelEditState.Enabled = (dataSource as ICanEdit)?.EditLevel > 0;
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-                commandBindings.Dispose();
-            base.Dispose(disposing);
-        }
+        #endregion
 
-        private void OnDataSourcePropertyChanged(ICommandSource<PropertyChangedEventArgs> source)
+        #region Command Handlers
+
+        private void OnDataSourcePropertyChangedCommand(ICommandSource<PropertyChangedEventArgs> source)
         {
             switch (source.EventArgs.PropertyName)
             {
@@ -131,5 +178,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
                     break;
             }
         }
+
+        #endregion
+
+        #endregion
     }
 }

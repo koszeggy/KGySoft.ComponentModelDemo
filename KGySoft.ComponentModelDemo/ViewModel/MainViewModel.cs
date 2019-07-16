@@ -26,7 +26,7 @@ namespace KGySoft.ComponentModelDemo.ViewModel
             {
                 new HashSet<string> { nameof(UseList), nameof(UseBindingList), nameof(UseSortableBindingList), nameof(UseSortableBindingListSortOnChange), nameof(UseObservableCollection), nameof(UseObservableBindingList) },
                 new HashSet<string> { nameof(NoInnerList), nameof(InnerList), nameof(InnerBindingList), nameof(InnerSortableBindingList), nameof(InnerObservableCollection), nameof(InnerObservableBindingList) },
-                new HashSet<string> { nameof(UseObject), nameof(UseObservableObject), nameof(UseUndoableObject), nameof(UseEditableObject), nameof(UseValidatingObject), nameof(UseModelBase) }
+                new HashSet<string> { nameof(UsePlainTestObject), nameof(UseObservableTestObject), nameof(UseUndoableTestObject), nameof(UseEditableTestObject), nameof(UseValidatingTestObject), nameof(UseAllInOneTestObject) }
             };
 
         #endregion
@@ -63,13 +63,13 @@ namespace KGySoft.ComponentModelDemo.ViewModel
         public bool InnerObservableCollection { get => Get(false); set => Set(value); }
         public bool InnerObservableBindingList { get => Get(false); set => Set(value); }
 
-        // The possible element base types.
-        public bool UseObject { get => Get(true); set => Set(value); }
-        public bool UseObservableObject { get => Get(false); set => Set(value); }
-        public bool UseUndoableObject { get => Get(false); set => Set(value); }
-        public bool UseEditableObject { get => Get(false); set => Set(value); }
-        public bool UseValidatingObject { get => Get(false); set => Set(value); }
-        public bool UseModelBase { get => Get(false); set => Set(value); }
+        // The possible element types.
+        public bool UsePlainTestObject { get => Get(true); set => Set(value); }
+        public bool UseObservableTestObject { get => Get(false); set => Set(value); }
+        public bool UseUndoableTestObject { get => Get(false); set => Set(value); }
+        public bool UseEditableTestObject { get => Get(false); set => Set(value); }
+        public bool UseValidatingTestObject { get => Get(false); set => Set(value); }
+        public bool UseAllInOneTestObject { get => Get(false); set => Set(value); }
 
         // This will be the test list for binding in the different UI frameworks. The actual type depends on the values above.
         // The initial value is quite complex to evaluate so initialized by a delegate.
@@ -135,12 +135,12 @@ namespace KGySoft.ComponentModelDemo.ViewModel
                 : UseObservableBindingList ? typeof(ObservableBindingList<>)
                 : throw new InvalidOperationException("No list type is selected");
 
-            Type elementType = UseObject ? typeof(PocoTestObject)
-                : UseObservableObject ? typeof(ObservableTestObject)
-                : UseUndoableObject ? typeof(UndoableTestObject)
-                : UseEditableObject ? typeof(EditableTestObject)
-                : UseValidatingObject ? typeof(ValidatingTestObject)
-                : UseModelBase ? typeof(FullExtraTestObject)
+            Type elementType = UsePlainTestObject ? typeof(PlainTestObject)
+                : UseObservableTestObject ? typeof(ObservableTestObject)
+                : UseUndoableTestObject ? typeof(UndoableTestObject)
+                : UseEditableTestObject ? typeof(EditableTestObject)
+                : UseValidatingTestObject ? typeof(ValidatingTestObject)
+                : UseAllInOneTestObject ? typeof(AllInOneTestObject)
                 : throw new InvalidOperationException("No element type is selected");
 
             Type innerListType = NoInnerList ? null
@@ -159,12 +159,12 @@ namespace KGySoft.ComponentModelDemo.ViewModel
             int length = rnd.NextInt32(2, 3, true);
             for (int i = 0; i < length; i++)
             {
-                ITestObject item = UseObject ? rnd.NextObject<PocoTestObject>()
-                    : UseObservableObject ? rnd.NextObject<ObservableTestObject>()
-                    : UseUndoableObject ? rnd.NextObject<UndoableTestObject>()
-                    : UseEditableObject ? rnd.NextObject<EditableTestObject>()
-                    : UseValidatingObject ? rnd.NextObject<ValidatingTestObject>()
-                    : (ITestObject)rnd.NextObject<FullExtraTestObject>();
+                ITestObject item = UsePlainTestObject ? rnd.NextObject<PlainTestObject>()
+                    : UseObservableTestObject ? rnd.NextObject<ObservableTestObject>()
+                    : UseUndoableTestObject ? rnd.NextObject<UndoableTestObject>()
+                    : UseEditableTestObject ? rnd.NextObject<EditableTestObject>()
+                    : UseValidatingTestObject ? rnd.NextObject<ValidatingTestObject>()
+                    : (ITestObject)rnd.NextObject<AllInOneTestObject>();
 
                 (item as ObservableObjectBase)?.SetModified(false);
                 (item as ICanUndo)?.ClearUndoHistory();

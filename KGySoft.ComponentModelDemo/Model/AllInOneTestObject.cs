@@ -1,22 +1,27 @@
-﻿using System;
+﻿#region Usings
+
+using System;
+
 using KGySoft.ComponentModel;
+
+#endregion
 
 namespace KGySoft.ComponentModelDemo.Model
 {
-    public class FullExtraTestObject : ModelBase, ITestObject
+    // A model class that unifies the features of EditableTestObject, UndoableTestObject and ValidatingTestObject classes.
+    public class AllInOneTestObject : ModelBase, ITestObject
     {
-        public int IntProp
-        {
-            get => Get<int>();
-            set => Set(value);
-        }
+        #region Properties
 
-        public string StringProp
-        {
-            get => Get<string>();
-            set => Set(value);
-        }
+        public int IntProp { get => Get<int>(); set => Set(value); }
+        public string StringProp { get => Get<string>(); set => Set(value); }
 
+        #endregion
+
+        #region Methods
+
+        // This is how validation of the properties can be implemented. Error, Warning and Information severities can be used.
+        // Changing a property value automatically causes the invalidation of earlier results.
         protected override ValidationResultsCollection DoValidation()
         {
             ValidationResultsCollection result = base.DoValidation();
@@ -34,5 +39,7 @@ namespace KGySoft.ComponentModelDemo.Model
                 result.AddWarning(nameof(StringProp), $"{nameof(StringProp)} is shorter than 3 characters.");
             return result;
         }
+
+        #endregion
     }
 }

@@ -8,15 +8,14 @@ using System.Windows.Input;
 namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 {
     /// <summary>
-    /// A base class for WPF commands with a switchable <see cref="IsEnabled"/> property.
+    /// A base class for WPF commands with a switchable <see cref="CanExecute"/> property.
     /// The term "Wpf" in the name just denotes that it is an <see cref="System.Windows.Input.ICommand"/> and not a <see cref="KGySoft.ComponentModel.ICommand"/>.
     /// </summary>
-    /// <seealso cref="ICommand" />
     public abstract class SwitchableWpfCommandBase : ICommand
     {
         #region Fields
 
-        private bool isEnabled = true;
+        private bool canExecute = true;
 
         #endregion
 
@@ -28,14 +27,14 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 
         #region Properties
 
-        public bool IsEnabled
+        public bool CanExecute
         {
-            get => isEnabled;
+            get => canExecute;
             set
             {
-                if (isEnabled == value)
+                if (canExecute == value)
                     return;
-                isEnabled = value;
+                canExecute = value;
                 OnCanExecuteChanged(EventArgs.Empty);
             }
         }
@@ -52,7 +51,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 
         #region Protected Methods
 
-        protected virtual bool EvaluateCanExecute(object parameter) => IsEnabled;
+        protected virtual bool EvaluateCanExecute(object parameter) => CanExecute;
 
         protected virtual void OnCanExecuteChanged(EventArgs e) => CanExecuteChanged?.Invoke(this, e);
 

@@ -1,24 +1,36 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+
 using KGySoft.ComponentModel;
 using KGySoft.Reflection;
 
+#endregion
+
 namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 {
+    // By the EventToKGyCommand extension you can bind KGy SOFT commands to events in XAML. 
+    // Alternatively, you can wrap the KGy SOFT commands into Microsoft commands (see also the KGyCommandAdapter class); however,
+    // if you need to pass the event arguments to a command you cannot use Microsoft's commands. Furthermore, for events that have
+    // no command support in WPF you can still use this extension.
+    // See the MainWindow.xaml for examples.
     /// <summary>
-    /// A markup extension for binding events to <see cref="KGySoft.ComponentModel.ICommand"/> intances in XAML.
+    /// A markup extension for binding events to <see cref="KGySoft.ComponentModel.ICommand"/> instances in XAML.
     /// </summary>
     public class EventToKGyCommandExtension : MarkupExtension
     {
-        /// <summary>
-        /// To provide a matching signature for any event handler.
-        /// </summary>
+        #region SubscriptionInfo class
+
+        // To provide a matching signature for any event handler.
         private sealed class SubscriptionInfo<TEventArgs>
             where TEventArgs : EventArgs
         {
+            #region CommandSource class
+
             private sealed class CommandSource : ICommandSource<TEventArgs>
             {
                 #region Properties
@@ -40,12 +52,20 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
                 #endregion
             }
 
+            #endregion
+
+            #region Fields
+
             private readonly EventToKGyCommandExtension owner;
             private readonly object source;
             private readonly string eventName;
 
             private ICommandState commandState;
             private ICommandBinding syncEnabledBinding;
+
+            #endregion
+
+            #region Properties
 
             private ICommandState State
             {
@@ -60,6 +80,10 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
                 }
             }
 
+            #endregion
+
+            #region Constructors
+
             public SubscriptionInfo(EventToKGyCommandExtension owner, object source, string eventName, ICommandState state)
             {
                 this.owner = owner;
@@ -71,6 +95,29 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
                     element.RegisterOnDisposed((s, e) => syncEnabledBinding?.Dispose());
             }
 
+            #endregion
+
+            #region Methods
+
+            #region Internal Methods
+
+            // This will
+            internal void Execute(object sender, TEventArgs e)
+            {
+                var src = source as DependencyObject;
+                var command = (ICommand)owner.Command.Evaluate(src);
+                if (command == null)
+                    return;
+                ICommandState state = State; // now it will not be null even if binding could not be resolved in constructor
+                object target = owner.Target?.Evaluate(src);
+                if (state.Enabled)
+                    command.Execute(new CommandSource { EventArgs = e, Source = source, TriggeringEvent = eventName }, state, target);
+            }
+
+            #endregion
+
+            #region Private Methods
+
             private void InitEnabledSync()
             {
                 if (commandState == null || !(source is UIElement element))
@@ -80,18 +127,14 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
                 syncEnabledBinding = commandState.CreatePropertyBinding(nameof(commandState.Enabled), nameof(element.IsEnabled), element);
             }
 
-            internal void Execute(object sender, TEventArgs e)
-            {
-                var src = source as DependencyObject;
-                ICommand command = (ICommand)owner.Command.Evaluate(src);
-                if (command == null)
-                    return;
-                ICommandState state = State; // now it will not be null even if binding could not be resolved in constructor
-                object target = owner.Target?.Evaluate(src);
-                if (state.Enabled)
-                    command.Execute(new CommandSource{ EventArgs = e, Source = source, TriggeringEvent = eventName}, state, target);
-            }
+            #endregion
+
+            #endregion
         }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Must resolve to an <see cref="KGySoft.ComponentModel.ICommand"/> instance.
@@ -110,6 +153,12 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
         /// </summary>
         public BindingBase Target { get; set; }
 
+        #endregion
+
+        #region Methods
+
+        #region Public Methods
+
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             if (Command == null)
@@ -124,6 +173,10 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
             return CreateDelegate(target.TargetObject, ei);
         }
 
+        #endregion
+
+        #region Private Methods
+
         private Delegate CreateDelegate(object source, EventInfo eventInfo)
         {
             MethodInfo invokeMethod = eventInfo.EventHandlerType.GetMethod(nameof(Action.Invoke));
@@ -135,10 +188,14 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 
             // creating generic info by reflection because the signature must match and EventArgs can vary
             var info = Reflector.CreateInstance(typeof(SubscriptionInfo<>).MakeGenericType(parameters[1].ParameterType),
-                this, source, eventName, State?.Evaluate(source as DependencyObject));
+                    this, source, eventName, State?.Evaluate(source as DependencyObject));
 
             // WPF will do the subscription itself. We do not keep any explicit reference to the created delegate to prevent leaks
             return Delegate.CreateDelegate(eventInfo.EventHandlerType, info, nameof(SubscriptionInfo<EventArgs>.Execute));
         }
+
+        #endregion
+
+        #endregion
     }
 }

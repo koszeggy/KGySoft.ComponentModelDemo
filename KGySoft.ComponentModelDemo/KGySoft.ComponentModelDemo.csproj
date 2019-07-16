@@ -49,7 +49,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\CommandBindingCollectionExtensions.cs" />
+    <Compile Include="CommandBindingCollectionExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -68,10 +68,10 @@
     <Compile Include="ViewWinForms\Controls\EditMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Model\FullExtraTestObject.cs" />
+    <Compile Include="Model\AllInOneTestObject.cs" />
     <Compile Include="Model\ITestObject.cs" />
     <Compile Include="Model\ObservableTestObject.cs" />
-    <Compile Include="Model\PocoTestObject.cs" />
+    <Compile Include="Model\PlainTestObject.cs" />
     <Compile Include="Model\UndoableTestObject.cs" />
     <Compile Include="Model\ValidatingTestObject.cs" />
     <Compile Include="ViewWinForms\Forms\MainForm.cs">
@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="ViewWpf\BindingBaseExtensions.cs" />
     <Compile Include="ViewWpf\Commands\EventToKGyCommandExtension.cs" />
+    <Compile Include="ViewWpf\Validation\HasValidationResultExtension.cs" />
     <Compile Include="ViewWpf\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

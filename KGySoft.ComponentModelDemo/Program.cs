@@ -1,14 +1,30 @@
-﻿using System.Threading;
+﻿#region Usings
+
+#region Used Namespaces
+
+using System.Threading;
+
 using KGySoft.ComponentModelDemo.ViewModel;
 using KGySoft.ComponentModelDemo.ViewWinForms.Forms;
 using KGySoft.ComponentModelDemo.ViewWpf.Windows;
+
+#endregion
+
+#region Used Aliases
+
 using WinFormsApp = System.Windows.Forms.Application;
 using WpfApp = KGySoft.ComponentModelDemo.ViewWpf.App;
+
+#endregion
+
+#endregion
 
 namespace KGySoft.ComponentModelDemo
 {
     static class Program
     {
+        #region Methods
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -38,5 +54,7 @@ namespace KGySoft.ComponentModelDemo
             WinFormsApp.SetCompatibleTextRenderingDefault(false);
             WinFormsApp.Run(new MainForm(new MainViewModel()));
         }
+
+        #endregion
     }
 }

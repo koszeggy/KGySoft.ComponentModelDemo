@@ -76,6 +76,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.infoProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.warningAdapter = new KGySoft.ComponentModelDemo.ViewWinForms.Components.ValidationResultToErrorProviderAdapter(this.components);
             this.infoAdapter = new KGySoft.ComponentModelDemo.ViewWinForms.Components.ValidationResultToErrorProviderAdapter(this.components);
+            this.lblInfo = new System.Windows.Forms.Label();
             this.Panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -99,9 +100,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // 
             this.Panel1.Controls.Add(this.tableLayoutPanel1);
             this.Panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Panel1.Location = new System.Drawing.Point(0, 0);
+            this.Panel1.Location = new System.Drawing.Point(0, 53);
             this.Panel1.Name = "Panel1";
-            this.Panel1.Size = new System.Drawing.Size(637, 134);
+            this.Panel1.Size = new System.Drawing.Size(684, 134);
             this.Panel1.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -118,7 +119,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(637, 134);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(684, 134);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox3
@@ -130,9 +131,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.groupBox3.Controls.Add(this.rbInnerList);
             this.groupBox3.Controls.Add(this.rbNoInnerList);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(215, 3);
+            this.groupBox3.Location = new System.Drawing.Point(231, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(206, 128);
+            this.groupBox3.Size = new System.Drawing.Size(222, 128);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Wrapped List Type";
@@ -145,7 +146,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbInnerObservableBindingList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbInnerObservableBindingList.Location = new System.Drawing.Point(3, 106);
             this.rbInnerObservableBindingList.Name = "rbInnerObservableBindingList";
-            this.rbInnerObservableBindingList.Size = new System.Drawing.Size(200, 18);
+            this.rbInnerObservableBindingList.Size = new System.Drawing.Size(216, 18);
             this.rbInnerObservableBindingList.TabIndex = 5;
             this.rbInnerObservableBindingList.Text = "ObservableBindingList";
             this.toolTip.SetToolTip(this.rbInnerObservableBindingList, "If wrapped into an ObservableBindingList, then direct modifications on the wrappe" +
@@ -159,7 +160,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbInnerObservableCollection.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbInnerObservableCollection.Location = new System.Drawing.Point(3, 88);
             this.rbInnerObservableCollection.Name = "rbInnerObservableCollection";
-            this.rbInnerObservableCollection.Size = new System.Drawing.Size(200, 18);
+            this.rbInnerObservableCollection.Size = new System.Drawing.Size(216, 18);
             this.rbInnerObservableCollection.TabIndex = 4;
             this.rbInnerObservableCollection.Text = "ObservableCollection";
             this.toolTip.SetToolTip(this.rbInnerObservableCollection, "If wrapped into an ObservableBindingList, then direct modifications on the wrappe" +
@@ -173,7 +174,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbInnerSortableBindingList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbInnerSortableBindingList.Location = new System.Drawing.Point(3, 70);
             this.rbInnerSortableBindingList.Name = "rbInnerSortableBindingList";
-            this.rbInnerSortableBindingList.Size = new System.Drawing.Size(200, 18);
+            this.rbInnerSortableBindingList.Size = new System.Drawing.Size(216, 18);
             this.rbInnerSortableBindingList.TabIndex = 3;
             this.rbInnerSortableBindingList.Text = "SortableBindingList";
             this.toolTip.SetToolTip(this.rbInnerSortableBindingList, "If wrapped into an ObservableBindingList, then direct modifications on the wrappe" +
@@ -187,7 +188,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbInnerBindingList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbInnerBindingList.Location = new System.Drawing.Point(3, 52);
             this.rbInnerBindingList.Name = "rbInnerBindingList";
-            this.rbInnerBindingList.Size = new System.Drawing.Size(200, 18);
+            this.rbInnerBindingList.Size = new System.Drawing.Size(216, 18);
             this.rbInnerBindingList.TabIndex = 2;
             this.rbInnerBindingList.Text = "BindingList";
             this.toolTip.SetToolTip(this.rbInnerBindingList, "If wrapped into an ObservableBindingList, then direct modifications on the wrappe" +
@@ -201,7 +202,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbInnerList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbInnerList.Location = new System.Drawing.Point(3, 34);
             this.rbInnerList.Name = "rbInnerList";
-            this.rbInnerList.Size = new System.Drawing.Size(200, 18);
+            this.rbInnerList.Size = new System.Drawing.Size(216, 18);
             this.rbInnerList.TabIndex = 1;
             this.rbInnerList.Text = "List";
             this.toolTip.SetToolTip(this.rbInnerList, "A List is passed to the default constructor.\r\n• Has no notification events so dir" +
@@ -215,7 +216,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbNoInnerList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbNoInnerList.Location = new System.Drawing.Point(3, 16);
             this.rbNoInnerList.Name = "rbNoInnerList";
-            this.rbNoInnerList.Size = new System.Drawing.Size(200, 18);
+            this.rbNoInnerList.Size = new System.Drawing.Size(216, 18);
             this.rbNoInnerList.TabIndex = 0;
             this.rbNoInnerList.Text = "None";
             this.toolTip.SetToolTip(this.rbNoInnerList, "The bound list is created by its default constructor.");
@@ -230,12 +231,12 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.groupBox2.Controls.Add(this.rbObservableObject);
             this.groupBox2.Controls.Add(this.rbObject);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(427, 3);
+            this.groupBox2.Location = new System.Drawing.Point(459, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(207, 128);
+            this.groupBox2.Size = new System.Drawing.Size(222, 128);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Element Base Type";
+            this.groupBox2.Text = "Element Type";
             this.toolTip.SetToolTip(this.groupBox2, "Determined the element type of the created collection");
             // 
             // rbModel
@@ -245,9 +246,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbModel.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbModel.Location = new System.Drawing.Point(3, 106);
             this.rbModel.Name = "rbModel";
-            this.rbModel.Size = new System.Drawing.Size(201, 18);
+            this.rbModel.Size = new System.Drawing.Size(216, 18);
             this.rbModel.TabIndex = 5;
-            this.rbModel.Text = "ModelBase";
+            this.rbModel.Text = "AllInOneTestObject";
             this.toolTip.SetToolTip(this.rbModel, "The element type is derived from ModelBase\r\n• Supports property change notificati" +
         "on\r\n• Supports Undo/Redo\r\n• Supports BeginEdit/EndEdit/CancelEdit\r\n• Supports Va" +
         "lidation");
@@ -260,9 +261,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbValidating.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbValidating.Location = new System.Drawing.Point(3, 88);
             this.rbValidating.Name = "rbValidating";
-            this.rbValidating.Size = new System.Drawing.Size(201, 18);
+            this.rbValidating.Size = new System.Drawing.Size(216, 18);
             this.rbValidating.TabIndex = 4;
-            this.rbValidating.Text = "ValidatingObjectBase";
+            this.rbValidating.Text = "ValidatingTestObject";
             this.toolTip.SetToolTip(this.rbValidating, "The element type is derived from ValidatingObjectBase\r\n• Supports property change" +
         " notification\r\n• Supports Validation");
             this.rbValidating.UseVisualStyleBackColor = true;
@@ -274,9 +275,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbEditable.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbEditable.Location = new System.Drawing.Point(3, 70);
             this.rbEditable.Name = "rbEditable";
-            this.rbEditable.Size = new System.Drawing.Size(201, 18);
+            this.rbEditable.Size = new System.Drawing.Size(216, 18);
             this.rbEditable.TabIndex = 3;
-            this.rbEditable.Text = "EditableObjectBase";
+            this.rbEditable.Text = "EditableTestObject";
             this.toolTip.SetToolTip(this.rbEditable, "The element type is derived from EditableObjectBase\r\n• Supports property change n" +
         "otification\r\n• Supports BeginEdit/EndEdit/CancelEdit");
             this.rbEditable.UseVisualStyleBackColor = true;
@@ -288,9 +289,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbUndoable.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbUndoable.Location = new System.Drawing.Point(3, 52);
             this.rbUndoable.Name = "rbUndoable";
-            this.rbUndoable.Size = new System.Drawing.Size(201, 18);
+            this.rbUndoable.Size = new System.Drawing.Size(216, 18);
             this.rbUndoable.TabIndex = 2;
-            this.rbUndoable.Text = "UndoableObjectBase";
+            this.rbUndoable.Text = "UndoableTestObject";
             this.toolTip.SetToolTip(this.rbUndoable, "The element type is derived from UndoableObjectBase\r\n• Supports property change n" +
         "otification\r\n• Supports Undo/Redo");
             this.rbUndoable.UseVisualStyleBackColor = true;
@@ -302,9 +303,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbObservableObject.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbObservableObject.Location = new System.Drawing.Point(3, 34);
             this.rbObservableObject.Name = "rbObservableObject";
-            this.rbObservableObject.Size = new System.Drawing.Size(201, 18);
+            this.rbObservableObject.Size = new System.Drawing.Size(216, 18);
             this.rbObservableObject.TabIndex = 1;
-            this.rbObservableObject.Text = "ObservableObjectBase";
+            this.rbObservableObject.Text = "ObservableTestObject";
             this.toolTip.SetToolTip(this.rbObservableObject, "The element type is derived from ObservableObjectBase\r\n• Supports property change" +
         " notification");
             this.rbObservableObject.UseVisualStyleBackColor = true;
@@ -316,9 +317,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbObject.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbObject.Location = new System.Drawing.Point(3, 16);
             this.rbObject.Name = "rbObject";
-            this.rbObject.Size = new System.Drawing.Size(201, 18);
+            this.rbObject.Size = new System.Drawing.Size(216, 18);
             this.rbObject.TabIndex = 0;
-            this.rbObject.Text = "Object";
+            this.rbObject.Text = "PlainTestObject";
             this.toolTip.SetToolTip(this.rbObject, "The element type is derived from object\r\n• Does not support property change notif" +
         "ication");
             this.rbObject.UseVisualStyleBackColor = true;
@@ -334,7 +335,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(206, 128);
+            this.groupBox1.Size = new System.Drawing.Size(222, 128);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Bound List Type";
@@ -348,7 +349,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbObservableBindingList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbObservableBindingList.Location = new System.Drawing.Point(3, 106);
             this.rbObservableBindingList.Name = "rbObservableBindingList";
-            this.rbObservableBindingList.Size = new System.Drawing.Size(200, 18);
+            this.rbObservableBindingList.Size = new System.Drawing.Size(216, 18);
             this.rbObservableBindingList.TabIndex = 5;
             this.rbObservableBindingList.Text = "ObservableBindingList";
             this.toolTip.SetToolTip(this.rbObservableBindingList, resources.GetString("rbObservableBindingList.ToolTip"));
@@ -361,7 +362,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbObservableCollection.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbObservableCollection.Location = new System.Drawing.Point(3, 88);
             this.rbObservableCollection.Name = "rbObservableCollection";
-            this.rbObservableCollection.Size = new System.Drawing.Size(200, 18);
+            this.rbObservableCollection.Size = new System.Drawing.Size(216, 18);
             this.rbObservableCollection.TabIndex = 4;
             this.rbObservableCollection.Text = "ObservableCollection";
             this.toolTip.SetToolTip(this.rbObservableCollection, "• Not supported by Windows Forms directly but can be wrapped into an ObservableBi" +
@@ -376,7 +377,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbSortableBindingListSortOnChange.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbSortableBindingListSortOnChange.Location = new System.Drawing.Point(3, 70);
             this.rbSortableBindingListSortOnChange.Name = "rbSortableBindingListSortOnChange";
-            this.rbSortableBindingListSortOnChange.Size = new System.Drawing.Size(200, 18);
+            this.rbSortableBindingListSortOnChange.Size = new System.Drawing.Size(216, 18);
             this.rbSortableBindingListSortOnChange.TabIndex = 3;
             this.rbSortableBindingListSortOnChange.Text = "SortableBindingList (SortOnChange)";
             this.toolTip.SetToolTip(this.rbSortableBindingListSortOnChange, resources.GetString("rbSortableBindingListSortOnChange.ToolTip"));
@@ -389,7 +390,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbSortableBindingList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbSortableBindingList.Location = new System.Drawing.Point(3, 52);
             this.rbSortableBindingList.Name = "rbSortableBindingList";
-            this.rbSortableBindingList.Size = new System.Drawing.Size(200, 18);
+            this.rbSortableBindingList.Size = new System.Drawing.Size(216, 18);
             this.rbSortableBindingList.TabIndex = 2;
             this.rbSortableBindingList.Text = "SortableBindingList";
             this.toolTip.SetToolTip(this.rbSortableBindingList, "• Events of a wrapped list are not captured\r\n• Events of item property changes ar" +
@@ -403,7 +404,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbBindingList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbBindingList.Location = new System.Drawing.Point(3, 34);
             this.rbBindingList.Name = "rbBindingList";
-            this.rbBindingList.Size = new System.Drawing.Size(200, 18);
+            this.rbBindingList.Size = new System.Drawing.Size(216, 18);
             this.rbBindingList.TabIndex = 1;
             this.rbBindingList.Text = "BindingList";
             this.toolTip.SetToolTip(this.rbBindingList, "• Does not support sorting\r\n• Events of a wrapped list are not captured\r\n• Events" +
@@ -417,7 +418,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.rbList.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.rbList.Location = new System.Drawing.Point(3, 16);
             this.rbList.Name = "rbList";
-            this.rbList.Size = new System.Drawing.Size(200, 18);
+            this.rbList.Size = new System.Drawing.Size(216, 18);
             this.rbList.TabIndex = 0;
             this.rbList.Text = "List";
             this.toolTip.SetToolTip(this.rbList, "• Has no notification events so direct changes are not reflected until refreshing" +
@@ -435,13 +436,13 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.tableLayoutPanel2.Controls.Add(this.gbGrid, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.gbListBox, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(40, 134);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(40, 187);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(573, 227);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(620, 254);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // gbBoundToCurrentItem
@@ -453,9 +454,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.gbBoundToCurrentItem.Controls.Add(this.label3);
             this.gbBoundToCurrentItem.Controls.Add(this.tbIntPropCurrent);
             this.gbBoundToCurrentItem.Controls.Add(this.label4);
-            this.gbBoundToCurrentItem.Location = new System.Drawing.Point(289, 116);
+            this.gbBoundToCurrentItem.Location = new System.Drawing.Point(313, 130);
             this.gbBoundToCurrentItem.Name = "gbBoundToCurrentItem";
-            this.gbBoundToCurrentItem.Size = new System.Drawing.Size(281, 108);
+            this.gbBoundToCurrentItem.Size = new System.Drawing.Size(304, 121);
             this.gbBoundToCurrentItem.TabIndex = 3;
             this.gbBoundToCurrentItem.TabStop = false;
             this.gbBoundToCurrentItem.Text = "Bound to the current item of the binding source";
@@ -465,7 +466,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.tbStringPropCurrent.Dock = System.Windows.Forms.DockStyle.Top;
             this.tbStringPropCurrent.Location = new System.Drawing.Point(3, 62);
             this.tbStringPropCurrent.Name = "tbStringPropCurrent";
-            this.tbStringPropCurrent.Size = new System.Drawing.Size(275, 20);
+            this.tbStringPropCurrent.Size = new System.Drawing.Size(298, 20);
             this.tbStringPropCurrent.TabIndex = 3;
             // 
             // label3
@@ -483,7 +484,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.tbIntPropCurrent.Dock = System.Windows.Forms.DockStyle.Top;
             this.tbIntPropCurrent.Location = new System.Drawing.Point(3, 29);
             this.tbIntPropCurrent.Name = "tbIntPropCurrent";
-            this.tbIntPropCurrent.Size = new System.Drawing.Size(275, 20);
+            this.tbIntPropCurrent.Size = new System.Drawing.Size(298, 20);
             this.tbIntPropCurrent.TabIndex = 1;
             // 
             // label4
@@ -505,9 +506,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.gbBoundToList.Controls.Add(this.label2);
             this.gbBoundToList.Controls.Add(this.tbIntPropList);
             this.gbBoundToList.Controls.Add(this.label1);
-            this.gbBoundToList.Location = new System.Drawing.Point(289, 3);
+            this.gbBoundToList.Location = new System.Drawing.Point(313, 3);
             this.gbBoundToList.Name = "gbBoundToList";
-            this.gbBoundToList.Size = new System.Drawing.Size(281, 107);
+            this.gbBoundToList.Size = new System.Drawing.Size(304, 121);
             this.gbBoundToList.TabIndex = 2;
             this.gbBoundToList.TabStop = false;
             this.gbBoundToList.Text = "Bound to the same source as the Grid and ListBox";
@@ -517,7 +518,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.tbStringPropList.Dock = System.Windows.Forms.DockStyle.Top;
             this.tbStringPropList.Location = new System.Drawing.Point(3, 62);
             this.tbStringPropList.Name = "tbStringPropList";
-            this.tbStringPropList.Size = new System.Drawing.Size(275, 20);
+            this.tbStringPropList.Size = new System.Drawing.Size(298, 20);
             this.tbStringPropList.TabIndex = 3;
             // 
             // label2
@@ -535,7 +536,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.tbIntPropList.Dock = System.Windows.Forms.DockStyle.Top;
             this.tbIntPropList.Location = new System.Drawing.Point(3, 29);
             this.tbIntPropList.Name = "tbIntPropList";
-            this.tbIntPropList.Size = new System.Drawing.Size(275, 20);
+            this.tbIntPropList.Size = new System.Drawing.Size(298, 20);
             this.tbIntPropList.TabIndex = 1;
             // 
             // label1
@@ -554,7 +555,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.gbGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbGrid.Location = new System.Drawing.Point(3, 3);
             this.gbGrid.Name = "gbGrid";
-            this.gbGrid.Size = new System.Drawing.Size(280, 107);
+            this.gbGrid.Size = new System.Drawing.Size(304, 121);
             this.gbGrid.TabIndex = 4;
             this.gbGrid.TabStop = false;
             this.gbGrid.Text = "DataGridView";
@@ -570,7 +571,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.Location = new System.Drawing.Point(3, 16);
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(274, 88);
+            this.grid.Size = new System.Drawing.Size(298, 102);
             this.grid.TabIndex = 1;
             // 
             // intPropDataGridViewTextBoxColumn
@@ -593,9 +594,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // 
             this.gbListBox.Controls.Add(this.listBox);
             this.gbListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbListBox.Location = new System.Drawing.Point(3, 116);
+            this.gbListBox.Location = new System.Drawing.Point(3, 130);
             this.gbListBox.Name = "gbListBox";
-            this.gbListBox.Size = new System.Drawing.Size(280, 108);
+            this.gbListBox.Size = new System.Drawing.Size(304, 121);
             this.gbListBox.TabIndex = 5;
             this.gbListBox.TabStop = false;
             this.gbListBox.Text = "ListBox";
@@ -608,7 +609,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.listBox.FormattingEnabled = true;
             this.listBox.Location = new System.Drawing.Point(3, 16);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(274, 89);
+            this.listBox.Size = new System.Drawing.Size(298, 102);
             this.listBox.TabIndex = 2;
             // 
             // tsList
@@ -621,9 +622,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.btnRemove,
             this.btnSetItem,
             this.btnSetProp});
-            this.tsList.Location = new System.Drawing.Point(0, 134);
+            this.tsList.Location = new System.Drawing.Point(0, 187);
             this.tsList.Name = "tsList";
-            this.tsList.Size = new System.Drawing.Size(40, 227);
+            this.tsList.Size = new System.Drawing.Size(40, 254);
             this.tsList.TabIndex = 0;
             this.tsList.Text = "toolStrip1";
             // 
@@ -694,13 +695,19 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.errorProvider.ContainerControl = this;
             this.errorProvider.DataSource = this.listBindingSource;
             // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 5000;
+            this.toolTip.InitialDelay = 500;
+            this.toolTip.ReshowDelay = 100;
+            // 
             // editMenuStrip
             // 
             this.editMenuStrip.DataSource = null;
             this.editMenuStrip.Dock = System.Windows.Forms.DockStyle.Right;
-            this.editMenuStrip.Location = new System.Drawing.Point(613, 134);
+            this.editMenuStrip.Location = new System.Drawing.Point(660, 187);
             this.editMenuStrip.Name = "editMenuStrip";
-            this.editMenuStrip.Size = new System.Drawing.Size(24, 227);
+            this.editMenuStrip.Size = new System.Drawing.Size(24, 254);
             this.editMenuStrip.TabIndex = 2;
             this.editMenuStrip.Text = "editMenuStrip1";
             // 
@@ -721,24 +728,35 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             this.warningAdapter.DataSource = this.listBindingSource;
             this.warningAdapter.Provider = this.warningProvider;
             this.warningAdapter.Severity = KGySoft.ComponentModel.ValidationSeverity.Warning;
-            this.warningAdapter.ShowBindingErrors = false;
             // 
             // infoAdapter
             // 
             this.infoAdapter.DataSource = this.listBindingSource;
             this.infoAdapter.Provider = this.infoProvider;
             this.infoAdapter.Severity = KGySoft.ComponentModel.ValidationSeverity.Information;
-            this.infoAdapter.ShowBindingErrors = false;
+            // 
+            // lblInfo
+            // 
+            this.lblInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblInfo.Location = new System.Drawing.Point(0, 0);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Padding = new System.Windows.Forms.Padding(2);
+            this.lblInfo.Size = new System.Drawing.Size(684, 53);
+            this.lblInfo.TabIndex = 3;
+            this.lblInfo.Text = resources.GetString("lblInfo.Text");
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(637, 361);
+            this.ClientSize = new System.Drawing.Size(684, 441);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.editMenuStrip);
             this.Controls.Add(this.tsList);
             this.Controls.Add(this.Panel1);
+            this.Controls.Add(this.lblInfo);
+            this.MinimumSize = new System.Drawing.Size(690, 450);
             this.Name = "MainForm";
             this.Text = "KGySoft.ComponentModel Demo (Windows Forms)";
             this.Panel1.ResumeLayout(false);
@@ -827,5 +845,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
         private ErrorProvider infoProvider;
         private Components.ValidationResultToErrorProviderAdapter warningAdapter;
         private Components.ValidationResultToErrorProviderAdapter infoAdapter;
+        private Label lblInfo;
     }
 }
