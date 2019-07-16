@@ -1,7 +1,6 @@
 ﻿using KGySoft.ComponentModel;
-using KGySoft.ComponentModelDemo.ViewWpf.Commands;
 
-namespace KGySoft.ComponentModelDemo.ViewWpf
+namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 {
     public class KGyCommandAdapter : SwitchableWpfCommandBase
     {

@@ -9,7 +9,7 @@ using KGySoft.Reflection;
 namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 {
     /// <summary>
-    /// A markup extension for events for binding events to <see cref="KGySoft.ComponentModel.ICommand"/>s in XAML.
+    /// A markup extension for binding events to <see cref="KGySoft.ComponentModel.ICommand"/> intances in XAML.
     /// </summary>
     public class EventToKGyCommandExtension : MarkupExtension
     {

@@ -127,13 +127,19 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Windows
                 .AddSource(currentView, nameof(currentView.CurrentChanged));
         }
 
-        private void ResetBinding() => currentView.Refresh();
+        private void ResetBinding(bool setFocus)
+        {
+            // This removes the focus from the DataGrid preventing further errors (cannot refresh while in editing state)
+            if (setFocus)
+                btnReset.Focus();
+            currentView.Refresh();
+        }
 
         #endregion
 
         #region View-related Command Handlers
 
-        private void OnResetBindingCommand() => ResetBinding();
+        private void OnResetBindingCommand() => ResetBinding(false);
 
         private void OnWindowClosedCommand()
         {
@@ -144,7 +150,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Windows
 
         private void OnCurrentDispatcherUnhandledExceptionCommand(ICommandSource<DispatcherUnhandledExceptionEventArgs> src)
         {
-            ResetBinding();
+            ResetBinding(true);
             MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. The binding have been reset to prevent further errors.{Environment.NewLine}{Environment.NewLine}"
                 + $"The caught exception: {src.EventArgs.Exception}", "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             src.EventArgs.Handled = true;

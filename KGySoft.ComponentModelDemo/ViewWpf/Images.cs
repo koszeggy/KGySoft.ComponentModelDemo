@@ -1,10 +1,16 @@
-﻿using System.Windows.Media;
+﻿#region Usings
+
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
     internal static class Images
     {
+        #region Fields
+
         private static ImageSource undo;
         private static ImageSource redo;
         private static ImageSource edit;
@@ -14,6 +20,10 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
         private static ImageSource error;
         private static ImageSource warning;
         private static ImageSource info;
+
+        #endregion
+
+        #region Properties
 
         public static ImageSource Undo => undo ?? (undo = BitmapFrame.Create(Properties.Resources.Undo));
         public static ImageSource Redo => redo ?? (redo = BitmapFrame.Create(Properties.Resources.Redo));
@@ -25,5 +35,6 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
         public static ImageSource Warning => warning ?? (warning = BitmapFrame.Create(Properties.Resources.Warning));
         public static ImageSource Information => info ?? (info = BitmapFrame.Create(Properties.Resources.Information));
 
+        #endregion
     }
 }

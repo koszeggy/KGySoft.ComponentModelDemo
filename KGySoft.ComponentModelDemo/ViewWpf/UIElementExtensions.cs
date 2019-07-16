@@ -1,12 +1,25 @@
-﻿using System;
+﻿#region Usings
+
+using System;
 using System.Collections.Concurrent;
 using System.Windows;
 
+#endregion
+
 namespace KGySoft.ComponentModelDemo.ViewWpf
 {
+    // Contains the RegisterOnDisposed extension method for FrameworkElement
     internal static class UIElementExtensions
     {
+        #region Fields
+
         private static readonly ConcurrentDictionary<FrameworkElement, EventHandler> onDisposedHandlers = new ConcurrentDictionary<FrameworkElement, EventHandler>();
+
+        #endregion
+
+        #region Methods
+
+        #region Internal Methods
 
         /// <summary>
         /// Registers a <paramref name="handler"/> to be executed when the parent <see cref="Window"/> of <paramref name="element"/> is disposed.
@@ -24,7 +37,25 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
                 element.Loaded += FrameworkElement_Loaded; // we delay subscribing because we can't get the parent window yet.
         }
 
+        #endregion
+
+        #region Private Methods
+
         private static void RemoveHandlers(FrameworkElement element) => onDisposedHandlers.TryRemove(element, out var _);
+
+        private static void HookWindowClosed(FrameworkElement element, Window window)
+        {
+            window.Closed += (sender, args) =>
+            {
+                if (onDisposedHandlers.TryGetValue(element, out EventHandler handler))
+                    handler.Invoke(element, args);
+                RemoveHandlers(element);
+            };
+        }
+
+        #endregion
+
+        #region Event handlers
 
         private static void FrameworkElement_Loaded(object sender, RoutedEventArgs e)
         {
@@ -36,14 +67,8 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
                 RemoveHandlers(element); // could not subscribe - removing handler to prevent leaks
         }
 
-        private static void HookWindowClosed(FrameworkElement element, Window window)
-        {
-            window.Closed += (sender, args) =>
-            {
-                if (onDisposedHandlers.TryGetValue(element, out EventHandler handler))
-                    handler.Invoke(element, args);
-                RemoveHandlers(element);
-            };
-        }
+        #endregion
+
+        #endregion
     }
 }

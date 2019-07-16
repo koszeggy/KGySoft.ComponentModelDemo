@@ -259,10 +259,10 @@
 &#13;&#10;• An ObservableCollection wraps a List no matter what was passed to the constructor"/>
 
                         <!--This button uses a regular WPF command-->
-                        <Button Content="Reset" Command="{Binding ResetBindingCommand, ElementName=this}" ToolTip="Resets the binding. Press to re-read the bound list if it was updated and the changes could not be detected."/>
+                        <Button Name="btnReset" Content="Reset" Command="{Binding ResetBindingCommand, ElementName=this}" ToolTip="Resets the binding. Press to re-read the bound list if it was updated and the changes could not be detected."/>
 
                         <!--
-                        These buttons refer KGySoft.ComponentModel commands.
+                        These buttons below refer to KGySoft.ComponentModel commands.
                         
                         The EventToKGyCommand markup extension can be used for binding events in XAML directly to KGySoft.ComponentModel.ICommand commands.
                         Alternatively, you can use the usual Command and CommandBindingsCollection methods from C#, or you can define local WPF commands

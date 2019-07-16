@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
 
-namespace KGySoft.ComponentModelDemo.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms.Commands
 {
     /// <summary>
     /// A specialized <see cref="CommandBindingsCollection"/> that can be used commands for <see cref="Control"/> sources.

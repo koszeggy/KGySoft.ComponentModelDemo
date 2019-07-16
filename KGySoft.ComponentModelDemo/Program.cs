@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using KGySoft.ComponentModelDemo.ViewModel;
 using KGySoft.ComponentModelDemo.ViewWinForms;
+using KGySoft.ComponentModelDemo.ViewWinForms.Forms;
 using KGySoft.ComponentModelDemo.ViewWpf.Windows;
 using WinFormsApp = System.Windows.Forms.Application;
 using WpfApp = KGySoft.ComponentModelDemo.ViewWpf.App;

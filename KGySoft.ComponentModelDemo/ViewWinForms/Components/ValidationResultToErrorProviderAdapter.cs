@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
 
-namespace KGySoft.ComponentModelDemo.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
 {
     /// <summary>
     /// Provides an adapter for <see cref="ErrorProvider"/> to be able to display validation results of any <see cref="ValidationSeverity"/>.

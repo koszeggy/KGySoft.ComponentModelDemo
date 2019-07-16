@@ -6,34 +6,18 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.Extensions;
 using KGySoft.ComponentModelDemo.Model;
 using KGySoft.ComponentModelDemo.ViewModel;
+using KGySoft.ComponentModelDemo.ViewWinForms.Components;
 
 #endregion
 
-namespace KGySoft.ComponentModelDemo.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
 {
     public partial class MainForm : Form
     {
-        private class SafeGrid : DataGridView
-        {
-            protected override void OnPaint(PaintEventArgs e)
-            {
-                try
-                {
-                    base.OnPaint(e);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"An unhandled exception has been detected in DataGridView.OnPaint. This would have killed the grid rendering in a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
-                        + $"The caught exception: {ex}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
         #region Fields
 
         // TODO: to designer
@@ -47,9 +31,8 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         private readonly ICommandState commandsWithCurrentItemState;
 
         // These bindings are dynamically removed and re-created so they are stored as fields
-        private Binding intPropListColorBinding, stringPropListColorBinding;
-        private Binding intPropCurrentColorBinding, stringPropCurrentColorBinding;
-        private ICommandBinding formatColorListBinding, formatColorCurrentBinding;
+        private Binding intPropColorBinding, stringPropColorBinding;
+        private ICommandBinding formatColorBinding;
 
         #endregion
 
@@ -194,19 +177,16 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         private void DoRebind()
         {
             // removing possible previous bindings for formatting validation results as colors (would not be needed if elements were always IValidatingObject instances)
-            if (formatColorListBinding != null)
+            if (formatColorBinding != null)
             {
-                tbIntPropList.DataBindings.Remove(intPropListColorBinding);
-                tbStringPropList.DataBindings.Remove(stringPropListColorBinding);
-                tbIntPropCurrent.DataBindings.Remove(intPropCurrentColorBinding);
-                tbStringPropCurrent.DataBindings.Remove(stringPropCurrentColorBinding);
+                tbIntPropList.DataBindings.Remove(intPropColorBinding);
+                tbStringPropList.DataBindings.Remove(stringPropColorBinding);
                 tbIntPropList.BackColor = SystemColors.Window;
                 tbStringPropList.BackColor = SystemColors.Window;
                 tbIntPropCurrent.BackColor = SystemColors.Window;
                 tbStringPropCurrent.BackColor = SystemColors.Window;
-                commandBindings.Remove(formatColorListBinding);
-                commandBindings.Remove(formatColorCurrentBinding);
-                formatColorListBinding = formatColorCurrentBinding = null;
+                commandBindings.Remove(formatColorBinding);
+                formatColorBinding = null;
             }
 
             // the actual rebind
@@ -219,21 +199,13 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             // bindings for TextBox.BackColor (could be in the constructor if elements were always IValidatingObject instances but WinForms is not tolerant for invalid property names)
             if (testList.Cast<ITestObject>().FirstOrDefault() is IValidatingObject)
             {
-                intPropListColorBinding = new Binding(nameof(TextBox.BackColor), listBindingSource, nameof(IValidatingObject.ValidationResults), true, DataSourceUpdateMode.Never);
-                stringPropListColorBinding = new Binding(nameof(TextBox.BackColor), listBindingSource, nameof(IValidatingObject.ValidationResults), true, DataSourceUpdateMode.Never);
-                formatColorListBinding = commandBindings.Add<ConvertEventArgs>(OnFormatColor)
-                    .AddSource(intPropListColorBinding, nameof(Binding.Format))
-                    .AddSource(stringPropListColorBinding, nameof(Binding.Format));
-                tbIntPropList.DataBindings.Add(intPropListColorBinding);
-                tbStringPropList.DataBindings.Add(stringPropListColorBinding);
-
-                intPropCurrentColorBinding = new Binding(nameof(TextBox.BackColor), itemBindingSource, nameof(IValidatingObject.ValidationResults), true, DataSourceUpdateMode.Never);
-                stringPropCurrentColorBinding = new Binding(nameof(TextBox.BackColor), itemBindingSource, nameof(IValidatingObject.ValidationResults), true, DataSourceUpdateMode.Never);
-                formatColorCurrentBinding = commandBindings.Add<ConvertEventArgs>(OnFormatColor)
-                    .AddSource(intPropCurrentColorBinding, nameof(Binding.Format))
-                    .AddSource(stringPropCurrentColorBinding, nameof(Binding.Format));
-                tbIntPropCurrent.DataBindings.Add(intPropCurrentColorBinding);
-                tbStringPropCurrent.DataBindings.Add(stringPropCurrentColorBinding);
+                intPropColorBinding = new Binding(nameof(TextBox.BackColor), listBindingSource, nameof(IValidatingObject.ValidationResults), true, DataSourceUpdateMode.Never);
+                stringPropColorBinding = new Binding(nameof(TextBox.BackColor), listBindingSource, nameof(IValidatingObject.ValidationResults), true, DataSourceUpdateMode.Never);
+                formatColorBinding = commandBindings.Add<ConvertEventArgs>(OnFormatColor)
+                    .AddSource(intPropColorBinding, nameof(Binding.Format))
+                    .AddSource(stringPropColorBinding, nameof(Binding.Format));
+                tbIntPropList.DataBindings.Add(intPropColorBinding);
+                tbStringPropList.DataBindings.Add(stringPropColorBinding);
             }
         }
 

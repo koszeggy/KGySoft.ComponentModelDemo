@@ -53,17 +53,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CommandErrorEventArgs.cs" />
+    <Compile Include="ViewWinForms\Controls\SafeGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ViewWpf\Adorners\AdornedElementPlaceholder.cs" />
     <Compile Include="ViewWpf\Adorners\ElementAdorner.cs" />
     <Compile Include="ViewWpf\Adorners\TemplatedAdorner.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Model\Commands.cs" />
     <Compile Include="Model\EditableTestObject.cs" />
-    <Compile Include="ViewWinForms\EditMenuStrip.cs">
+    <Compile Include="ViewWinForms\Controls\EditMenuStrip.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ViewWinForms\EditMenuStrip.Designer.cs">
-      <DependentUpon>EditMenuStrip.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\FullExtraTestObject.cs" />
     <Compile Include="Model\ITestObject.cs" />
@@ -71,16 +71,16 @@
     <Compile Include="Model\PocoTestObject.cs" />
     <Compile Include="Model\UndoableTestObject.cs" />
     <Compile Include="Model\ValidatingTestObject.cs" />
-    <Compile Include="ViewWinForms\MainForm.cs">
+    <Compile Include="ViewWinForms\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ViewWinForms\MainForm.Designer.cs">
+    <Compile Include="ViewWinForms\Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewWinForms\Images.cs" />
-    <Compile Include="ViewWinForms\TooltipUpdater.cs" />
-    <Compile Include="ViewWinForms\ValidationResultToErrorProviderAdapter.cs" />
-    <Compile Include="ViewWinForms\WinformsCommandBindingsCollection.cs" />
+    <Compile Include="ViewWinForms\Commands\TooltipUpdater.cs" />
+    <Compile Include="ViewWinForms\Components\ValidationResultToErrorProviderAdapter.cs" />
+    <Compile Include="ViewWinForms\Commands\WinformsCommandBindingsCollection.cs" />
     <Compile Include="ViewWpf\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -103,7 +103,7 @@
     <Compile Include="ViewWpf\Commands\SimpleWpfCommand.cs" />
     <Compile Include="ViewWpf\UIElementExtensions.cs" />
     <Compile Include="ViewWpf\Validation\ValidationBindingExtension.cs" />
-    <EmbeddedResource Include="ViewWinForms\MainForm.resx">
+    <EmbeddedResource Include="ViewWinForms\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

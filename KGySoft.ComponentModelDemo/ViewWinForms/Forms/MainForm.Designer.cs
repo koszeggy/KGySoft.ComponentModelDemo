@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
+using KGySoft.ComponentModelDemo.ViewWinForms.Controls;
 
-namespace KGySoft.ComponentModelDemo.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
 {
     partial class MainForm
     {
@@ -68,7 +69,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.warningProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.infoProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.editMenuStrip = new KGySoft.ComponentModelDemo.ViewWinForms.EditMenuStrip();
+            this.editMenuStrip = new EditMenuStrip();
             this.Panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -765,8 +766,8 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         private ErrorProvider warningProvider;
         private ErrorProvider infoProvider;
         private GroupBox gbGrid;
-        private DataGridView grid;
         private GroupBox gbListBox;
         private ListBox listBox;
+        private SafeGrid grid;
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
-using KGySoft.ComponentModelDemo.Model;
+using KGySoft.ComponentModelDemo.ViewWinForms.Commands;
 using KGySoft.CoreLibraries;
 
-namespace KGySoft.ComponentModelDemo.ViewWinForms
+namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
 {
-    public partial class EditMenuStrip : ToolStrip
+    public class EditMenuStrip : ToolStrip
     {
         private readonly CommandBindingsCollection commandBindings = new WinformsCommandBindingsCollection();
         private readonly ToolStripButton btnUndo = new ToolStripButton();
@@ -49,8 +49,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
 
         public EditMenuStrip()
         {
-            InitializeComponent();
-
             // ReSharper disable once VirtualMemberCallInConstructor
             Items.AddRange(new ToolStripItem[] { btnUndo, btnRedo, btnBeginEdit, btnEndEdit, btnCancelEdit });
             ApplyDataSource();
@@ -72,11 +70,11 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         {
             commandBindings.Clear();
             ResetStates();
-            commandBindings.Add(Commands.Undo, undoState).AddSource(btnUndo, nameof(btnUndo.Click));
-            commandBindings.Add(Commands.Redo, redoState).AddSource(btnRedo, nameof(btnRedo.Click));
-            commandBindings.Add(Commands.BeginEdit, beginEditState).AddSource(btnBeginEdit, nameof(btnBeginEdit.Click));
-            commandBindings.Add(Commands.EndEdit, endEditState).AddSource(btnEndEdit, nameof(btnEndEdit.Click));
-            commandBindings.Add(Commands.CancelEdit, cancelEditState).AddSource(btnCancelEdit, nameof(btnCancelEdit.Click));
+            commandBindings.Add(Model.Commands.Undo, undoState).AddSource(btnUndo, nameof(btnUndo.Click));
+            commandBindings.Add(Model.Commands.Redo, redoState).AddSource(btnRedo, nameof(btnRedo.Click));
+            commandBindings.Add(Model.Commands.BeginEdit, beginEditState).AddSource(btnBeginEdit, nameof(btnBeginEdit.Click));
+            commandBindings.Add(Model.Commands.EndEdit, endEditState).AddSource(btnEndEdit, nameof(btnEndEdit.Click));
+            commandBindings.Add(Model.Commands.CancelEdit, cancelEditState).AddSource(btnCancelEdit, nameof(btnCancelEdit.Click));
             if (dataSource != null)
                 commandBindings.ForEach(b => b.AddTarget(dataSource));
             if (dataSource is INotifyPropertyChanged)
@@ -99,10 +97,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
-                components?.Dispose();
                 commandBindings.Dispose();
-            }
             base.Dispose(disposing);
         }
 

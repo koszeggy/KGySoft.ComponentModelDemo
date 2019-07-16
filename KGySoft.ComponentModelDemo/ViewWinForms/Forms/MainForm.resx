@@ -120,9 +120,6 @@
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>348, 17</value>
   </metadata>
-  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>348, 17</value>
-  </metadata>
   <data name="groupBox3.ToolTip" xml:space="preserve">
     <value>The type of the list to be passed to the constructor of the bound list
 • If the bound list is List or ObservableCollection, then only the elements are copied
@@ -138,7 +135,8 @@
     <value>• Events of a wrapped list are not captured
 • Events of item property changes are captured
 • Sort is re-applied when an item changes
-• To sort for simple property changes element must support change notification</value>
+• To sort for simple property changes element must support change notification
+• If element type does not support change notification the DataGridView can randomly overwrite elements when editing the sorted elements</value>
   </data>
   <metadata name="tsList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
