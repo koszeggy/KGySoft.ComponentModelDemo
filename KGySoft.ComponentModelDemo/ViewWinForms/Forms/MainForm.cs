@@ -5,12 +5,12 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.Extensions;
 using KGySoft.ComponentModelDemo.Model;
 using KGySoft.ComponentModelDemo.ViewModel;
-using KGySoft.ComponentModelDemo.ViewWinForms.Components;
 
 #endregion
 
@@ -34,16 +34,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
         #endregion
 
         #region Constructors
-
-        #region Static Constructor
-
-        static MainForm() => Application.ThreadException += (sender, e) =>
-            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
-                + $"The caught exception: {e.Exception}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-        #endregion
-
-        #region Instance Constructors
 
         public MainForm(MainViewModel viewModel)
         {
@@ -122,9 +112,11 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             commandBindings.Add<EventArgs>(OnListBindingSourceCurrentItemChangedCommand) // listBindingSource.CurrentItemChanged -> OnListBindingSourceCurrentItemChangedCommand
                 .AddSource(listBindingSource, nameof(listBindingSource.CurrentItemChanged));
             commandBindings.Add(OnResetBindingCommand).AddSource(btnReset, nameof(btnReset.Click)); // btnReset.Click -> OnResetBindingCommand
-        }
 
-        #endregion
+            // even static events are supported, provide a type as source:
+            commandBindings.Add<ThreadExceptionEventArgs>(OnApplicationThreadExceptionCommand) // Application.ThreadException -> OnApplicationThreadExceptionCommand
+                .AddSource(typeof(Application), nameof(Application.ThreadException));
+        }
 
         #endregion
 
@@ -244,6 +236,10 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             MessageBox.Show($"Operation '{source.EventArgs.Operation}' failed: {source.EventArgs.Exception.Message}{Environment.NewLine}Press Reset to refresh the binding.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             source.EventArgs.Handled = true;
         }
+
+        private void OnApplicationThreadExceptionCommand(ICommandSource<ThreadExceptionEventArgs> source) => 
+            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
+                + $"The caught exception: {source.EventArgs.Exception}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         #endregion
 
