@@ -15,7 +15,7 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An unhandled exception has been detected in DataGridView.OnPaint. This would have killed the grid rendering in a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
+                MessageBox.Show($"Oops, an unhandled exception has been detected in DataGridView.OnPaint. This would have killed the grid rendering in a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
                     + $"The caught exception: {ex}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

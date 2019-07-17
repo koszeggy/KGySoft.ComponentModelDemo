@@ -28,25 +28,31 @@
             <Style.Triggers>
 
                 <!--
-                The ValidationResult/HasValidationResult markup extensions are converters for IValidatingObject implementations that can be used also in Binding position.
+                The ValidationResult/HasValidationResult markup extensions are converters for IValidatingObject implementations that
+                can be used also in Binding position.
                 
                 Examples:
                 
                 Getting whether the TestList/ValidationResults has a warning validation entry for the IntProp property:
                 
-                <DataTrigger Value="True" Binding="{validation:HasValidationResult Warning, Path=TestList/ValidationResults, PropertyName=IntProp}">
+                <DataTrigger Value="True" Binding="{validation:HasValidationResult Warning,
+                                                    Path=TestList/ValidationResults,
+                                                    PropertyName=IntProp}">
                 
                 Which is practically the same as:
                 
                 <DataTrigger Value="True" Binding="{Binding TestList/ValidationResults,
-                                                    Converter={validation:HasValidationResult Warning, PropertyName=IntProp}}">
+                                                    Converter={validation:HasValidationResult Warning,
+                                                               PropertyName=IntProp}}">
                 
-                Note: The bindings above point to the ValidationResults property. The converter works also for IValidatingObject (Path=TestList/) but we want the
-                trigger to reevaluate the condition for the changes of the ValidationResults property.
+                Note: The bindings above point to the ValidationResults property. The converter works also for
+                IValidatingObject (Path=TestList/) but we want the trigger to reevaluate the condition for the changes of the
+                ValidationResults property.
                 
-                Above we specified the property name IntProp but the style can be applied to any TextBox used to display different properties.
-                So we can tell that the name of the validated property has to determined by the original binding on the TextBox.
-                Getting whether the TestList/ValidationResults has a warning validation entry for the property bound to TextBox.Text:
+                Above we specified the property name IntProp but the style can be applied to any TextBox used to display different
+                properties. So we can tell that the name of the validated property has to determined by the original binding on the
+                TextBox. Getting whether the TestList/ValidationResults has a warning validation entry for the property bound to
+                TextBox.Text:
                 
                 <DataTrigger Value="True" Binding="{validation:HasValidationResult Warning,
                                                     Path=TestList/ValidationResults,
@@ -61,28 +67,44 @@
                                                     BoundTarget={Binding RelativeSource={RelativeSource Self}},
                                                     PropertyName=Text}">
 
-                Note that if BoundTarget is specified, then PropertyName specifies one of its properties rather than a IValidatingObject property (see above)
+                Note that if BoundTarget is specified, then PropertyName specifies one of its properties rather than a
+                IValidatingObject property (see the first example)
                 
-                If no property is defined, then the bound property is tried to be auto detected. If neither BoundTarget, nor a property is defined,
-                then the result tells if there is at least one info validation entry for any properties.
+                If no property is defined, then the bound property is tried to be auto detected. If neither BoundTarget, nor a
+                property is defined, then the result tells if there is at least one warning validation entry for any properties.
                 -->
 
-                <!-- Info Style - we don't specify the TextBox.Text property so it is auto detected now (see also the examples above). -->
+                <!--
+                Info Style - we don't specify the TextBox.Text property so it is auto detected now (see also the examples above).
+                -->
                 <DataTrigger Value="True" Binding="{validation:HasValidationResult Information, Path=TestList/ValidationResults, BoundTarget={Binding RelativeSource={RelativeSource Self}}}">
 
-                    <!--Setting ElementAdorner.Template, which works similarly to Validation.ErrorTemplate: makes possible to define a template
-                        displayed in the adorner layer so the arrangement of the controls will not change when the border appears, and the original content
-                        of the control will be preserved (which would disappear by setting the regular Template property) -->
+                    <!--
+                    Setting ElementAdorner.Template, which works similarly to Validation.ErrorTemplate: makes possible to define a
+                    template displayed in the adorner layer so the arrangement of the controls will not change when the border
+                    appears, and the original content of the control will be preserved (which would disappear by setting the regular
+                    Template property)
+                    -->
                     <Setter Property="adorners:ElementAdorner.Template">
                         <Setter.Value>
                             <ControlTemplate>
-                                <!-- Drawing a border around the original control. Since we are in the adorner layer now, this will not change the layout -->
+                                
+                                <!--
+                                Drawing a border around the original control. Since we are in the adorner layer now, this will not
+                                change the layout
+                                -->
                                 <Border BorderBrush="Blue" BorderThickness="3">
-                                    <!--adorners:AdornedElementPlaceholder is the same as Controls.AdornedElementPlaceholder, which unfortunately works only for ErrorTemplate -->
+                                    <!--
+                                    adorners:AdornedElementPlaceholder is the same as Controls.AdornedElementPlaceholder,
+                                    which unfortunately works only for ErrorTemplate
+                                    -->
                                     <adorners:AdornedElementPlaceholder>
-                                        <!-- Displaying an icon in the original TextBox and using the ValidationResult extension for obtaining the validation message.
-                                             Note the {adorners:AdornerBinding} used in BoundTarget. It can be used similarly to TemplateBinding and is actually the shorthand of
-                                             {Binding RelativeSource={RelativeSource TemplatedParent}, Path=(adorners:ElementAdorner.AdornedParent)}-->
+                                        <!--
+                                        Displaying an icon in the original TextBox and using the ValidationResult extension for
+                                        obtaining the validation message. Note the {adorners:AdornerBinding} used in BoundTarget. It
+                                        can be used similarly to TemplateBinding and is actually the shorthand of
+                                        {Binding RelativeSource={RelativeSource TemplatedParent}, Path=(adorners:ElementAdorner.AdornedParent)}
+                                        -->
                                         <Image HorizontalAlignment="Right" DockPanel.Dock="Right"
                                                Source="{Binding Source={x:Static viewWpf:Images.Information}}"
                                                ToolTip="{validation:ValidationResult Information,
@@ -94,7 +116,10 @@
                         </Setter.Value>
                     </Setter>
 
-                    <!-- Unlike regular templates, the adorner template above does not make the original TextBox disappear so we can change also its properties: -->
+                    <!--
+                    Unlike regular templates, the adorner template above does not make the original TextBox disappear so we can
+                    change also its properties:
+                    -->
                     <Setter Property="Background" Value="LightBlue"/>
                 </DataTrigger>
 
@@ -118,20 +143,31 @@
                     <Setter Property="Background" Value="Khaki"/>
                 </DataTrigger>
 
-                <!-- Error style - now by the standard way (for the sake of comparison). Works because ValidatingObjectBase implements IDataErrorInfo, too.
-                     Could be used similarly to Info and Warning styles above but then binding errors (eg. string in an int field) weren't displayed.
-                     Tip: Specify Error style similarly to Info and Warning, do not enable ValidatesOnDataErrors on bindings, and then this can be
-                     an additional level above Error, specifically for binding errors -->
+                <!--
+                Error style - now by the standard way (for the sake of comparison). Works because ValidatingObjectBase implements
+                IDataErrorInfo, too. Could be used similarly to Info and Warning styles above but then binding errors (eg. string in
+                an int field) weren't displayed.
+                
+                Tip: Specify Error style similarly to Info and Warning, do not enable ValidatesOnDataErrors on bindings, and then an
+                Validation.ErrorTemplate can be an additional level above Error, specifically for binding errors.
+                -->
                 <Trigger Property="Validation.HasError" Value="True">
-                    <!--Disabling the original error template and using the general adorner template instead so they will not interfere-->
+                    
+                    <!--
+                    Disabling the original error template and using the general adorner template instead so they will not interfere
+                    -->
                     <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
                     <Setter Property="adorners:ElementAdorner.Template">
                         <Setter.Value>
                             <ControlTemplate>
                                 <Border BorderBrush="Red" BorderThickness="3">
                                     <adorners:AdornedElementPlaceholder>
-                                        <!-- Here the AdornerBinding is used with a path (see the Info Style above for more details)
-                                             If we used ToolTip="{validation:ValidationResult Error, ...}" here, then binding errors would not be displayed. -->
+                                        
+                                        <!--
+                                        Here the AdornerBinding is used with a path (see the Info Style above for more details).
+                                        If we used ToolTip="{validation:ValidationResult Error, ...}" here, then binding errors
+                                        would not be displayed.
+                                        -->
                                         <Image HorizontalAlignment="Right" DockPanel.Dock="Right"
                                                Source="{Binding Source={x:Static viewWpf:Images.Error}}"
                                                ToolTip="{adorners:AdornerBinding (Validation.Errors)[0].ErrorContent}"/>
@@ -168,7 +204,7 @@
     <DockPanel LastChildFill="True">
         <TextBlock DockPanel.Dock="Top" Padding="3" Text="Choose the configuration and check how WPF controls and bindings behave for different list and element types.
             &#13;&#10;Be careful: By choosing non-observable types you can easily cause inconsistencies.
-            &#13;&#10;And of course, there are several bugs in WPF DataGrid."/>
+            &#13;&#10;And of course, you can discover some WPF bugs as well. Hover the mouse on the options to see some further details."/>
 
         <!-- The Grid of GroupBoxes with the RadioButtons -->
         <Grid DockPanel.Dock="Top">
@@ -267,19 +303,21 @@
                         <!--
                         These buttons below refer to KGySoft.ComponentModel commands.
                         
-                        The EventToKGyCommand markup extension can be used for binding events in XAML directly to KGySoft.ComponentModel.ICommand commands.
-                        Alternatively, you can use the usual Command and CommandBindingsCollection methods from C#, or you can define local WPF commands
-                        to wrap the KGy SOFT commands.
+                        The EventToKGyCommand markup extension can be used for binding events in XAML directly to
+                        KGySoft.ComponentModel.ICommand commands. Alternatively, you can use the usual Command and
+                        CommandBindingsCollection methods from C#, or you can define local WPF commands to wrap the
+                        KGy SOFT commands.
                         
-                        See also the EditToolBar control where the KGySoft.ComponentModel commands are wrapped into KGyCommandAdapter instances instead.
-                        Please note though that WPF commands do receive the event arguments. So while the KGyCommandAdapter can be used for simple or
-                        targeted commands (or parameterized commands as per WPF terminology), for source aware commands the EventToKGyCommand extension is
-                        a better choice.
+                        See also the EditToolBar control where the KGySoft.ComponentModel commands are wrapped into KGyCommandAdapter
+                        instances instead. Please note though that WPF commands do receive the event arguments. So while the
+                        KGyCommandAdapter can be used for simple or targeted commands (or parameterized commands as per WPF
+                        terminology), for source aware commands the EventToKGyCommand extension is a better choice.
 
                         The EventToKGyCommand extension has 3 properties, Command, State and Target, all of them are bindings.
                         - Command is mandatory and has to be evaluated to a KGySoft.ComponentModel.ICommand.
                         - State is optional. If not defined, then the command will always be enabled.
-                        - Target is optional. It is evaluated each time when the command is executed (that is the parameter in WPF commands).
+                        - Target is optional. It is evaluated each time when the command is executed (that is the parameter in
+                          WPF commands).
                         -->
                         <Button Content="Add" Click="{commands:EventToKGyCommand Command={Binding AddItemCommand}}"
                                 ToolTip="Adds a new element to the bound list.
@@ -310,12 +348,13 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <!-- WPF DataGrid Issues:
-                        - If columns are auto generated: validation and style can be added only from events (current solution)
-                        - If columns are manually added with validation, then sorting will have issues:
-                          - List and ObservableCollection: simply do not work
-                          - SortableBindingList: null reference exception from deeply in PresentationFramework.dll/System.Windows.Data.BindingListCollectionView.ConvertSortDescriptionCollection 
-                        - Bonus: AutoGeneratingColumn is not triggered if the DataGrid is defined in <mc:AlternateContent>/<mc:Choice Requires="NET40">
+                    <!--
+                    WPF DataGrid Issues:
+                    - If columns are auto generated: validation and style can be added only from events (current solution)
+                    - If columns are manually added with validation, then sorting will have issues:
+                      - List and ObservableCollection: simply do not work
+                      - SortableBindingList: null reference exception from deeply in PresentationFramework.dll/System.Windows.Data.BindingListCollectionView.ConvertSortDescriptionCollection 
+                    - Bonus: AutoGeneratingColumn is not triggered if the DataGrid is defined in <mc:AlternateContent>/<mc:Choice Requires="NET40">
                     -->
 
                     <!-- Just a DataGrid bound to the TestList. See how a command is bound to the AutoGeneratingColumn event by the EventToKGyCommand extension -->
@@ -339,14 +378,18 @@
             </DockPanel>
             <DockPanel Grid.Column="1">
 
-                <!-- A custom re-usable ToolBar to demonstrate how to use ICanUndo[/Redo] and ICanEdit features in WPF
-                     and how to wraps KGySoft.ComponentModel commands into WPF commands. See the EditToolBar control for details. -->
+                <!--
+                A custom re-usable ToolBar to demonstrate how to use ICanUndo[/Redo] and ICanEdit features in WPF
+                and how to wraps KGySoft.ComponentModel commands into WPF commands. See the EditToolBar control for details.
+                -->
                 <ToolBarTray Orientation="Vertical" DockPanel.Dock="Right">
                     <controls:EditToolBar DataContext="{Binding TestList/}" />
                 </ToolBarTray>
 
-                <!-- Just a couple of TextBoxes bound to the properties of TestList items. The validation styles for IValidatingObject are enabled for them
-                     (see the style definitions in the Window.Resources above) -->
+                <!-- 
+                Just a couple of TextBoxes bound to the properties of TestList items. The validation styles for IValidatingObject are
+                enabled for them (see the style definitions in the Window.Resources above)
+                -->
                 <GroupBox Header="Bound to the same source as the DataGrid and ListBox" DockPanel.Dock="Top">
                     <StackPanel>
                         <Label Content="IntProp"/>
@@ -356,9 +399,12 @@
                     </StackPanel>
                 </GroupBox>
 
-                <!-- Just another couple of TextBoxes bound to the current item of the ListBox.
-                     As their binding source is different from the one used in styleValidatingTextBox info and warning validation would not work for them.
-                     Error validation would work just because in styleValidatingTextBox the Error template is used for errors instead of adorner template -->
+                <!--
+                Just another couple of TextBoxes bound to the current item of the ListBox.
+                As their binding source is different from the one used in styleValidatingTextBox info and warning validation would
+                not work for them. Error validation would work just because in styleValidatingTextBox the Error template is used for
+                errors instead of adorner template
+                -->
                 <GroupBox Header="Bound to the selected item in ListBox">
                     <StackPanel>
                         <Label Content="IntProp"/>

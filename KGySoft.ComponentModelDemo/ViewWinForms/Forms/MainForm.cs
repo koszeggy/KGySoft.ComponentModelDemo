@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+
 using KGySoft.ComponentModel;
 using KGySoft.ComponentModelDemo.Model;
 using KGySoft.ComponentModelDemo.ViewModel;
@@ -220,12 +221,12 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
 
         private void OnCommandErrorHandler(ICommandSource<CommandErrorEventArgs> source)
         {
-            MessageBox.Show($"Operation '{source.EventArgs.Operation}' failed: {source.EventArgs.Exception.Message}{Environment.NewLine}Press Reset to refresh the binding.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"Oops, operation '{source.EventArgs.Operation}' caused an exception: {source.EventArgs.Exception}{Environment.NewLine}Press Reset to refresh the binding.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             source.EventArgs.Handled = true;
         }
 
         private void OnApplicationThreadExceptionCommand(ICommandSource<ThreadExceptionEventArgs> source) => 
-            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
+            MessageBox.Show($"Oops, this caused an exception, which could have crashed the application. Press Reset to update a possibly inconsistent binding.{Environment.NewLine}{Environment.NewLine}"
                 + $"The caught exception: {source.EventArgs.Exception}", "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         #endregion

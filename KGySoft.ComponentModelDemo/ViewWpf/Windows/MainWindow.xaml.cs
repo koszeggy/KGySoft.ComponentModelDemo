@@ -151,7 +151,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Windows
         private void OnCurrentDispatcherUnhandledExceptionCommand(ICommandSource<DispatcherUnhandledExceptionEventArgs> src)
         {
             ResetBinding(true);
-            MessageBox.Show($"An unhandled exception has been detected, which would crash a regular application. The binding have been reset to prevent further errors.{Environment.NewLine}{Environment.NewLine}"
+            MessageBox.Show($"Oops, this caused an exception, which could have crashed the application. The binding have been reset to prevent further errors.{Environment.NewLine}{Environment.NewLine}"
                 + $"The caught exception: {src.EventArgs.Exception}", "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             src.EventArgs.Handled = true;
         }
