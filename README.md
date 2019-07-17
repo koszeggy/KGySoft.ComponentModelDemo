@@ -9,10 +9,20 @@ This repo is a demo WPF/WinForms application that focuses on some features of th
 
 ![KGySoft.ComponentModelDemo](https://kgysoft.net/images/KGySoft.ComponentModelDemo.jpg)
 
+## Table of Contents
+1. [A few highlights](#a-few-highlights)
+2. [Download](#download)
+3. [Useful WPF Components](#useful-wpf-components)
+4. [Useful Windows Forms Components](#useful-windows-forms-components)
+5. [License](#license)
+
 ## A few highlights:
 * The [KGySoft.ComponentModelDemo.Model](https://github.com/koszeggy/KGySoft.ComponentModelDemo/tree/master/KGySoft.ComponentModelDemo/Model) namespace demonstrates how to use the various [business object](https://kgysoft.net/corelibraries#business-objects) base types as model classes.
 * It contains also some [example commands](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/Model/Commands.cs). See more about KGy SOFT's technology agnostic commands and command bindings on the [website](https://kgysoft.net/corelibraries#command-binding).
 * The [KGySoft.ComponentModelDemo.ViewModel](https://github.com/koszeggy/KGySoft.ComponentModelDemo/tree/master/KGySoft.ComponentModelDemo/ViewModel) namespace demonstrates how to create a technology-agnostic ViewModel. The [MainViewModel](https://github.com/koszeggy/KGySoft.ComponentModelDemo/tree/master/KGySoft.ComponentModelDemo/ViewModel/MainViewModel.cs) class is used by a [WPF Window](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/ViewWpf/Windows/MainWindow.xaml) and [WinForms Form](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/ViewWinForms/Forms/MainForm.cs) as well.
+
+## Download
+You can download the sources and the binaries as .zip archives [here](https://github.com/koszeggy/KGySoft.ComponentModelDemo/releases).
 
 ## Useful WPF Components
 * The [KGyCommandAdapter](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/ViewWpf/Commands/KGyCommandAdapter.cs) class makes possible to use KGy SOFT commands in WPF as traditional Microsoft commands.
