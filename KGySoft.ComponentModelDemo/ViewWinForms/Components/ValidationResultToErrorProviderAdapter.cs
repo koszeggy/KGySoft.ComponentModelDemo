@@ -13,7 +13,7 @@ using KGySoft.ComponentModel;
 namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
 {
     // If you want your ErrorProvider to provide Warning or Information messages of an IValidatingObject (see also Model.ValidatingTestObject),
-    // then just drop an ValidationResultToErrorProviderAdapter to the Form and set the Provider, Severity and DataSource properties. See also Forms.MainForm.
+    // then just drop a ValidationResultToErrorProviderAdapter to the Form and set the Provider, Severity and DataSource properties. See also Forms.MainForm.
     /// <summary>
     /// Provides an adapter for <see cref="ErrorProvider"/> to be able to display validation results of any <see cref="ValidationSeverity"/>.
     /// </summary>
@@ -130,10 +130,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
             if (bindingManager == null)
                 return;
 
-            // removing the originally set event handlers
-            UnwireEvents(bindingManager);
-
-            // wiring the fixed event handlers
             bindingManager.CurrentChanged += BindingManager_CurrentChanged;
             bindingManager.BindingComplete += BindingManager_BindingComplete;
             if (bindingManager is CurrencyManager currencyManager)
@@ -144,7 +140,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
 
             currentManager = bindingManager;
 
-            // as we are coming from a newly triggered CurrentChanged we let the rewired handler to go
             ApplyMessagesFromBinding();
         }
 
@@ -229,17 +224,17 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Components
 
         private void CurrencyManager_ItemChanged(object sender, ItemChangedEventArgs e)
         {
-            // This is the fixed version of the base.ErrorManager_ItemChanged method.
+            // This is the fixed version of the ErrorProvider.ErrorManager_ItemChanged method.
             var manager = (CurrencyManager)sender;
 
-            // The original handler is overridden only due to this part.
+            // The original handler is "overridden" only due to this part.
             if (e.Index != -1 || manager.Count != 0)
             {
                 ApplyMessagesFromBinding();
                 return;
             }
 
-            // If the list became empty then reset the errors
+            // If the list became empty then reset the messages
             foreach (Binding binding in manager.Bindings)
             {
                 if (binding.Control != null)
