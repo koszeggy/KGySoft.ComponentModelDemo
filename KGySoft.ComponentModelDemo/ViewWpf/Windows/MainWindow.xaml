@@ -256,7 +256,7 @@
 &#13;&#10;• Supports sorting if created by its default constructor"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Grid.Column="2" Header="Element Base Type">
+            <GroupBox Grid.Column="2" Header="Element Type">
                 <StackPanel>
                     <RadioButton Content="PlainTestObject" IsChecked="{Binding UsePlainTestObject}" ToolTip="The element type is derived from object
 &#13;&#10;• Does not support property change notification"/>
