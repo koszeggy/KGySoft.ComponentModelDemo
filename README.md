@@ -6,7 +6,6 @@ This repo is a demo WPF/WinForms application that demonstrates some features of 
 [![Website](https://img.shields.io/website/https/kgysoft.net/corelibraries.svg)](https://kgysoft.net/corelibraries)
 [![Online Help](https://img.shields.io/website/https/docs.kgysoft.net/corelibraries.svg?label=online%20help&up_message=available)](https://docs.kgysoft.net/corelibraries)
 [![CoreLibraries Repo](https://img.shields.io/github/repo-size/koszeggy/KGySoft.CoreLibraries.svg?label=CoreLibraries)](https://github.com/koszeggy/KGySoft.CoreLibraries)
-[![CoreLibraries Nuget](https://img.shields.io/nuget/vpre/KGySoft.CoreLibraries.svg)](https://www.nuget.org/packages/KGySoft.CoreLibraries)
 
 ![KGySoft.ComponentModelDemo](https://kgysoft.net/images/KGySoft.ComponentModelDemo.jpg)
 
