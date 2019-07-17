@@ -7,11 +7,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Controls
     // Needed to demonstrate the issues of inconsistent binding states in a DataGridView without destroying rendering.
     internal class SafeDataGridView : DataGridView
     {
-        public SafeDataGridView()
-        {
-            AutoGenerateColumns = true;
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             try

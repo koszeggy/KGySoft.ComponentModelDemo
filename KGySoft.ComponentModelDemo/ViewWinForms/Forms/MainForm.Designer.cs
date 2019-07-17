@@ -482,6 +482,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // tbIntPropCurrent
             // 
             this.tbIntPropCurrent.Dock = System.Windows.Forms.DockStyle.Top;
+            this.warningProvider.SetIconPadding(this.tbIntPropCurrent, -20);
+            this.errorProvider.SetIconPadding(this.tbIntPropCurrent, -20);
+            this.infoProvider.SetIconPadding(this.tbIntPropCurrent, -20);
             this.tbIntPropCurrent.Location = new System.Drawing.Point(3, 29);
             this.tbIntPropCurrent.Name = "tbIntPropCurrent";
             this.tbIntPropCurrent.Size = new System.Drawing.Size(298, 20);
@@ -516,6 +519,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // tbStringPropList
             // 
             this.tbStringPropList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.warningProvider.SetIconPadding(this.tbStringPropList, -20);
+            this.errorProvider.SetIconPadding(this.tbStringPropList, -20);
+            this.infoProvider.SetIconPadding(this.tbStringPropList, -20);
             this.tbStringPropList.Location = new System.Drawing.Point(3, 62);
             this.tbStringPropList.Name = "tbStringPropList";
             this.tbStringPropList.Size = new System.Drawing.Size(298, 20);
@@ -534,6 +540,9 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             // tbIntPropList
             // 
             this.tbIntPropList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.warningProvider.SetIconPadding(this.tbIntPropList, -20);
+            this.errorProvider.SetIconPadding(this.tbIntPropList, -20);
+            this.infoProvider.SetIconPadding(this.tbIntPropList, -20);
             this.tbIntPropList.Location = new System.Drawing.Point(3, 29);
             this.tbIntPropList.Name = "tbIntPropList";
             this.tbIntPropList.Size = new System.Drawing.Size(298, 20);

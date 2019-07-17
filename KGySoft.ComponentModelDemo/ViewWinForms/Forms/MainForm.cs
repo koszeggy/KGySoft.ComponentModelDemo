@@ -37,15 +37,13 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
         public MainForm(MainViewModel viewModel)
         {
             InitializeComponent();
+
             this.viewModel = viewModel;
+            grid.AutoGenerateColumns = true;
 
             errorProvider.Icon = Images.Error;
             warningProvider.Icon = Images.Warning;
             infoProvider.Icon = Images.Information;
-
-            // Setting the TextBoxes of current elements, too; though they have a different source so no validation will appear for them
-            // without manual setting or another set of providers bound to the itemBindingSource
-            SetProviderPaddings(-20, tbIntPropList, tbStringPropList, tbIntPropCurrent, tbStringPropCurrent);
 
             // For the better overview even the standard WinForms bindings are set here instead of the designer.
 
@@ -137,16 +135,6 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
         #endregion
 
         #region Private Methods
-
-        private void SetProviderPaddings(int padding, params Control[] controls)
-        {
-            foreach (Control control in controls)
-            {
-                errorProvider.SetIconPadding(control, padding);
-                warningProvider.SetIconPadding(control, padding);
-                infoProvider.SetIconPadding(control, padding);
-            }
-        }
 
         private void DoRebind()
         {
