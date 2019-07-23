@@ -122,7 +122,9 @@
     <None Include="..\README.md">
       <Link>README.md</Link>
     </None>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="ViewWpf\App.xaml">
