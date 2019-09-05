@@ -54,6 +54,7 @@ You can download the sources and the binaries as .zip archives [here](https://gi
 ## Useful Windows Forms Components
 * The [EditMenuStrip](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/ViewWinForms/Controls/EditMenuStrip.cs) control can be bound to any undoable/editable object.
 * The [ValidationResultToErrorProviderAdapter](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/ViewWinForms/Components/ValidationResultToErrorProviderAdapter.cs) component can turn an ErrorProvider component to a WarningProvider or InfoProvider. Just drop it on the Windows Forms Designer, and select the provider instance and the severity. If the `DataSource` property provides [IValidatingObject](http://docs.kgysoft.net/corelibraries/?topic=html/T_KGySoft_ComponentModel_IValidatingObject.htm) instances, then the selected provider will display the validation results of the chosen severity.
+* The [ToolTipUpdater](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/ViewWinForms/Commands/TooltipUpdater.cs) is a [command state updater](https://github.com/koszeggy/KGySoft.CoreLibraries#icommandstateupdater) that can sync `ToolTipText` command state for `Control` sources if any of their parents have a `ToolTip` component.
 
 ## License
 This repository is under the MIT license. You can freely reuse all code you find here even in commercial products without any restrictions.
