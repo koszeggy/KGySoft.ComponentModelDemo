@@ -88,17 +88,17 @@ namespace KGySoft.ComponentModelDemo.ViewWinForms.Forms
             commandsWithCurrentItemState = new CommandState { Enabled = false };
             commandBindings.Add(viewModel.AddItemCommand, btnAdd, nameof(btnAdd.Click)); // btnAdd.Click -> viewModel.AddItemCommand
             commandBindings.Add(viewModel.RemoveItemCommand, commandsWithCurrentItemState) // btnRemove.Click -> viewModel.RemoveItemCommand
+                .WithParameter(() => listBindingSource.Current)
                 .AddStateUpdater(PropertyCommandStateUpdater.Updater)
-                .AddSource(btnRemove, nameof(btnRemove.Click))
-                .AddTarget(() => listBindingSource.Current);
+                .AddSource(btnRemove, nameof(btnRemove.Click));
             commandBindings.Add(viewModel.SetItemCommand, commandsWithCurrentItemState) // btnSetItem.Click -> viewModel.SetItemCommand
+                .WithParameter(() => listBindingSource.Current)
                 .AddStateUpdater(PropertyCommandStateUpdater.Updater)
-                .AddSource(btnSetItem, nameof(btnSetItem.Click))
-                .AddTarget(() => listBindingSource.Current);
+                .AddSource(btnSetItem, nameof(btnSetItem.Click));
             commandBindings.Add(viewModel.SetItemPropertyCommand, commandsWithCurrentItemState) // btnSetProp.Click -> viewModel.SetItemPropertyCommand
+                .WithParameter(() => listBindingSource.Current)
                 .AddStateUpdater(PropertyCommandStateUpdater.Updater)
-                .AddSource(btnSetProp, nameof(btnSetProp.Click))
-                .AddTarget(() => listBindingSource.Current);
+                .AddSource(btnSetProp, nameof(btnSetProp.Click));
 
             // Note that the following bindings don't reference any explicitly defined ICommands instances. We can do this for private commands not used by anyone else.
             commandBindings.Add<CommandErrorEventArgs>(OnCommandErrorHandler) // viewModel.CommandError -> OnCommandErrorHandler

@@ -84,9 +84,9 @@ namespace KGySoft.ComponentModelDemo.ViewModel
 
         // Unlike Model.Commands, these are instance commands, which use the MainModelView members.
         public ICommand AddItemCommand => Get(() => new SimpleCommand(OnAddItemCommand));
-        public ICommand RemoveItemCommand => Get(() => new TargetedCommand<ITestObject>(OnRemoveItemCommand));
-        public ICommand SetItemCommand => Get(() => new TargetedCommand<ITestObject>(OnSetItemCommand));
-        public ICommand SetItemPropertyCommand => Get(() => new TargetedCommand<ITestObject>(OnSetItemPropertyCommand));
+        public ICommand RemoveItemCommand => Get(() => new SimpleCommand<ITestObject>(OnRemoveItemCommand));
+        public ICommand SetItemCommand => Get(() => new SimpleCommand<ITestObject>(OnSetItemCommand));
+        public ICommand SetItemPropertyCommand => Get(() => new SimpleCommand<ITestObject>(OnSetItemPropertyCommand));
 
         #endregion
 
@@ -227,7 +227,9 @@ namespace KGySoft.ComponentModelDemo.ViewModel
             Type elementType = list.GetType().GetInterface(typeof(IList<>).Name).GetGenericArguments()[0];
             try
             {
-                list[list.IndexOf(toBeReplaced)] = RandomInstance.NextObject(elementType);
+                var item = RandomInstance.NextObject(elementType);
+                (item as ICanUndo)?.ClearUndoHistory();
+                list[list.IndexOf(toBeReplaced)] = item;
             }
             catch (Exception e)
             {

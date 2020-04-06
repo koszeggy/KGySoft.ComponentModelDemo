@@ -40,10 +40,12 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 
         public override void Execute(object parameter)
         {
-            // If a command state was passed to the constructor we double check its Enabled state
-            // (though setting Enabled adjusts also CanExecute)
+            // If a command state was passed to the constructor we double check its Enabled state (though setting Enabled adjusts also CanExecute)
+            // Note that WPF command parameter is passed as both target and parameter to the KGySoft Command so it can be either a parameterized or
+            // targeted command (when using a regular command binding the difference is that the command is invoked for each targets but here
+            // we invoke the command directly so they do not make any difference).
             if (state?.Enabled != false)
-                wrappedCommand.Execute(null, state, parameter);
+                wrappedCommand.Execute(null, state, parameter, parameter);
         }
 
         #endregion

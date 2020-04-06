@@ -101,7 +101,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
 
             #region Internal Methods
 
-            // This will
+            // This will be the actual handler method of the event.
             internal void Execute(object sender, TEventArgs e)
             {
                 var src = source as DependencyObject;
@@ -109,9 +109,9 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
                 if (command == null)
                     return;
                 ICommandState state = State; // now it will not be null even if binding could not be resolved in constructor
-                object target = owner.Target?.Evaluate(src);
+                object parameter = owner.Parameter?.Evaluate(src);
                 if (state.Enabled)
-                    command.Execute(new CommandSource { EventArgs = e, Source = source, TriggeringEvent = eventName }, state, target);
+                    command.Execute(new CommandSource { EventArgs = e, Source = source, TriggeringEvent = eventName }, state, null, parameter);
             }
 
             #endregion
@@ -148,10 +148,10 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
         public BindingBase State { get; set; }
 
         /// <summary>
-        /// If not null, must resolve to an object that the <see cref="ICommand.Execute"/> will receive as the <c>target</c> parameter.
+        /// If not null, must resolve to an object that the <see cref="ICommand.Execute"/> will receive as the <c>parameter</c> argument.
         /// <br/>This binding is evaluated every time when the event is invoked.
         /// </summary>
-        public BindingBase Target { get; set; }
+        public BindingBase Parameter { get; set; }
 
         #endregion
 
@@ -186,7 +186,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
             if (invokeMethod?.ReturnType != typeof(void) || parameters.Length != 2 || parameters[0].ParameterType != typeof(object) || !typeof(EventArgs).IsAssignableFrom(parameters[1].ParameterType))
                 throw new ArgumentException($"Event '{nameof(eventName)}' does not have regular event handler delegate type.");
 
-            // creating generic info by reflection because the signature must match and EventArgs can vary
+            // creating generic info by reflection because the signature must match and the type of EventArgs can vary
             var info = Reflector.CreateInstance(typeof(SubscriptionInfo<>).MakeGenericType(parameters[1].ParameterType),
                     this, source, eventName, State?.Evaluate(source as DependencyObject));
 

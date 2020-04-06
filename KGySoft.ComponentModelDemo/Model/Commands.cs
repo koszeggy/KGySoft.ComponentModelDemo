@@ -14,7 +14,7 @@ namespace KGySoft.ComponentModelDemo.Model
         #region Properties
 
         // Usually commands are recommended to be static members. These class contains such general commands.
-        // These are all targeted (parameterized) commands.
+        // These are all targeted commands (similar to parameterized ones but the command is executed once for each targets).
         // See further examples in ViewModel.MainViewModel and in ViewWpf.Windows.MainWindow
         public static ICommand Undo { get; } = new TargetedCommand<ICanUndo>(OnUndo);
         public static ICommand Redo { get; } = new TargetedCommand<ICanUndoRedo>(OnRedo);

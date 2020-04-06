@@ -309,33 +309,32 @@
                         KGy SOFT commands.
                         
                         See also the EditToolBar control where the KGySoft.ComponentModel commands are wrapped into KGyCommandAdapter
-                        instances instead. Please note though that WPF commands do receive the event arguments. So while the
-                        KGyCommandAdapter can be used for simple or targeted commands (or parameterized commands as per WPF
-                        terminology), for source aware commands the EventToKGyCommand extension is a better choice.
+                        instances instead. Please note though that WPF commands do not receive the event arguments. So while the
+                        KGyCommandAdapter can be used for simple commands (allowing a parameter, similar to WPF commands),
+                        for source aware commands the EventToKGyCommand extension is a better choice.
 
-                        The EventToKGyCommand extension has 3 properties, Command, State and Target, all of them are bindings.
+                        The EventToKGyCommand extension has 3 properties, Command, State and Parameter, all of them are bindings.
                         - Command is mandatory and has to be evaluated to a KGySoft.ComponentModel.ICommand.
                         - State is optional. If not defined, then the command will always be enabled.
-                        - Target is optional. It is evaluated each time when the command is executed (that is the parameter in
-                          WPF commands).
+                        - Parameter is optional. It is evaluated each time when the command is executed.
                         -->
                         <Button Content="Add" Click="{commands:EventToKGyCommand Command={Binding AddItemCommand}}"
                                 ToolTip="Adds a new element to the bound list.
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Del" Click="{commands:EventToKGyCommand Command={Binding RemoveItemCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
+                        <Button Content="Del" Click="{commands:EventToKGyCommand Command={Binding RemoveItemCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Parameter={Binding TestList/}}"
                                 ToolTip="Removes the current element from the bound list
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Item" Click="{commands:EventToKGyCommand Command={Binding SetItemCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
+                        <Button Content="Item" Click="{commands:EventToKGyCommand Command={Binding SetItemCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Parameter={Binding TestList/}}"
                                 ToolTip="Replaces the current element in the bound list
 &#13;&#10;• ATTENTION: If no change can be seen press Reset to avoid errors due to inconsistency.
 &#13;&#10;• WPF BUG: WPF ignores element change of an IBindingList if element implements INotifyPropertyChanged (anything but PlainTestObject)
 &#13;&#10;• Change cannot be detected if bound list type is List
 &#13;&#10;• Change of the wrapped list can be detected only if the bound list is ObservableBindingList and the wrapped list is not List"/>
-                        <Button Content="Prop" Click="{commands:EventToKGyCommand Command={Binding SetItemPropertyCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Target={Binding TestList/}}"
+                        <Button Content="Prop" Click="{commands:EventToKGyCommand Command={Binding SetItemPropertyCommand}, State={Binding IsCurrentItemAvailable, ElementName=this}, Parameter={Binding TestList/}}"
                                 ToolTip="Sets the StringProp of the current item. It does not matther whether [...] is checked.
 &#13;&#10;• If no change can be seen press Reset to refresh the binding.
 &#13;&#10;• Change can be detected if element type supports change notification (anything but PlainTestObject is selected)"/>
