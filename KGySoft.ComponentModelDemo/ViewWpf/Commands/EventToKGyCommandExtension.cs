@@ -76,7 +76,7 @@ namespace KGySoft.ComponentModelDemo.ViewWpf.Commands
                     commandState = (ICommandState)owner.State?.Evaluate(source as DependencyObject);
                     if (commandState != null)
                         InitEnabledSync();
-                    return commandState ?? (commandState = new CommandState());
+                    return commandState ??= new CommandState();
                 }
             }
 

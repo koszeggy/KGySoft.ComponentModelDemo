@@ -1,172 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{336A85AB-7AD0-4063-9835-24B523D32422}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net472</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>KGySoft.ComponentModelDemo</RootNamespace>
-    <AssemblyName>KGySoft.ComponentModelDemo</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <OutputPath>bin\$(Configuration)</OutputPath>
+    <LangVersion>latest</LangVersion>
+    <Authors>György Kőszeg</Authors>
+    <OutputType>WinExe</OutputType>
+    <UseWpf>true</UseWpf>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>KGySoft.ComponentModelDemo.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="KGySoft.CoreLibraries, Version=5.0.99.2, Culture=neutral, PublicKeyToken=b45eba277439ddfe, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\KGySoft.CoreLibraries.5.1.0-alpha.2\lib\net472\KGySoft.CoreLibraries.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="KGySoft.CoreLibraries" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CommandBindingCollectionExtensions.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModel\CommandErrorEventArgs.cs" />
-    <Compile Include="ViewWinForms\Controls\SafeDataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ViewWpf\Adorners\AdornedElementPlaceholder.cs" />
-    <Compile Include="ViewWpf\Adorners\ElementAdorner.cs" />
-    <Compile Include="ViewWpf\Adorners\TemplatedAdorner.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Model\Commands.cs" />
-    <Compile Include="Model\EditableTestObject.cs" />
-    <Compile Include="ViewWinForms\Controls\EditMenuStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Model\AllInOneTestObject.cs" />
-    <Compile Include="Model\ITestObject.cs" />
-    <Compile Include="Model\ObservableTestObject.cs" />
-    <Compile Include="Model\PlainTestObject.cs" />
-    <Compile Include="Model\UndoableTestObject.cs" />
-    <Compile Include="Model\ValidatingTestObject.cs" />
-    <Compile Include="ViewWinForms\Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ViewWinForms\Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewWinForms\Images.cs" />
-    <Compile Include="ViewWinForms\Commands\TooltipUpdater.cs" />
-    <Compile Include="ViewWinForms\Components\ValidationResultToErrorProviderAdapter.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ViewWinForms\Commands\WinformsCommandBindingsCollection.cs" />
-    <Compile Include="ViewWpf\App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewWpf\BindingBaseExtensions.cs" />
-    <Compile Include="ViewWpf\Commands\EventToKGyCommandExtension.cs" />
-    <Compile Include="ViewWpf\Validation\HasValidationResultExtension.cs" />
-    <Compile Include="ViewWpf\Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewWpf\Commands\SwitchableWpfCommandBase.cs" />
-    <Compile Include="ViewWpf\Controls\EditToolBar.xaml.cs">
-      <DependentUpon>EditToolBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewWpf\Images.cs" />
-    <Compile Include="ViewWpf\Commands\KGyCommandAdapter.cs" />
-    <Compile Include="ViewWpf\Adorners\AdornerBindingExtension.cs" />
-    <Compile Include="ViewWpf\Commands\ParameterizedWpfCommand.cs" />
-    <Compile Include="ViewWpf\Commands\SimpleWpfCommand.cs" />
-    <Compile Include="ViewWpf\UIElementExtensions.cs" />
-    <Compile Include="ViewWpf\Validation\ValidationBindingExtension.cs" />
-    <EmbeddedResource Include="ViewWinForms\Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\README.md">
-      <Link>README.md</Link>
-    </None>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="ViewWpf\App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewWpf\Windows\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ViewWpf\Controls\EditToolBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.manifest" />
-    <None Include="packages.config" />
-    <None Include="Properties\DataSources\KGySoft.ComponentModelDemo.Model.ITestObject.datasource" />
-    <None Include="Resources\Undo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Redo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Accept.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Cancel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Edit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Error.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Information.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Warning.ico" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

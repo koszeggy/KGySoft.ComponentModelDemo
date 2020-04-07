@@ -25,15 +25,15 @@ namespace KGySoft.ComponentModelDemo.ViewWpf
 
         #region Properties
 
-        public static ImageSource Undo => undo ?? (undo = BitmapFrame.Create(Properties.Resources.Undo));
-        public static ImageSource Redo => redo ?? (redo = BitmapFrame.Create(Properties.Resources.Redo));
-        public static ImageSource Edit => edit ?? (edit = BitmapFrame.Create(Properties.Resources.Edit));
-        public static ImageSource Accept => accept ?? (accept = BitmapFrame.Create(Properties.Resources.Accept));
-        public static ImageSource Cancel => cancel ?? (cancel = BitmapFrame.Create(Properties.Resources.Cancel));
+        public static ImageSource Undo => undo ??= BitmapFrame.Create(Properties.Resources.Undo);
+        public static ImageSource Redo => redo ??= BitmapFrame.Create(Properties.Resources.Redo);
+        public static ImageSource Edit => edit ??= BitmapFrame.Create(Properties.Resources.Edit);
+        public static ImageSource Accept => accept ??= BitmapFrame.Create(Properties.Resources.Accept);
+        public static ImageSource Cancel => cancel ??= BitmapFrame.Create(Properties.Resources.Cancel);
 
-        public static ImageSource Error => error ?? (error = BitmapFrame.Create(Properties.Resources.Error));
-        public static ImageSource Warning => warning ?? (warning = BitmapFrame.Create(Properties.Resources.Warning));
-        public static ImageSource Information => info ?? (info = BitmapFrame.Create(Properties.Resources.Information));
+        public static ImageSource Error => error ??= BitmapFrame.Create(Properties.Resources.Error);
+        public static ImageSource Warning => warning ??= BitmapFrame.Create(Properties.Resources.Warning);
+        public static ImageSource Information => info ??= BitmapFrame.Create(Properties.Resources.Information);
 
         #endregion
     }
