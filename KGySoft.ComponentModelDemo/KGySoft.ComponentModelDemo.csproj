@@ -7,6 +7,7 @@
     <Authors>György Kőszeg</Authors>
     <OutputType>WinExe</OutputType>
     <UseWpf>true</UseWpf>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
