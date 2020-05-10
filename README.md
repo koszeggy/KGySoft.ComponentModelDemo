@@ -57,4 +57,4 @@ You can download the sources and the binaries as .zip archives [here](https://gi
 * The [ToolTipUpdater](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/KGySoft.ComponentModelDemo/ViewWinForms/Commands/TooltipUpdater.cs) is a [command state updater](https://github.com/koszeggy/KGySoft.CoreLibraries#icommandstateupdater) that can sync `ToolTipText` command state for `Control` sources if any of their parents have a `ToolTip` component.
 
 ## License
-This repository is under the MIT license. You can freely reuse all code you find here even in commercial products without any restrictions.
+This repository is under the [KGy SOFT License 1.0](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/LICENSE), which is a permissive GPL-like license. It allows you to copy and redistribute the material in any medium or format for any purpose, even commercially. The only thing is not allowed is to distribute a modified material as yours: though you are free to change and re-use anything, do that by giving appropriate credit. See the [LICENSE](https://github.com/koszeggy/KGySoft.ComponentModelDemo/blob/master/LICENSE) file for details.
