@@ -1,5 +1,3 @@
-[![KGy SOFT .net](https://docs.kgysoft.net/corelibraries/icons/logo.png)](https://kgysoft.net)
-
 # KGySoft.ComponentModelDemo
 This repo is a demo WPF/WinForms application that focuses on some features of the [KGySoft.ComponentModel](https://docs.kgysoft.net/corelibraries/?topic=html/N_KGySoft_ComponentModel.htm) namespace of [KGy SOFT Core Libraries](https://kgysoft.net/corelibraries) and also provides some useful solutions for using the KGy SOFT Core Libraries in WPF and Windows Forms applications.
 
